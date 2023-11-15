@@ -1,0 +1,11 @@
+services:
+  wimt-mysql:
+    image: mysql:8.1.0
+    container_name: wimt-mysql
+    environment:
+      MYSQL_DATABASE: wimt
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - 3306:3306
