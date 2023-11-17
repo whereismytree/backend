@@ -6,12 +6,6 @@ spring:
       local: oauth
       dev: oauth
       prod: oauth
-
----
-spring:
-  config:
-    activate:
-      on-profile: local
   datasource:
     url: jdbc:mysql://localhost:3306/wimt?useUnicode=true&serverTimezone=Asia/Seoul
     username: user
@@ -21,7 +15,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none    # 테이블 초기화 방어로직
     open-in-view: false
   flyway:
     enabled: false
@@ -35,33 +29,35 @@ springdoc:
     display-request-duration: true      # 요청에 대한 응답 시간 표시
   server-url: http://localhost:8080
 
+aws:
+  account:
+    access-key: ${AWS_ACCESS_KEY}
+    secret-key: ${AWS_SECRET_KEY}
+  region:
+    static: ap-northeast-2
+  s3:
+    bucket-name: jypbasebucket
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  jpa:
+    hibernate:
+      ddl-auto: update
+
 ---
 spring:
   config:
     activate:
       on-profile: dev
     import: aws-parameterstore:/config/wimt/
-  datasource:
-    url: jdbc:mysql://localhost:3306/wimt?useUnicode=true&serverTimezone=Asia/Seoul
-    username: user
-    password: password
-    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
-    show-sql: true
     hibernate:
       ddl-auto: update
-    open-in-view: false
-  flyway:
-    enabled: false
 
 springdoc:
-  packages-to-scan: org.whatismytree.wimt
-  default-consumes-media-type: application/json;charset=UTF-8
-  default-produces-media-type: application/json;charset=UTF-8
-  swagger-ui:
-    path: /swagger-ui.html
-    display-request-duration: true      # 요청에 대한 응답 시간 표시
   server-url: https://devjyp.shop       # TODO: 도메인 변경 후 수정
 
 ---
@@ -77,20 +73,12 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
-    show-sql: true
     hibernate:
       ddl-auto: validate
-    open-in-view: false
   flyway:
     enabled: true
     baseline-on-migrate: true
     baseline-version: 0
 
 springdoc:
-  packages-to-scan: org.whatismytree.wimt
-  default-consumes-media-type: application/json;charset=UTF-8
-  default-produces-media-type: application/json;charset=UTF-8
-  swagger-ui:
-    path: /swagger-ui.html
-    display-request-duration: true      # 요청에 대한 응답 시간 표시
   server-url: https://devjyp.shop       # TODO: 도메인 변경 후 수정
