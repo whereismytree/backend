@@ -17,7 +17,7 @@ class ReviewService (
 
 
     @Transactional
-    fun createReview(treeId: Long, userId: Long, contents: String, tagIds: List<Long>, imageUrl: String?): Long {
+    fun createReview(treeId: Long, userId: Long, content: String, tagIds: List<Long>, imageUrl: String?): Long {
         // TODO: 트리 존재 여부 체크
 
         val tags = tagRepository.findAllByDeletedAtIsNullAndIdIn(tagIds)
@@ -25,7 +25,7 @@ class ReviewService (
             throw TagNotFoundException("태그가 존재하지 않습니다. tagIds: $tagIds")
         }
 
-        val review = Review.of(treeId, userId, contents, tagIds, imageUrl)
+        val review = Review.of(treeId, userId, content, tagIds, imageUrl)
 
         reviewRepository.save(review)
 

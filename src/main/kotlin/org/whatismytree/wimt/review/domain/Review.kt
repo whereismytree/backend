@@ -33,7 +33,7 @@ class Review protected constructor(
         protected set
 
     @Column(name = "content", nullable = false, length = 3000)
-    var contents: String = content
+    var content: String = content
         protected set
 
     @Column(name = "image_url", length = 1000)

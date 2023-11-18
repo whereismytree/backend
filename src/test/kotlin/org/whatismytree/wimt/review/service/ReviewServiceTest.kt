@@ -30,12 +30,12 @@ internal class ReviewServiceTest(
 
             val treeId = 1L
             val userId = 1L
-            val contents = "content"
+            val content = "content"
             val tagIds = listOf(tag.id!!)
             val imageUrl = "imageUrl"
 
             // when
-            val reviewId = reviewService.createReview(treeId, userId, contents, tagIds, imageUrl)
+            val reviewId = reviewService.createReview(treeId, userId, content, tagIds, imageUrl)
 
             // then
             assertThat(reviewId).isNotNull()
@@ -52,13 +52,13 @@ internal class ReviewServiceTest(
 
             val treeId = 1L
             val userId = 1L
-            val contents = "content"
+            val content = "content"
             val tagIds = listOf(1L, 2L)
             val imageUrl = "imageUrl"
 
             // when
             val result = catchThrowable {
-                reviewService.createReview(treeId, userId, contents, tagIds, imageUrl)
+                reviewService.createReview(treeId, userId, content, tagIds, imageUrl)
             }
 
             // then

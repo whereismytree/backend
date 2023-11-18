@@ -16,17 +16,17 @@ internal class ReviewTest {
             // given
             val treeId = 1L
             val userId = 1L
-            val contents = "content"
+            val content = "content"
             val tagIds = listOf(1L, 2L)
             val imageUrl = "imageUrl"
 
             // when
-            val review = Review.of(treeId, userId, contents, tagIds, imageUrl)
+            val review = Review.of(treeId, userId, content, tagIds, imageUrl)
 
             // then
             assertThat(review.treeId).isEqualTo(treeId)
             assertThat(review.userId).isEqualTo(userId)
-            assertThat(review.contents).isEqualTo(contents)
+            assertThat(review.content).isEqualTo(content)
             assertThat(review.imageUrl).isEqualTo(imageUrl)
             assertThat(review.tags).hasSize(2)
 

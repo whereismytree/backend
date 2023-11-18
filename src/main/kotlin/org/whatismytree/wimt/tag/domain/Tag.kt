@@ -7,11 +7,11 @@ import java.time.LocalDateTime
 
 @Entity(name = "tag")
 class Tag protected constructor(
-    contents: String,
+    content: String,
 ) : BaseTimeEntity() {
 
-    @Column(name = "contents", nullable = false)
-    var contents: String = contents
+    @Column(name = "content", nullable = false)
+    var content: String = content
         protected set
 
     @Column(name = "deleted_at")
@@ -20,10 +20,10 @@ class Tag protected constructor(
 
     companion object {
         fun of(
-            contents: String,
+            content: String,
         ): Tag {
             return Tag(
-                contents = contents,
+                content = content,
             )
         }
     }
