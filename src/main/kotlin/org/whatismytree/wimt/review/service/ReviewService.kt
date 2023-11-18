@@ -27,6 +27,6 @@ class ReviewService(
 
         reviewRepository.save(review)
 
-        return review.id!!
+        return review.id
     }
 }

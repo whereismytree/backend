@@ -31,7 +31,7 @@ internal class ReviewServiceTest(
             val treeId = 1L
             val userId = 1L
             val content = "content"
-            val tagIds = listOf(tag.id!!)
+            val tagIds = listOf(tag.id)
             val imageUrl = "imageUrl"
 
             // when
@@ -64,6 +64,5 @@ internal class ReviewServiceTest(
             // then
             assertThat(result).isInstanceOf(TagNotFoundException::class.java)
         }
-
     }
 }
