@@ -52,7 +52,7 @@ class Review protected constructor(
     @OneToMany(
         mappedBy = "review",
         orphanRemoval = true,
-        cascade = [CascadeType.ALL],
+        cascade = [CascadeType.PERSIST],
         fetch = FetchType.EAGER,
         targetEntity = ReviewTag::class
     )
