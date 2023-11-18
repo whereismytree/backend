@@ -2,7 +2,6 @@ package org.whatismytree.wimt.review.domain
 
 import jakarta.persistence.Column
 import jakarta.persistence.ConstraintMode
-import jakarta.persistence.Embeddable
 import jakarta.persistence.Entity
 import jakarta.persistence.EntityListeners
 import jakarta.persistence.ForeignKey
@@ -17,7 +16,7 @@ import java.time.LocalDateTime
 @Entity(name = "review_tag")
 @EntityListeners(AuditingEntityListener::class)
 @IdClass(ReviewTagId::class)
-class ReviewTag protected constructor(
+class ReviewTag private constructor(
     review: Review,
     tagId: Long,
 ) {
@@ -31,10 +30,9 @@ class ReviewTag protected constructor(
     @JoinColumn(
         name = "review_id",
         nullable = false,
-        foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT)
+        foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT),
     )
     val review: Review = review
-
 
     @CreatedDate
     lateinit var createdAt: LocalDateTime

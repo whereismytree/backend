@@ -1,6 +1,5 @@
 package org.whatismytree.wimt.review.service
 
-
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.whatismytree.wimt.review.domain.Review
@@ -10,10 +9,10 @@ import org.whatismytree.wimt.tag.repository.TagRepository
 
 @Service
 @Transactional(readOnly = true)
-class ReviewService (
+class ReviewService(
     private val reviewRepository: ReviewRepository,
-    private val tagRepository: TagRepository
-){
+    private val tagRepository: TagRepository,
+) {
 
     @Transactional
     fun createReview(treeId: Long, userId: Long, content: String, tagIds: List<Long>, imageUrl: String?): Long {

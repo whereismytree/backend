@@ -15,9 +15,9 @@ import java.time.LocalDateTime
     indexes = [
         Index(name = "idx_review_1", columnList = "tree_id"),
         Index(name = "idx_review_2", columnList = "user_id"),
-    ]
+    ],
 )
-class Review protected constructor(
+class Review private constructor(
     treeId: Long,
     userId: Long,
     content: String,
@@ -49,13 +49,14 @@ class Review protected constructor(
         orphanRemoval = true,
         cascade = [CascadeType.PERSIST],
         fetch = FetchType.EAGER,
-        targetEntity = ReviewTag::class
+        targetEntity = ReviewTag::class,
     )
     var tags: List<ReviewTag> = listOf()
 
-
     fun addTags(tagIds: List<Long>) {
-        tagIds.filter { tagId -> tags.all { tag -> tag.tagId != tagId } }.forEach {
+        val existedTagIds = tags.map { it.tagId }.toSet()
+
+        tagIds.filterNot { it in existedTagIds }.forEach {
             tags += (ReviewTag.of(this, it))
         }
     }
