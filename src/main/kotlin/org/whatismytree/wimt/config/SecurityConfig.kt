@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
+import org.whatismytree.wimt.auth.handler.OAuth2AuthenticationSuccessHandler
 
 @Configuration
 @EnableWebSecurity
@@ -19,7 +20,7 @@ class SecurityConfig {
             .formLogin { formLogin -> formLogin.disable() }
             .httpBasic { httpBasic -> httpBasic.disable() }
             .oauth2Login { oauth2 -> oauth2
-                .successHandler { _, _, _ -> println("로그인 성공") }    // TODO: 추후 성공 시 로직 추가 (회원 닉네임 설정 여부)
+                .successHandler(OAuth2AuthenticationSuccessHandler())    // TODO: 추후 성공 시 로직 추가 (회원 닉네임 설정 여부)
             }
             .build()
     }
