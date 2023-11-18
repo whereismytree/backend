@@ -44,11 +44,12 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     runtimeOnly("com.mysql:mysql-connector-j")
+    testRuntimeOnly("com.h2database:h2")
 
-    implementation ("com.querydsl:querydsl-jpa:5.0.0:jakarta")
-    kapt ("com.querydsl:querydsl-apt:5.0.0:jakarta")
-    kapt ("jakarta.annotation:jakarta.annotation-api")
-    kapt ("jakarta.persistence:jakarta.persistence-api")
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    kapt("jakarta.annotation:jakarta.annotation-api")
+    kapt("jakarta.persistence:jakarta.persistence-api")
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 
