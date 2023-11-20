@@ -23,7 +23,7 @@ class Tree (
     val lng: Float,
 
     @Column
-    val addressType: String,
+    val addressType: AddressType,
 
     @Column
     val streetAddress: String? = null,
@@ -35,7 +35,7 @@ class Tree (
     val detailAddress: String? = null,
 
     @Column
-    val space: String? = null,
+    val space: SPACE? = null,
 
     @Column
     val exhibitionStartDate: LocalDate? = null,
@@ -54,4 +54,15 @@ class Tree (
 
     @Column
     val description: Boolean? = null,
-)
+): BaseEntity() {
+
+    enum class AddressType {
+        ROAD,
+        STREET
+    }
+
+    enum class SPACE {
+        INTERIOR,
+        EXTERNAL
+    }
+}
