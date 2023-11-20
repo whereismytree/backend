@@ -1,11 +1,12 @@
-package org.whatismytree.wimt.tree
+package org.whatismytree.wimt.tree.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.whatismytree.wimt.tree.dto.CreateTreeDto
-import org.whatismytree.wimt.tree.dto.UpdateTreeDto
+import org.whatismytree.wimt.tree.controller.dto.CreateTreeDto
+import org.whatismytree.wimt.tree.controller.dto.UpdateTreeDto
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
+import org.whatismytree.wimt.tree.service.TreeService
 
 @RestController
 @Tag(name = "트리 관리")
@@ -26,7 +27,7 @@ class TreeController(
     = treeService.findTree(id)
 
     @GetMapping("list")
-    @Operation(summary = "트리 목록 조회")
+    @Operation(summary = "트리 목록 조성")
     @Throws(Exception::class)
     fun findTreeList()
     = treeService.findTreeList()
