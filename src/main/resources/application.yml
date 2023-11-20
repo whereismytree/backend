@@ -43,3 +43,6 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     display-request-duration: true      # 요청에 대한 응답 시간 표시
+
+jwt:
+  secret: af7m12389fashjvo412nklgoira441klnfudfa741nkafdl149gn41algnhh31vdk41labfb123jgfkq1351fakasfh41 # 추후 변경
