@@ -61,6 +61,14 @@ class Review private constructor(
         }
     }
 
+    fun isAuthor(userId: Long): Boolean {
+        return this.userId == userId
+    }
+
+    fun delete(now: LocalDateTime = LocalDateTime.now()) {
+        deletedAt = now
+    }
+
     companion object {
         fun of(
             treeId: Long,
