@@ -15,14 +15,13 @@ import org.whatismytree.wimt.review.exception.ReviewInvalidPermissionException
 import org.whatismytree.wimt.review.exception.ReviewNotFoundException
 import org.whatismytree.wimt.review.exception.TagNotFoundException
 import org.whatismytree.wimt.support.createLocalDateTime
-import org.whatismytree.wimt.support.createSample
 import org.whatismytree.wimt.support.makeSample
 import org.whatismytree.wimt.tag.domain.Tag
 
 @ServiceIntTest(ReviewService::class)
 internal class ReviewServiceTest(
     private val reviewService: ReviewService,
-    private val entityManager: EntityManager,
+    private val entityManager: EntityManager
 ) {
 
     @Nested

@@ -4,9 +4,7 @@ import com.navercorp.fixturemonkey.ArbitraryBuilder
 import com.navercorp.fixturemonkey.FixtureMonkey
 import com.navercorp.fixturemonkey.api.introspector.FieldReflectionArbitraryIntrospector
 import com.navercorp.fixturemonkey.kotlin.KotlinPlugin
-import com.navercorp.fixturemonkey.kotlin.setNull
 import jakarta.persistence.EntityManager
-import org.whatismytree.wimt.common.BaseEntity
 
 val fixtureMonkey = FixtureMonkey.builder().plugin(KotlinPlugin())
     .objectIntrospector(FieldReflectionArbitraryIntrospector.INSTANCE).build()

@@ -9,5 +9,4 @@ class WimtApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }

@@ -14,8 +14,4 @@ import kotlin.reflect.KClass
 @Retention(AnnotationRetention.RUNTIME)
 annotation class ServiceIntTest(
     @get:AliasFor(annotation = Import::class, attribute = "value") val value: KClass<*> = Unit::class
-) {
-
-}
-
-
+)

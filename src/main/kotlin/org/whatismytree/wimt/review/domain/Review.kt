@@ -14,14 +14,14 @@ import java.time.LocalDateTime
 @Table(
     indexes = [
         Index(name = "idx_review_1", columnList = "tree_id"),
-        Index(name = "idx_review_2", columnList = "user_id"),
-    ],
+        Index(name = "idx_review_2", columnList = "user_id")
+    ]
 )
 class Review private constructor(
     treeId: Long,
     userId: Long,
     content: String,
-    imageUrl: String?,
+    imageUrl: String?
 ) : BaseTimeEntity() {
 
     @Column(name = "tree_id", nullable = false)
@@ -49,7 +49,7 @@ class Review private constructor(
         orphanRemoval = true,
         cascade = [CascadeType.PERSIST],
         fetch = FetchType.EAGER,
-        targetEntity = ReviewTag::class,
+        targetEntity = ReviewTag::class
     )
     var tags: List<ReviewTag> = listOf()
 
@@ -75,13 +75,13 @@ class Review private constructor(
             userId: Long,
             content: String,
             tagIds: List<Long>,
-            imageUrl: String? = null,
+            imageUrl: String? = null
         ): Review {
             val review = Review(
                 treeId = treeId,
                 userId = userId,
                 content = content,
-                imageUrl = imageUrl,
+                imageUrl = imageUrl
             )
 
             review.addTags(tagIds)

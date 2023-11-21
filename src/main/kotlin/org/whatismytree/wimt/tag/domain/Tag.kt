@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 
 @Entity(name = "tag")
 class Tag protected constructor(
-    content: String,
+    content: String
 ) : BaseTimeEntity() {
 
     @Column(name = "content", nullable = false)
@@ -17,14 +17,4 @@ class Tag protected constructor(
     @Column(name = "deleted_at")
     var deletedAt: LocalDateTime? = null
         protected set
-
-    companion object {
-        fun of(
-            content: String,
-        ): Tag {
-            return Tag(
-                content = content,
-            )
-        }
-    }
 }

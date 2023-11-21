@@ -6,5 +6,5 @@ import java.io.Serializable
 @Embeddable
 data class ReviewTagId(
     private val tagId: Long,
-    private val review: Long,
+    private val review: Long
 ) : Serializable
