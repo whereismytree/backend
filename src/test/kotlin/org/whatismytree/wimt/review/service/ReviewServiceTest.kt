@@ -21,7 +21,7 @@ import org.whatismytree.wimt.tag.domain.Tag
 @ServiceIntTest(ReviewService::class)
 internal class ReviewServiceTest(
     private val reviewService: ReviewService,
-    private val entityManager: EntityManager
+    private val entityManager: EntityManager,
 ) {
 
     @Nested

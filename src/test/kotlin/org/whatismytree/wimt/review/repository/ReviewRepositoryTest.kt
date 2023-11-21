@@ -12,7 +12,7 @@ import org.whatismytree.wimt.review.domain.Review
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 internal class ReviewRepositoryTest(
     private val reviewRepository: ReviewRepository,
-    private val entityManager: EntityManager
+    private val entityManager: EntityManager,
 ) {
 
     @Test
@@ -21,7 +21,7 @@ internal class ReviewRepositoryTest(
             treeId = 1L,
             userId = 1L,
             content = "content",
-            tagIds = listOf(0)
+            tagIds = listOf(0),
         )
 
         reviewRepository.save(review)

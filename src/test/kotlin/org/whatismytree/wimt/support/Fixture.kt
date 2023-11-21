@@ -13,7 +13,7 @@ inline fun <reified T> createSample(builder: ArbitraryBuilder<T>.() -> Unit = {}
     fixtureMonkey.giveMeBuilder(T::class.java).apply(builder).build().sample()
 
 inline fun <reified T> EntityManager.makeSample(
-    builder: ArbitraryBuilder<T>.() -> Unit = {}
+    builder: ArbitraryBuilder<T>.() -> Unit = {},
 ): T =
     fixtureMonkey.giveMeBuilder(T::class.java).setNull("id").apply(builder).build().sample()
         .apply { persist(this) }

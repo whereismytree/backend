@@ -18,14 +18,14 @@ import org.whatismytree.wimt.review.service.ReviewService
 @RestController
 @RequestMapping("/v1/reviews")
 class ReviewController(
-    private val reviewService: ReviewService
+    private val reviewService: ReviewService,
 ) {
 
     @Operation(summary = "리뷰를 생성한다")
     @PostMapping
     fun createReview(
         @Valid @RequestBody
-        request: CreateReviewRequest
+        request: CreateReviewRequest,
     ): CreateReviewResponse {
         val reviewId = reviewService.createReview(
             treeId = request.treeId,
@@ -33,7 +33,7 @@ class ReviewController(
             userId = 1L,
             content = request.content,
             tagIds = request.tagIds,
-            imageUrl = request.imageUrl
+            imageUrl = request.imageUrl,
         )
 
         return CreateReviewResponse(reviewId)
@@ -42,12 +42,12 @@ class ReviewController(
     @Operation(summary = "리뷰를 삭제한다")
     @DeleteMapping("/{reviewId}")
     fun createReview(
-        @Min(1) @PathVariable reviewId: Long
+        @Min(1) @PathVariable reviewId: Long,
     ) {
         reviewService.deleteReview(
             reviewId = reviewId,
             // TODO: 시큐리티 작업 이후 AuthenticationPrincipal 통해 가져오는 값으로 변경
-            userId = 1L
+            userId = 1L,
         )
     }
 }

@@ -18,7 +18,7 @@ import java.time.LocalDateTime
 @IdClass(ReviewTagId::class)
 class ReviewTag private constructor(
     review: Review,
-    tagId: Long
+    tagId: Long,
 ) {
 
     @Id
@@ -30,7 +30,7 @@ class ReviewTag private constructor(
     @JoinColumn(
         name = "review_id",
         nullable = false,
-        foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT)
+        foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT),
     )
     val review: Review = review
 
@@ -41,11 +41,11 @@ class ReviewTag private constructor(
     companion object {
         fun of(
             review: Review,
-            tagId: Long
+            tagId: Long,
         ): ReviewTag {
             return ReviewTag(
                 review = review,
-                tagId = tagId
+                tagId = tagId,
             )
         }
     }

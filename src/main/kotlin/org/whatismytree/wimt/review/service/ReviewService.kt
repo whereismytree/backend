@@ -14,7 +14,7 @@ import java.time.LocalDateTime
 @Transactional(readOnly = true)
 class ReviewService(
     private val reviewRepository: ReviewRepository,
-    private val tagRepository: TagRepository
+    private val tagRepository: TagRepository,
 ) {
 
     @Transactional

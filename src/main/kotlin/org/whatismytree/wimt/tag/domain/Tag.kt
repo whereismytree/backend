@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 
 @Entity(name = "tag")
 class Tag private constructor(
-    content: String
+    content: String,
 ) : BaseTimeEntity() {
 
     @Column(name = "content", nullable = false)

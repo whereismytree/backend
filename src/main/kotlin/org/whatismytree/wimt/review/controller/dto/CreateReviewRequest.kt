@@ -9,5 +9,5 @@ data class CreateReviewRequest(
     @field:Size(max = 5)
     val tagIds: List<Long>,
     val content: String,
-    val imageUrl: String?
+    val imageUrl: String?,
 )
