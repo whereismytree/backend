@@ -6,7 +6,7 @@ import org.whatismytree.wimt.common.BaseTimeEntity
 import java.time.LocalDateTime
 
 @Entity(name = "tag")
-class Tag protected constructor(
+class Tag private constructor(
     content: String
 ) : BaseTimeEntity() {
 

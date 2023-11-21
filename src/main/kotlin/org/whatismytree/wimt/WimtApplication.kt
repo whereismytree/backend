@@ -7,5 +7,6 @@ import org.springframework.boot.runApplication
 class WimtApplication
 
 fun main(args: Array<String>) {
+    @Suppress("SpreadOperator")
     runApplication<WimtApplication>(*args)
 }

@@ -3,6 +3,7 @@ package org.whatismytree.wimt.support
 import java.time.LocalDate
 import java.time.LocalDateTime
 
+@Suppress("LongParameterList")
 fun createLocalDateTime(
     year: Int,
     month: Int = 1,
