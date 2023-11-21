@@ -1,13 +1,11 @@
 package org.whatismytree.wimt.user.domain
 
 import jakarta.persistence.*
-import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import org.whatismytree.wimt.auth.domain.OAuthType
 import org.whatismytree.wimt.common.BaseTimeEntity
 import java.time.LocalDateTime
 
 @Entity
-@EntityListeners(AuditingEntityListener::class)
 @Table(
     name = "users",
     uniqueConstraints = [
