@@ -7,7 +7,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.stereotype.Component
 import org.whatismytree.wimt.auth.dto.OAuthInfo
-import org.whatismytree.wimt.user.UserService
+import org.whatismytree.wimt.user.service.UserService
 
 @Component
 class OAuth2AuthenticationSuccessHandler(

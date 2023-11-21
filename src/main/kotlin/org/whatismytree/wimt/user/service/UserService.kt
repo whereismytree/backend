@@ -1,4 +1,4 @@
-package org.whatismytree.wimt.user
+package org.whatismytree.wimt.user.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
