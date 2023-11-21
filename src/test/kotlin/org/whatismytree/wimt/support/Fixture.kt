@@ -9,9 +9,11 @@ import jakarta.persistence.EntityManager
 val fixtureMonkey = FixtureMonkey.builder().plugin(KotlinPlugin())
     .objectIntrospector(FieldReflectionArbitraryIntrospector.INSTANCE).build()
 
-fun <T> createSample(clazz: Class<T>): T = fixtureMonkey.giveMeOne(clazz)
+inline fun <reified T> createSample(builder: ArbitraryBuilder<T>.() -> Unit = {}): T =
+    fixtureMonkey.giveMeBuilder(T::class.java).apply(builder).build().sample()
 
 inline fun <reified T> EntityManager.makeSample(
     builder: ArbitraryBuilder<T>.() -> Unit = {}
 ): T =
-    fixtureMonkey.giveMeBuilder(T::class.java).setNull("id").apply(builder).build().sample().apply { persist(this) }
+    fixtureMonkey.giveMeBuilder(T::class.java).setNull("id").apply(builder).build().sample()
+        .apply { persist(this) }
