@@ -10,8 +10,6 @@ import org.whatismytree.wimt.auth.domain.OAuthType
 import org.whatismytree.wimt.auth.dto.OAuthInfo
 import org.whatismytree.wimt.user.domain.User
 
-private const val s = "test@google.com"
-
 @ServiceIntTest(UserService::class)
 internal class UserServiceTest(
     private val userService: UserService,
@@ -46,10 +44,11 @@ internal class UserServiceTest(
             val oAuthId = "ThisIsSampleOAuthId"
             val email = "test@google.com"
 
-            val existUser = User(
+            val existUser = User.of(
                 email = email,
                 oauthType = oAuthType,
-                oauthId = oAuthId)
+                oauthId = oAuthId
+            )
             val existUserId = entityManager.persistAndGetId(existUser)
 
             val oAuthInfo = OAuthInfo(

@@ -11,7 +11,11 @@ class UserTest {
     @Test
     fun `softDelete시 deleteAt에 현재 시간이 설정된다`() {
         // given
-        val user = User("test@email.com", OAuthType.KAKAO, "sampleOAuthId")
+        val email = "test@email.com"
+        val oauthType = OAuthType.KAKAO
+        val oauthId = "sampleOAuthId"
+
+        val user = User.of(email, oauthType, oauthId)
         val now = LocalDateTime.now()
 
         // when

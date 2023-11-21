@@ -22,7 +22,7 @@ class SecurityConfig(
             .formLogin { formLogin -> formLogin.disable() }
             .httpBasic { httpBasic -> httpBasic.disable() }
             .oauth2Login { oauth2 -> oauth2
-                .successHandler(oAuth2AuthenticationSuccessHandler)    // TODO: 추후 성공 시 로직 추가 (회원 닉네임 설정 여부)
+                .successHandler(oAuth2AuthenticationSuccessHandler)
             }
             .build()
     }

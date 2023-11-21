@@ -1,10 +1,9 @@
 package org.whatismytree.wimt.user.domain
 
 import jakarta.persistence.*
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import org.whatismytree.wimt.auth.domain.OAuthType
+import org.whatismytree.wimt.common.BaseTimeEntity
 import java.time.LocalDateTime
 
 @Entity
@@ -12,41 +11,55 @@ import java.time.LocalDateTime
 @Table(
     name = "users",
     uniqueConstraints = [
-        UniqueConstraint(name = "uk_oauth", columnNames = ["oauthType", "oauthId"]),
+        UniqueConstraint(name = "uk_oauth", columnNames = ["oauth_type", "oauth_id"]),
     ]
 )
-class User(
-    @Column(nullable = false, updatable = false, length = 255)
-    val email: String,
+class User private constructor(
+    email: String,
+    oauthType: OAuthType,
+    oauthId: String,
+    nickname: String?,
+    profileImageUrl: String?
+) : BaseTimeEntity() {
+
+    @Column(name = "email", nullable = false, updatable = false, length = 255)
+    val email: String = email
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, updatable = false, length = 50)
-    val oauthType: OAuthType,
+    @Column(name = "oauth_type", nullable = false, updatable = false, length = 50)
+    val oauthType: OAuthType = oauthType
 
-    @Column(nullable = false, updatable = false, length = 255)
-    val oauthId: String,
+    @Column(name = "oauth_id", nullable = false, updatable = false, length = 255)
+    val oauthId: String = oauthId
 
-    @Column(length = 50, unique = true)
-    var nickname: String? = null,
+    @Column(name = "nickname", length = 50, unique = true)
+    var nickname: String? = nickname
 
-    @Column(length = 255)
-    var profileImageUrl: String? = null,
+    @Column(name = "profile_image_url", length = 255)
+    var profileImageUrl: String? = profileImageUrl
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    var createdAt: LocalDateTime? = null,
+    @Column(name = "deleted_at")
+    var deletedAt: LocalDateTime? = null
+        protected set
 
-    @LastModifiedDate
-    @Column(nullable = false)
-    var updatedAt: LocalDateTime? = null,
-
-    var deletedAt: LocalDateTime? = null,
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null,
-) {
     fun softDelete() {
         deletedAt = LocalDateTime.now()
+    }
+
+    companion object {
+        fun of(
+            email: String,
+            oauthType: OAuthType,
+            oauthId: String,
+            nickname: String? = null,
+            profileImageUrl: String? = null
+        ): User =
+            User(
+                email = email,
+                oauthType = oauthType,
+                oauthId = oauthId,
+                nickname = nickname,
+                profileImageUrl = profileImageUrl
+            )
     }
 }

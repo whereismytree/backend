@@ -12,7 +12,8 @@ class UserService(
     private val userRepository: UserRepository
 ) {
     @Transactional
-    fun findOrCreateUser(oAuthInfo: OAuthInfo): User =
-        userRepository.findUserByOAuthInfo(oAuthInfo) ?:
-            userRepository.save(User(oAuthInfo.email, oAuthInfo.oAuthType, oAuthInfo.oAuthId))
+    fun findOrCreateUser(oAuthInfo: OAuthInfo): User {
+        val user = User.of(oAuthInfo.email, oAuthInfo.oAuthType, oAuthInfo.oAuthId)
+        return userRepository.findUserByOAuthInfo(oAuthInfo) ?: userRepository.save(user)
+    }
 }
