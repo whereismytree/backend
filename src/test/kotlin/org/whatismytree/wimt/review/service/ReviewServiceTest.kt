@@ -124,8 +124,6 @@ internal class ReviewServiceTest(
             val review = entityManager.makeSample {
                 set(Review::userId, 10)
                 set(Review::tags, listOf<ReviewTag>())
-                setNull(Review::createdAt)
-                setNull(Review::updatedAt)
                 setNull(Review::deletedAt)
             }
 
