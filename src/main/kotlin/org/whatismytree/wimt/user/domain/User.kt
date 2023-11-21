@@ -10,6 +10,7 @@ import java.time.LocalDateTime
 @Entity
 @EntityListeners(AuditingEntityListener::class)
 @Table(
+    name = "users",
     uniqueConstraints = [
         UniqueConstraint(name = "uk_oauth", columnNames = ["oauthType", "oauthId"]),
     ]
