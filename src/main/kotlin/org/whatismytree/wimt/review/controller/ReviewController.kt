@@ -3,6 +3,9 @@ package org.whatismytree.wimt.review.controller
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
+import jakarta.validation.constraints.Min
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -33,5 +36,17 @@ class ReviewController(
         )
 
         return CreateReviewResponse(reviewId)
+    }
+
+    @Operation(summary = "리뷰를 삭제한다")
+    @DeleteMapping("/{reviewId}")
+    fun createReview(
+        @Min(1) @PathVariable reviewId: Long,
+    ) {
+        reviewService.deleteReview(
+            reviewId = reviewId,
+            // TODO: 시큐리티 작업 이후 AuthenticationPrincipal 통해 가져오는 값으로 변경
+            userId = 1L,
+        )
     }
 }

@@ -15,6 +15,7 @@ import org.whatismytree.wimt.review.exception.ReviewInvalidPermissionException
 import org.whatismytree.wimt.review.exception.ReviewNotFoundException
 import org.whatismytree.wimt.review.exception.TagNotFoundException
 import org.whatismytree.wimt.support.createLocalDateTime
+import org.whatismytree.wimt.support.createSample
 import org.whatismytree.wimt.support.makeSample
 import org.whatismytree.wimt.tag.domain.Tag
 
@@ -31,8 +32,11 @@ internal class ReviewServiceTest(
         @DisplayName("리뷰를 생성한다")
         fun createReview() {
             // given
-            val tag = Tag.of("tag1")
-            entityManager.persist(tag)
+            val tag: Tag = entityManager.makeSample {
+                setNull(Tag::createdAt)
+                setNull(Tag::updatedAt)
+                setNull(Tag::deletedAt)
+            }
 
             // TODO: 트리 추가 필요
 
@@ -81,8 +85,7 @@ internal class ReviewServiceTest(
         @DisplayName("리뷰를 삭제한다")
         fun deleteReview() {
             // given
-            val review = entityManager.makeSample(Review::class.java) {
-                setNull(Review::id)
+            val review = entityManager.makeSample {
                 set(Review::userId, 10)
                 set(Review::tags, listOf<ReviewTag>())
                 setNull(Review::createdAt)
@@ -123,8 +126,7 @@ internal class ReviewServiceTest(
         @DisplayName("리뷰를 작성한 사용자가 아니면 ReviewInvalidPermissionException이 발생한다")
         fun invalidPermission() {
             // given
-            val review = entityManager.makeSample(Review::class.java) {
-                setNull(Review::id)
+            val review = entityManager.makeSample {
                 set(Review::userId, 10)
                 set(Review::tags, listOf<ReviewTag>())
                 setNull(Review::createdAt)
