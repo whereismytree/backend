@@ -7,6 +7,7 @@ import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
+import java.time.Duration
 import java.util.*
 
 @Component
@@ -33,6 +34,6 @@ class JwtTokenProvider {
     }
 
     companion object {
-        private const val EXPIRATION_MILLISECONDS = 1000 * 60 * 60 // 1시간
+        private val EXPIRATION_MILLISECONDS = Duration.ofHours(1).toMillis()
     }
 }
