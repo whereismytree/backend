@@ -1,4 +1,15 @@
+# default
 spring:
+  profiles:
+    default: local
+    group:
+      local: oauth
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
   datasource:
     url: jdbc:mysql://localhost:3306/wimt?useUnicode=true&serverTimezone=Asia/Seoul
     username: user
