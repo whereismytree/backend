@@ -46,7 +46,7 @@ internal class ReviewTest {
                 treeId = 1L,
                 userId = 1L,
                 content = "content",
-                tagIds = listOf()
+                tagIds = listOf(),
             )
 
             // when
@@ -64,7 +64,7 @@ internal class ReviewTest {
                 treeId = 1L,
                 userId = 1L,
                 content = "content",
-                tagIds = listOf(1L)
+                tagIds = listOf(1L),
             )
 
             // when

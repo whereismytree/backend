@@ -6,7 +6,7 @@ import org.whatismytree.wimt.common.BaseTimeEntity
 import java.time.LocalDateTime
 
 @Entity(name = "tag")
-class Tag protected constructor(
+class Tag private constructor(
     content: String,
 ) : BaseTimeEntity() {
 
@@ -17,14 +17,4 @@ class Tag protected constructor(
     @Column(name = "deleted_at")
     var deletedAt: LocalDateTime? = null
         protected set
-
-    companion object {
-        fun of(
-            content: String,
-        ): Tag {
-            return Tag(
-                content = content,
-            )
-        }
-    }
 }
