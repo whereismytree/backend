@@ -2,6 +2,7 @@ package org.whatismytree.wimt.user.domain
 
 import jakarta.persistence.*
 import org.whatismytree.wimt.auth.domain.OAuthType
+import org.whatismytree.wimt.auth.domain.converter.OAuthTypeConverter
 import org.whatismytree.wimt.common.BaseTimeEntity
 import java.time.LocalDateTime
 
@@ -23,7 +24,7 @@ class User private constructor(
     @Column(name = "email", nullable = false, updatable = false, length = 255)
     val email: String = email
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = OAuthTypeConverter::class)
     @Column(name = "oauth_type", nullable = false, updatable = false, length = 50)
     val oauthType: OAuthType = oauthType
 
