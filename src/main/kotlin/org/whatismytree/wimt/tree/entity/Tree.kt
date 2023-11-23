@@ -1,6 +1,7 @@
 package org.whatismytree.wimt.tree.entity
 
 import jakarta.persistence.*
+import org.whatismytree.wimt.tree.controller.dto.UpdateTreeDto
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -11,49 +12,49 @@ class Tree (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    val id: Long,
+    val id: Long = 0,
 
     @Column
-    val name: String,
+    var name: String,
 
     @Column
-    val lat: Float,
+    var lat: Float,
 
     @Column
-    val lng: Float,
+    var lng: Float,
 
     @Column
-    val addressType: AddressType,
+    var addressType: AddressType,
 
     @Column
-    val streetAddress: String? = null,
+    var streetAddress: String? = null,
 
     @Column
-    val roadAddress: String? = null,
+    var roadAddress: String? = null,
 
     @Column
-    val detailAddress: String? = null,
+    var detailAddress: String? = null,
 
     @Column
-    val space: SPACE? = null,
+    var space: Space? = null,
 
     @Column
-    val exhibitionStartDate: LocalDate? = null,
+    var exhibitionStartDate: LocalDate? = null,
 
     @Column
-    val exhibitionEndDate: LocalDate? = null,
+    var exhibitionEndDate: LocalDate? = null,
 
     @Column
-    val businessDays: String? = null,
+    var businessDays: String? = null,
 
     @Column
-    val isPet: Boolean? = null,
+    var isPet: Boolean? = null,
 
     @Column
-    val title: String? = null,
+    var title: String? = null,
 
     @Column
-    val description: Boolean? = null,
+    var description: String? = null,
 ): BaseEntity() {
 
     enum class AddressType {
@@ -61,8 +62,25 @@ class Tree (
         STREET
     }
 
-    enum class SPACE {
+    enum class Space {
         INTERIOR,
         EXTERNAL
+    }
+
+    fun updateTree (req: UpdateTreeDto.Req) {
+        this.name = req.name
+        this.lat = req.lat
+        this.lng = req.lng
+        this.addressType = AddressType.valueOf(req.addressType)
+        this.roadAddress = req.roadAddress
+        this.streetAddress = req.streetAddress
+        this.detailAddress = req.detailAddress
+        this.space = req.spaceType?.let { Space.valueOf(it) }
+        this.exhibitionStartDate = req.exhibitionStartDate
+        this.exhibitionEndDate = req.exhibitionEndDate
+        this.businessDays = req.businessDays
+        this.isPet = req.isPet
+        this.title = req.title
+        this.description = req.description
     }
 }
