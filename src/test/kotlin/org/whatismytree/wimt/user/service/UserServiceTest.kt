@@ -20,7 +20,7 @@ internal class UserServiceTest(
     inner class FindOrCreateUser {
 
         @Test
-        @DisplayName("OAuthInfo로 회원을 생성한다")
+        @DisplayName("OauthInfo와 일치하는 회원이 없다면 회원을 생성한다.")
         fun createUser() {
             // given
             val oAuthInfo = OAuthInfo(
