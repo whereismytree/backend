@@ -26,7 +26,7 @@ class OAuth2AuthenticationSuccessHandler(
         @Suppress("UnusedPrivateProperty")
         val findUser = userService.findOrCreateUser(oAuthInfo)
         // TODO : 회원 닉네임 설정 여부에 따라 분기 처리
-        val accessToken = jwtTokenProvider.createAccessToken(authentication!!)
+        val accessToken = jwtTokenProvider.createAccessToken(authentication!!, findUser.id)
 
         val redirectUri = getRedirectUri(request)
 
