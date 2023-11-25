@@ -2,6 +2,7 @@ package org.whatismytree.wimt.review.domain
 
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
+import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.Index
@@ -44,22 +45,9 @@ class Review private constructor(
     var deletedAt: LocalDateTime? = null
         protected set
 
-    @OneToMany(
-        mappedBy = "review",
-        orphanRemoval = true,
-        cascade = [CascadeType.PERSIST],
-        fetch = FetchType.EAGER,
-        targetEntity = ReviewTag::class,
-    )
-    var tags: List<ReviewTag> = listOf()
-
-    fun addTags(tagIds: List<Long>) {
-        val existedTagIds = tags.map { it.tagId }.toSet()
-
-        tagIds.filterNot { it in existedTagIds }.forEach {
-            tags += (ReviewTag.of(this, it))
-        }
-    }
+    @Embedded
+    var tags: ReviewTags = ReviewTags()
+        protected set
 
     fun isAuthor(userId: Long): Boolean {
         return this.userId == userId
@@ -67,6 +55,12 @@ class Review private constructor(
 
     fun delete(now: LocalDateTime = LocalDateTime.now()) {
         deletedAt = now
+    }
+
+    fun update(content: String?, tagIds: List<Long>?, imageUrl: String?) {
+        content?.let { this.content = it }
+        imageUrl?.let { this.imageUrl = it }
+        tagIds?.let { tags.update(this, it) }
     }
 
     companion object {
@@ -84,7 +78,7 @@ class Review private constructor(
                 imageUrl = imageUrl,
             )
 
-            review.addTags(tagIds)
+            review.tags.update(review, tagIds)
 
             return review
         }

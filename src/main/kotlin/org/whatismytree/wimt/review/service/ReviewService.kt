@@ -34,6 +34,18 @@ class ReviewService(
     }
 
     @Transactional
+    fun updateReview(userId: Long, reviewId: Long, content: String?, tagIds: List<Long>?, imageUrl: String?) {
+        val review = reviewRepository.findById(reviewId)
+            .orElseThrow { throw ReviewNotFoundException("존재하지 않는 리뷰입니다. reviewId: $reviewId") }
+
+        if (!review.isAuthor(userId)) {
+            throw ReviewInvalidPermissionException("수정 권한이 없습니다. reviewId: $reviewId, userId: $userId")
+        }
+
+        review.update(content, tagIds, imageUrl)
+    }
+
+    @Transactional
     fun deleteReview(reviewId: Long, userId: Long, now: LocalDateTime = LocalDateTime.now()) {
         val review = reviewRepository.findById(reviewId)
             .orElseThrow { throw ReviewNotFoundException("존재하지 않는 리뷰입니다. reviewId: $reviewId") }
