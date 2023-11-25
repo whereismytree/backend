@@ -12,7 +12,7 @@ import org.whatismytree.wimt.tag.repository.TagQueryRepository
 @RestController
 @RequestMapping("/v1/tags")
 class TagController(
-    private val tagQueryRepository: TagQueryRepository
+    private val tagQueryRepository: TagQueryRepository,
 ) {
 
     @Operation(summary = "유효한 전체 태그를 조회한다")

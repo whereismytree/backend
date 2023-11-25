@@ -1,6 +1,10 @@
 package org.whatismytree.wimt.user.domain
 
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Convert
+import jakarta.persistence.Entity
+import jakarta.persistence.Table
+import jakarta.persistence.UniqueConstraint
 import org.whatismytree.wimt.auth.domain.OAuthType
 import org.whatismytree.wimt.auth.domain.converter.OAuthTypeConverter
 import org.whatismytree.wimt.common.BaseTimeEntity
@@ -11,14 +15,14 @@ import java.time.LocalDateTime
     name = "users",
     uniqueConstraints = [
         UniqueConstraint(name = "uk_oauth", columnNames = ["oauth_type", "oauth_id"]),
-    ]
+    ],
 )
 class User private constructor(
     email: String,
     oauthType: OAuthType,
     oauthId: String,
     nickname: String?,
-    profileImageUrl: String?
+    profileImageUrl: String?,
 ) : BaseTimeEntity() {
 
     @Column(name = "email", nullable = false, updatable = false, length = 255)
@@ -51,14 +55,14 @@ class User private constructor(
             oauthType: OAuthType,
             oauthId: String,
             nickname: String? = null,
-            profileImageUrl: String? = null
+            profileImageUrl: String? = null,
         ): User =
             User(
                 email = email,
                 oauthType = oauthType,
                 oauthId = oauthId,
                 nickname = nickname,
-                profileImageUrl = profileImageUrl
+                profileImageUrl = profileImageUrl,
             )
     }
 }

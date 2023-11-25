@@ -13,7 +13,7 @@ import org.whatismytree.wimt.user.domain.User
 @ServiceIntTest(UserService::class)
 internal class UserServiceTest(
     private val userService: UserService,
-    private val entityManager: TestEntityManager
+    private val entityManager: TestEntityManager,
 ) {
 
     @Nested
@@ -26,7 +26,7 @@ internal class UserServiceTest(
             val oAuthInfo = OAuthInfo(
                 OAuthType.GOOGLE,
                 "ThisIsSampleOAuthId",
-                "test@google.com"
+                "test@google.com",
             )
 
             // when
@@ -47,14 +47,14 @@ internal class UserServiceTest(
             val existUser = User.of(
                 email = email,
                 oauthType = oAuthType,
-                oauthId = oAuthId
+                oauthId = oAuthId,
             )
             val existUserId = entityManager.persistAndGetId(existUser)
 
             val oAuthInfo = OAuthInfo(
                 email = email,
                 oAuthType = oAuthType,
-                oAuthId = oAuthId
+                oAuthId = oAuthId,
             )
 
             // when

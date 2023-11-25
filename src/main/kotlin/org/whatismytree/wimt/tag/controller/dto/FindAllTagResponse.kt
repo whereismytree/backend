@@ -19,7 +19,7 @@ data class FindAllTagResponse(
                         id = it.id,
                         content = it.content,
                     )
-                }
+                },
             )
         }
     }
