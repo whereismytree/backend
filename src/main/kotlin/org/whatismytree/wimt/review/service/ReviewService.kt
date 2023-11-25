@@ -6,7 +6,9 @@ import org.whatismytree.wimt.review.domain.Review
 import org.whatismytree.wimt.review.exception.ReviewInvalidPermissionException
 import org.whatismytree.wimt.review.exception.ReviewNotFoundException
 import org.whatismytree.wimt.review.exception.TagNotFoundException
+import org.whatismytree.wimt.review.repository.ReviewQueryRepository
 import org.whatismytree.wimt.review.repository.ReviewRepository
+import org.whatismytree.wimt.review.repository.dto.ReviewSummary
 import org.whatismytree.wimt.tag.repository.TagRepository
 import java.time.LocalDateTime
 
@@ -14,8 +16,13 @@ import java.time.LocalDateTime
 @Transactional(readOnly = true)
 class ReviewService(
     private val reviewRepository: ReviewRepository,
+    private val reviewQueryRepository: ReviewQueryRepository,
     private val tagRepository: TagRepository,
 ) {
+
+    fun findAll(treeId: Long): List<ReviewSummary> {
+        return reviewQueryRepository.findAllByTreeId(treeId)
+    }
 
     @Transactional
     fun createReview(treeId: Long, userId: Long, content: String, tagIds: List<Long>, imageUrl: String?): Long {

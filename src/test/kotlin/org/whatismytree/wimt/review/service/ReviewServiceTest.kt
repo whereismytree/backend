@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.whatismytree.wimt.annotation.ServiceIntTest
 import org.whatismytree.wimt.review.domain.Review
-import org.whatismytree.wimt.review.domain.ReviewTag
 import org.whatismytree.wimt.review.domain.ReviewTags
 import org.whatismytree.wimt.review.exception.ReviewInvalidPermissionException
 import org.whatismytree.wimt.review.exception.ReviewNotFoundException

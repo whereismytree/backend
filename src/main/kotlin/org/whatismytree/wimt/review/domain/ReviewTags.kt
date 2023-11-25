@@ -28,7 +28,6 @@ class ReviewTags {
         value.addAll(newTagIds.map { ReviewTag.of(review, it) })
     }
 
-
     fun getValue(): List<ReviewTag> {
         return value.toList()
     }
