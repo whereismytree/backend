@@ -6,8 +6,9 @@ plugins {
     kotlin("jvm") version "1.9.0"
     kotlin("plugin.spring") version "1.9.0"
     kotlin("plugin.jpa") version "1.9.0"
-    kotlin("plugin.allopen") version "1.9.0"
     kotlin("kapt") version "1.9.0"
+    id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
+    id("io.gitlab.arturbosch.detekt") version "1.23.1"
     idea
 }
 
@@ -53,7 +54,16 @@ dependencies {
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+    testImplementation("org.springframework.security:spring-security-test")
+
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter-kotlin:1.0.2")
 }
 
 tasks.withType<KotlinCompile> {

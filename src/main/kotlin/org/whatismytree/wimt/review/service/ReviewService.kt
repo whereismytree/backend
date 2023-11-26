@@ -3,9 +3,12 @@ package org.whatismytree.wimt.review.service
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.whatismytree.wimt.review.domain.Review
+import org.whatismytree.wimt.review.exception.ReviewInvalidPermissionException
+import org.whatismytree.wimt.review.exception.ReviewNotFoundException
 import org.whatismytree.wimt.review.exception.TagNotFoundException
 import org.whatismytree.wimt.review.repository.ReviewRepository
 import org.whatismytree.wimt.tag.repository.TagRepository
+import java.time.LocalDateTime
 
 @Service
 @Transactional(readOnly = true)
@@ -28,5 +31,17 @@ class ReviewService(
         reviewRepository.save(review)
 
         return review.id
+    }
+
+    @Transactional
+    fun deleteReview(reviewId: Long, userId: Long, now: LocalDateTime = LocalDateTime.now()) {
+        val review = reviewRepository.findById(reviewId)
+            .orElseThrow { throw ReviewNotFoundException("존재하지 않는 리뷰입니다. reviewId: $reviewId") }
+
+        if (!review.isAuthor(userId)) {
+            throw ReviewInvalidPermissionException("삭제 권한이 없습니다. reviewId: $reviewId, userId: $userId")
+        }
+
+        review.delete(now)
     }
 }

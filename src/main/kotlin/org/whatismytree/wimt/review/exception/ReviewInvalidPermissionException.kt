@@ -1,6 +1,6 @@
 package org.whatismytree.wimt.review.exception
 
-class TagNotFoundException(
+class ReviewInvalidPermissionException(
     message: String?,
     throwable: Throwable?,
 ) : RuntimeException(message, throwable) {
