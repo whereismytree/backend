@@ -4,6 +4,7 @@ import java.time.LocalDateTime
 
 data class ReviewSummary(
     val id: Long,
+    val authorId: Long,
     val authorNickname: String?,
     val authorProfileUrl: String?,
     val createdAt: LocalDateTime,

@@ -19,14 +19,14 @@ import org.whatismytree.wimt.review.controller.dto.GetReviewsResponse
 import org.whatismytree.wimt.review.controller.dto.UpdateReviewRequest
 import org.whatismytree.wimt.review.service.ReviewService
 
-@Tag(name = "리뷰 API", description = "리뷰 API")
+@Tag(name = "후기 API", description = "후기 API")
 @RestController
 @RequestMapping("/v1/reviews")
 class ReviewController(
     private val reviewService: ReviewService,
 ) {
 
-    @Operation(summary = "리뷰를 생성한다")
+    @Operation(summary = "후기를 생성한다")
     @PostMapping
     fun createReview(
         @Valid @RequestBody
@@ -44,7 +44,7 @@ class ReviewController(
         return CreateReviewResponse(reviewId)
     }
 
-    @Operation(summary = "리뷰 목록을 조회한다")
+    @Operation(summary = "후기 목록을 조회한다")
     @GetMapping
     fun getReviews(
         request: GetReviewsRequest,
@@ -54,7 +54,14 @@ class ReviewController(
         return GetReviewsResponse.of(reviews)
     }
 
-    @Operation(summary = "리뷰를 수정한다")
+    @Operation(summary = "후기를 조회한다")
+    @GetMapping("/{reviewId}")
+    fun getReview(
+        @Min(1) @PathVariable reviewId: Long,
+        // TODO: 시큐리티 작업 이후 AuthenticationPrincipal 통해 가져오는 값으로 변경
+    ) = reviewService.getDetailById(reviewId, 1L)
+
+    @Operation(summary = "후기를 수정한다")
     @PutMapping("/{reviewId}")
     fun updateReview(
         @Min(1) @PathVariable reviewId: Long,
@@ -71,7 +78,7 @@ class ReviewController(
         )
     }
 
-    @Operation(summary = "리뷰를 삭제한다")
+    @Operation(summary = "후기를 삭제한다")
     @DeleteMapping("/{reviewId}")
     fun deleteReview(
         @Min(1) @PathVariable reviewId: Long,

@@ -14,12 +14,13 @@ import org.whatismytree.wimt.user.domain.QUser.user
 class ReviewQueryRepositoryImpl(
     private val query: JPAQueryFactory,
 ) : ReviewQueryRepository {
-    override fun findAllByTreeId(treeId: Long): List<ReviewSummary> {
-        return query
+    override fun findAllByTreeId(treeId: Long): List<ReviewSummary> =
+        query
             .select(
                 Projections.constructor(
                     ReviewSummary::class.java,
                     review.id,
+                    review.userId,
                     user.nickname,
                     user.profileImageUrl,
                     review.createdAt,
@@ -38,5 +39,30 @@ class ReviewQueryRepositoryImpl(
             )
             .groupBy(review.id)
             .fetch()
-    }
+
+    override fun findById(reviewId: Long): ReviewSummary? =
+        query
+            .select(
+                Projections.constructor(
+                    ReviewSummary::class.java,
+                    review.id,
+                    review.userId,
+                    user.nickname,
+                    user.profileImageUrl,
+                    review.createdAt,
+                    review.imageUrl,
+                    review.content,
+                    Expressions.stringTemplate("GROUP_CONCAT({0})", tag.content),
+                ),
+            )
+            .from(review)
+            .join(review.tags.value, reviewTag)
+            .innerJoin(tag).on(reviewTag.tagId.eq(tag.id))
+            .innerJoin(user).on(review.userId.eq(user.id))
+            .where(
+                review.id.eq(reviewId),
+                review.deletedAt.isNull(),
+            )
+            .groupBy(review.id)
+            .fetchOne()
 }

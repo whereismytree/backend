@@ -60,7 +60,7 @@ internal class ReviewQueryRepositoryImplTest(
             }
 
             // when
-            val result = reviewQueryRepository.findAll()
+            val result = reviewQueryRepository.findAllByTreeId(review.treeId)
 
             // then
             assertThat(result).hasSize(1)

@@ -2,6 +2,7 @@ package org.whatismytree.wimt.review.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.whatismytree.wimt.review.controller.dto.GetReviewResponse
 import org.whatismytree.wimt.review.domain.Review
 import org.whatismytree.wimt.review.exception.ReviewInvalidPermissionException
 import org.whatismytree.wimt.review.exception.ReviewNotFoundException
@@ -22,6 +23,16 @@ class ReviewService(
 
     fun findAll(treeId: Long): List<ReviewSummary> {
         return reviewQueryRepository.findAllByTreeId(treeId)
+    }
+
+    fun getDetailById(reviewId: Long, userId: Long): GetReviewResponse {
+        val reviewSummary = reviewQueryRepository.findById(reviewId)
+            ?: throw ReviewNotFoundException("존재하지 않는 리뷰입니다. reviewId: $reviewId")
+
+        val canEdit = reviewSummary.authorId == userId
+        val canRemove = reviewSummary.authorId == userId
+
+        return GetReviewResponse.of(reviewSummary, canEdit, canRemove)
     }
 
     @Transactional
