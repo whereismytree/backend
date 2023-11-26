@@ -49,6 +49,11 @@ class User private constructor(
         deletedAt = LocalDateTime.now()
     }
 
+    fun updateProfile(nickname: String, profileImageUrl: String) {
+        this.nickname = nickname
+        this.profileImageUrl = profileImageUrl
+    }
+
     companion object {
         fun of(
             email: String,
