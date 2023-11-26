@@ -1,6 +1,7 @@
 package org.whatismytree.wimt.auth.handler
 
 import io.jsonwebtoken.Claims
+import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.io.Decoders
@@ -59,6 +60,20 @@ class JwtTokenProvider {
             defaultOAuth2User.authorities,
             claims[OAUTH_TYPE] as String,
         )
+    }
+
+    /**
+     * Token 검증
+     */
+    fun isValidToken(token: String): Boolean {
+        return try {
+            getClaims(token)
+            true
+        } catch (e: JwtException) {
+            false
+        } catch (e: IllegalArgumentException) {
+            false
+        }
     }
 
     private fun getClaims(token: String): Claims =
