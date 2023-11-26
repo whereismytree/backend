@@ -25,7 +25,7 @@ class TreeController(
     @GetMapping("{id}")
     @Operation(summary = "트리 조회")
     @Throws(Exception::class)
-    fun findTree(@PathVariable id: String): FindTreeDto.Res
+    fun findTree(@PathVariable id: Long): FindTreeDto.Res
     = treeService.findTree(id)
 
     @GetMapping("list")
@@ -56,7 +56,7 @@ class TreeController(
     @Operation(summary = "트리 수정")
     @Throws(Exception::class)
     fun updateTree(
-        @PathVariable id: String,
+        @PathVariable id: Long,
         @Valid @RequestBody req: UpdateTreeDto.Req
     ) = treeService.updateTree(
         id,
@@ -66,7 +66,7 @@ class TreeController(
     @DeleteMapping("{id}")
     @Operation(summary = "트리 삭제")
     @Throws(Exception::class)
-    fun deleteTree(@PathVariable id: String)
+    fun deleteTree(@PathVariable id: Long)
     = treeService.deleteTree(id)
 
 

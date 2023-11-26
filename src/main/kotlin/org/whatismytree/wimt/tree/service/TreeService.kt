@@ -27,14 +27,13 @@ class TreeService (
             exhibitionEndDate = req.exhibitionEndDate,
             businessDays = req.businessDays,
             isPet = req.isPet,
-            title = req.title,
-            description = req.description
+            extraInfo = req.extraInfo
         )
 
         treeRepository.save(tree)
     }
 
-    fun findTree(id: String): FindTreeDto.Res {
+    fun findTree(id: Long): FindTreeDto.Res {
         val tree = treeRepository.findByIdAndDeletedAtIsNull(id)
             ?: throw Exception("id로 조회되는 tree가 없습니다.")
 
@@ -51,8 +50,7 @@ class TreeService (
             spaceType = tree.space?.name,
             businessDays = tree.businessDays,
             isPet = tree.isPet,
-            title = tree.title,
-            description = tree.description,
+            extraInfo = tree.extraInfo,
         )
     }
 
@@ -92,7 +90,7 @@ class TreeService (
     }
 
     fun updateTree(
-        id: String,
+        id: Long,
         req: UpdateTreeDto.Req
     ) {
         val tree = treeRepository.findByIdAndDeletedAtIsNull(id)
@@ -100,7 +98,7 @@ class TreeService (
         tree.updateTree(req)
     }
 
-    fun deleteTree(id: String) {
+    fun deleteTree(id: Long) {
         treeRepository.findByIdAndDeletedAtIsNull(id)
             ?: throw Exception("id로 조회되는 tree가 없습니다.")
         treeRepository.deleteById(id)

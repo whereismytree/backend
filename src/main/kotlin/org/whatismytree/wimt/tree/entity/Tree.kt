@@ -1,6 +1,8 @@
 package org.whatismytree.wimt.tree.entity
 
 import jakarta.persistence.*
+import org.whatismytree.wimt.common.BaseTimeEntity
+import org.whatismytree.wimt.review.domain.Review
 import org.whatismytree.wimt.tree.controller.dto.UpdateTreeDto
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -8,11 +10,6 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "tree")
 class Tree (
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    val id: Long = 0,
 
     @Column
     var name: String,
@@ -51,11 +48,12 @@ class Tree (
     var isPet: Boolean? = null,
 
     @Column
-    var title: String? = null,
+    var extraInfo: String? = null,
 
     @Column
-    var description: String? = null,
-): BaseEntity() {
+    var deletedAt: LocalDateTime? = null,
+
+): BaseTimeEntity() {
 
     enum class AddressType {
         ROAD,
@@ -80,7 +78,6 @@ class Tree (
         this.exhibitionEndDate = req.exhibitionEndDate
         this.businessDays = req.businessDays
         this.isPet = req.isPet
-        this.title = req.title
-        this.description = req.description
+        this.extraInfo = req.extraInfo
     }
 }

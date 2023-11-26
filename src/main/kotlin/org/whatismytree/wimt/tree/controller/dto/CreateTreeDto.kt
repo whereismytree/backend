@@ -17,6 +17,6 @@ class CreateTreeDto {
         val businessDays: String? = null,
         val isPet: Boolean? = null,
         val title: String? = null,
-        val description: String? = null,
+        val extraInfo: String? = null,
     )
 }

@@ -5,7 +5,9 @@ import org.springframework.data.jpa.repository.Query
 import org.whatismytree.wimt.tree.entity.Tree
 
 interface TreeRepository : JpaRepository<Tree, String> {
-    fun findByIdAndDeletedAtIsNull(id: String): Tree?
+    fun findByIdAndDeletedAtIsNull(id: Long): Tree?
+
+    fun deleteById(id: Long)
 
     @Query("SELECT t FROM Tree t " +
             "WHERE (t.lat BETWEEN :bottomLeftLat AND :topLeftLat) " +
