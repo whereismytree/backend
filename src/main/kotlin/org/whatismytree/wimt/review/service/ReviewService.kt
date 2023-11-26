@@ -9,7 +9,8 @@ import org.whatismytree.wimt.review.exception.ReviewNotFoundException
 import org.whatismytree.wimt.review.exception.TagNotFoundException
 import org.whatismytree.wimt.review.repository.ReviewQueryRepository
 import org.whatismytree.wimt.review.repository.ReviewRepository
-import org.whatismytree.wimt.review.repository.dto.ReviewSummary
+import org.whatismytree.wimt.review.repository.dto.ReviewDetailResult
+import org.whatismytree.wimt.review.repository.dto.ReviewImageResult
 import org.whatismytree.wimt.tag.repository.TagRepository
 import java.time.LocalDateTime
 
@@ -21,8 +22,12 @@ class ReviewService(
     private val tagRepository: TagRepository,
 ) {
 
-    fun findAll(treeId: Long): List<ReviewSummary> {
+    fun findAllDetail(treeId: Long): List<ReviewDetailResult> {
         return reviewQueryRepository.findAllByTreeId(treeId)
+    }
+
+    fun findAllImage(treeId: Long): List<ReviewImageResult> {
+        return reviewQueryRepository.findAllImagesByTreeId(treeId)
     }
 
     fun getDetailById(reviewId: Long, userId: Long): GetReviewResponse {
@@ -34,6 +39,8 @@ class ReviewService(
 
         return GetReviewResponse.of(reviewSummary, canEdit, canRemove)
     }
+
+
 
     @Transactional
     fun createReview(treeId: Long, userId: Long, content: String, tagIds: List<Long>, imageUrl: String?): Long {

@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.whatismytree.wimt.review.controller.dto.CreateReviewRequest
 import org.whatismytree.wimt.review.controller.dto.CreateReviewResponse
-import org.whatismytree.wimt.review.controller.dto.GetReviewsRequest
+import org.whatismytree.wimt.review.controller.dto.GetReviewImagesResponse
 import org.whatismytree.wimt.review.controller.dto.GetReviewsResponse
 import org.whatismytree.wimt.review.controller.dto.UpdateReviewRequest
 import org.whatismytree.wimt.review.service.ReviewService
@@ -47,11 +48,21 @@ class ReviewController(
     @Operation(summary = "후기 목록을 조회한다")
     @GetMapping
     fun getReviews(
-        request: GetReviewsRequest,
+        @RequestParam(required = true) treeId: Long
     ): GetReviewsResponse {
-        val reviews = reviewService.findAll(request.treeId)
+        val reviews = reviewService.findAllDetail(treeId)
 
         return GetReviewsResponse.of(reviews)
+    }
+
+    @Operation(summary = "후기 이미지 목록을 조회한다")
+    @GetMapping("/images")
+    fun getReviewImages(
+        @RequestParam(required = true) treeId: Long
+    ): GetReviewImagesResponse {
+        val reviews = reviewService.findAllImage(treeId)
+
+        return GetReviewImagesResponse.of(reviews)
     }
 
     @Operation(summary = "후기를 조회한다")

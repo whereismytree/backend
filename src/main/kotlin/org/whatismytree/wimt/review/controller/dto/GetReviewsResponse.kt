@@ -1,6 +1,6 @@
 package org.whatismytree.wimt.review.controller.dto
 
-import org.whatismytree.wimt.review.repository.dto.ReviewSummary
+import org.whatismytree.wimt.review.repository.dto.ReviewDetailResult
 import java.time.LocalDateTime
 
 data class GetReviewsResponse(
@@ -19,7 +19,7 @@ data class GetReviewsResponse(
     )
 
     companion object {
-        fun of(reviewResult: List<ReviewSummary>): GetReviewsResponse {
+        fun of(reviewResult: List<ReviewDetailResult>): GetReviewsResponse {
             return GetReviewsResponse(
                 reviews = reviewResult.map {
                     Review(

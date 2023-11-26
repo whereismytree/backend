@@ -6,7 +6,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
 import org.whatismytree.wimt.review.domain.QReview.review
 import org.whatismytree.wimt.review.domain.QReviewTag.reviewTag
-import org.whatismytree.wimt.review.repository.dto.ReviewSummary
+import org.whatismytree.wimt.review.repository.dto.ReviewDetailResult
+import org.whatismytree.wimt.review.repository.dto.ReviewImageResult
 import org.whatismytree.wimt.tag.domain.QTag.tag
 import org.whatismytree.wimt.user.domain.QUser.user
 
@@ -14,11 +15,11 @@ import org.whatismytree.wimt.user.domain.QUser.user
 class ReviewQueryRepositoryImpl(
     private val query: JPAQueryFactory,
 ) : ReviewQueryRepository {
-    override fun findAllByTreeId(treeId: Long): List<ReviewSummary> =
+    override fun findAllByTreeId(treeId: Long): List<ReviewDetailResult> =
         query
             .select(
                 Projections.constructor(
-                    ReviewSummary::class.java,
+                    ReviewDetailResult::class.java,
                     review.id,
                     review.userId,
                     user.nickname,
@@ -40,11 +41,28 @@ class ReviewQueryRepositoryImpl(
             .groupBy(review.id)
             .fetch()
 
-    override fun findById(reviewId: Long): ReviewSummary? =
+    override fun findAllImagesByTreeId(treeId: Long): List<ReviewImageResult> =
         query
             .select(
                 Projections.constructor(
-                    ReviewSummary::class.java,
+                    ReviewImageResult::class.java,
+                    review.id,
+                    review.imageUrl,
+                ),
+            )
+            .from(review)
+            .where(
+                review.treeId.eq(treeId),
+                review.imageUrl.isNotNull,
+                review.deletedAt.isNull(),
+            )
+            .fetch()
+
+    override fun findById(reviewId: Long): ReviewDetailResult? =
+        query
+            .select(
+                Projections.constructor(
+                    ReviewDetailResult::class.java,
                     review.id,
                     review.userId,
                     user.nickname,

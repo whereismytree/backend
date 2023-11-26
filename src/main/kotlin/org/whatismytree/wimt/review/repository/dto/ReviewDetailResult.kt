@@ -2,7 +2,7 @@ package org.whatismytree.wimt.review.repository.dto
 
 import java.time.LocalDateTime
 
-data class ReviewSummary(
+data class ReviewDetailResult(
     val id: Long,
     val authorId: Long,
     val authorNickname: String?,
