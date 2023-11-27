@@ -64,6 +64,7 @@ dependencies {
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter-kotlin:1.0.2")
+    testImplementation("com.ninja-squad:springmockk:4.0.2")
 }
 
 tasks.withType<KotlinCompile> {
