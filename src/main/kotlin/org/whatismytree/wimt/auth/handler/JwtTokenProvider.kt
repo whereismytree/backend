@@ -70,8 +70,10 @@ class JwtTokenProvider {
             getClaims(token)
             true
         } catch (e: JwtException) {
+            println(e.message)
             false
         } catch (e: IllegalArgumentException) {
+            println(e.message)
             false
         }
     }

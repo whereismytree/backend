@@ -3,12 +3,11 @@ package org.whatismytree.wimt.user.controller
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
-import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import org.whatismytree.wimt.common.CurrentUserId
 import org.whatismytree.wimt.user.controller.dto.CreateProfileRequest
 import org.whatismytree.wimt.user.service.UserService
 
@@ -24,14 +23,12 @@ class UserController(
     fun createProfile(
         @Valid @RequestBody
         request: CreateProfileRequest,
-        @AuthenticationPrincipal oauthUser: OAuth2User,
+        @CurrentUserId userId: Long,
     ) {
         userService.createProfile(
-            userId = getUserId(oauthUser),
+            userId = userId,
             nickname = request.nickname,
             profileImageUrl = request.profileImageUrl,
         )
     }
-
-    private fun getUserId(oauthUser: OAuth2User) = oauthUser.name.toLong()
 }
