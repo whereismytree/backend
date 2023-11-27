@@ -7,8 +7,6 @@ import org.assertj.core.api.Assertions.catchThrowable
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
-import org.mockito.junit.MockitoJUnit
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.whatismytree.wimt.annotation.ServiceIntTest
 import org.whatismytree.wimt.auth.domain.OAuthType
@@ -17,7 +15,6 @@ import org.whatismytree.wimt.support.makeSample
 import org.whatismytree.wimt.user.domain.User
 import org.whatismytree.wimt.user.exception.DuplicatedNicknameException
 import org.whatismytree.wimt.user.exception.UserNotFoundException
-import org.whatismytree.wimt.user.repository.UserRepository
 
 @ServiceIntTest(UserService::class)
 internal class UserServiceTest(
@@ -113,7 +110,6 @@ internal class UserServiceTest(
                 setNull(User::nickname)
                 setNull(User::profileImageUrl)
             }
-
 
             // when
             val result = catchThrowable {

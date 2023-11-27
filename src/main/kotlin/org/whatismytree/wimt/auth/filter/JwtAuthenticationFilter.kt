@@ -31,7 +31,9 @@ class JwtAuthenticationFilter(
 
         return if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(TOKEN_PREFIX)) {
             bearerToken.substring(TOKEN_PREFIX.length)
-        } else null
+        } else {
+            null
+        }
     }
 
     companion object {
