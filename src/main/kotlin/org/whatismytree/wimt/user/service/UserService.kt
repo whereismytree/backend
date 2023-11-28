@@ -9,7 +9,7 @@ import org.whatismytree.wimt.user.repository.UserRepository
 @Service
 @Transactional(readOnly = true)
 class UserService(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
     @Transactional
     fun findOrCreateUser(oAuthInfo: OAuthInfo): User {

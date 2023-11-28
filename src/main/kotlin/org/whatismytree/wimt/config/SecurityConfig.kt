@@ -11,18 +11,21 @@ import org.whatismytree.wimt.auth.handler.OAuth2AuthenticationSuccessHandler
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val oAuth2AuthenticationSuccessHandler: OAuth2AuthenticationSuccessHandler
+    private val oAuth2AuthenticationSuccessHandler: OAuth2AuthenticationSuccessHandler,
 ) {
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         return http
             .csrf { csrf -> csrf.disable() }
-            .sessionManagement { session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+            .sessionManagement { session ->
+                session
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            }
             .formLogin { formLogin -> formLogin.disable() }
             .httpBasic { httpBasic -> httpBasic.disable() }
-            .oauth2Login { oauth2 -> oauth2
-                .successHandler(oAuth2AuthenticationSuccessHandler)
+            .oauth2Login { oauth2 ->
+                oauth2
+                    .successHandler(oAuth2AuthenticationSuccessHandler)
             }
             .build()
     }

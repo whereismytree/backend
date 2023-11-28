@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.whatismytree.wimt.annotation.ServiceIntTest
 import org.whatismytree.wimt.review.domain.Review
-import org.whatismytree.wimt.review.domain.ReviewTag
+import org.whatismytree.wimt.review.domain.ReviewTags
 import org.whatismytree.wimt.review.exception.ReviewInvalidPermissionException
 import org.whatismytree.wimt.review.exception.ReviewNotFoundException
 import org.whatismytree.wimt.review.exception.TagNotFoundException
@@ -76,6 +76,89 @@ internal class ReviewServiceTest(
     }
 
     @Nested
+    inner class UpdateReview {
+
+        @Test
+        @DisplayName("리뷰를 수정한다")
+        fun updateReview() {
+            // given
+            val review = entityManager.makeSample {
+                set(Review::userId, 10)
+                set(Review::tags, ReviewTags())
+                setNull(Review::deletedAt)
+            }
+
+            val tag1 = entityManager.makeSample {
+                setNull(Tag::deletedAt)
+            }
+
+            val tag2 = entityManager.makeSample {
+                setNull(Tag::deletedAt)
+            }
+
+            val reviewId = review.id
+            val userId = review.userId
+            val content = "content"
+            val tagIds = listOf<Long>(tag1.id, tag2.id)
+            val imageUrl = "imageUrl"
+
+            // when
+            reviewService.updateReview(userId, reviewId, content, tagIds, imageUrl)
+
+            // then
+            val updatedReview = entityManager.find(Review::class.java, reviewId)
+            assertThat(updatedReview).isNotNull()
+            assertThat(updatedReview.content).isEqualTo(content)
+            assertThat(updatedReview.imageUrl).isEqualTo(imageUrl)
+            assertThat(updatedReview.tags.getValue().map { it.tagId }).contains(tag1.id, tag2.id)
+        }
+
+        @Test
+        @DisplayName("리뷰가 존재하지 않으면 ReviewNotFoundException가 발생한다")
+        fun reviewNotFound() {
+            // given
+            val reviewId = 1L
+            val userId = 1L
+            val content = "content"
+            val tagIds = listOf<Long>()
+            val imageUrl = "imageUrl"
+
+            // when
+            val result = catchThrowable {
+                reviewService.updateReview(userId, reviewId, content, tagIds, imageUrl)
+            }
+
+            // then
+            assertThat(result).isInstanceOf(ReviewNotFoundException::class.java)
+        }
+
+        @Test
+        @DisplayName("리뷰를 작성한 사용자가 아니면 ReviewInvalidPermissionException이 발생한다")
+        fun invalidPermission() {
+            // given
+            val review = entityManager.makeSample {
+                set(Review::userId, 10)
+                set(Review::tags, ReviewTags())
+                setNull(Review::deletedAt)
+            }
+
+            val reviewId = review.id
+            val userId = 1L
+            val content = "content"
+            val tagIds = listOf<Long>()
+            val imageUrl = "imageUrl"
+
+            // when
+            val result = catchThrowable {
+                reviewService.updateReview(userId, reviewId, content, tagIds, imageUrl)
+            }
+
+            // then
+            assertThat(result).isInstanceOf(ReviewInvalidPermissionException::class.java)
+        }
+    }
+
+    @Nested
     inner class DeleteReview {
 
         @Test
@@ -84,7 +167,7 @@ internal class ReviewServiceTest(
             // given
             val review = entityManager.makeSample {
                 set(Review::userId, 10)
-                set(Review::tags, listOf<ReviewTag>())
+                set(Review::tags, ReviewTags())
                 setNull(Review::deletedAt)
             }
 
@@ -123,7 +206,7 @@ internal class ReviewServiceTest(
             // given
             val review = entityManager.makeSample {
                 set(Review::userId, 10)
-                set(Review::tags, listOf<ReviewTag>())
+                set(Review::tags, ReviewTags())
                 setNull(Review::deletedAt)
             }
 
