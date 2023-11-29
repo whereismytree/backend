@@ -5,14 +5,12 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.whatismytree.wimt.tree.controller.dto.CreateTreeDto
 import org.whatismytree.wimt.tree.entity.Tree
 import java.time.LocalDate
 
 @SpringBootTest
-@AutoConfigureMockMvc
 class TreeServiceTest @Autowired constructor(
     private val treeService: TreeService
 ) {
@@ -40,6 +38,7 @@ class TreeServiceTest @Autowired constructor(
 
             val req = CreateTreeDto.Req(
                 name = name,
+                imageUrl = null,
                 lat = lat,
                 lng = lng,
                 addressType = addressType.name,

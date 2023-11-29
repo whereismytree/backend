@@ -1,28 +1,39 @@
 package org.whatismytree.wimt.tree.service
 
-import org.whatismytree.wimt.tree.controller.dto.CreateTreeDto
-import org.whatismytree.wimt.tree.controller.dto.UpdateTreeDto
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+import org.whatismytree.wimt.tree.controller.dto.CreateTreeDto
 import org.whatismytree.wimt.tree.controller.dto.FindTreeDto
 import org.whatismytree.wimt.tree.controller.dto.FindTreeListDto
+import org.whatismytree.wimt.tree.controller.dto.FindTreeMapDto
+import org.whatismytree.wimt.tree.controller.dto.UpdateTreeDto
 import org.whatismytree.wimt.tree.entity.Tree
 import org.whatismytree.wimt.tree.repository.TreeRepository
+import org.whatismytree.wimt.user.repository.UserRepository
 import java.lang.Exception
 
 @Service
 class TreeService (
     private val treeRepository: TreeRepository,
+    private val userRepository: UserRepository,
 ) {
     fun createTree(req: CreateTreeDto.Req) {
+
+        val user = userRepository.findByIdOrNull(1L)
+            ?: throw Exception("유저가 존재하지 않습니다.")
+
         val tree = Tree(
+            userId = user.id,
             name = req.name,
+            imageUrl = req.imageUrl,
             lat = req.lat,
             lng = req.lng,
-            addressType = Tree.AddressType.valueOf(req.addressType),
+            addressType = req.addressType,
             streetAddress = req.streetAddress,
             roadAddress = req.roadAddress,
             detailAddress = req.detailAddress,
-            space = req.spaceType?.let { Tree.Space.valueOf(it) },
+            space = req.spaceType,
             exhibitionStartDate = req.exhibitionStartDate,
             exhibitionEndDate = req.exhibitionEndDate,
             businessDays = req.businessDays,
@@ -41,13 +52,13 @@ class TreeService (
             name = tree.name,
             lat = tree.lat,
             lng = tree.lng,
-            addressType = tree.addressType.name,
+            addressType = tree.addressType,
             roadAddress = tree.roadAddress,
             streetAddress = tree.streetAddress,
             detailAddress = tree.detailAddress,
             exhibitionStartDate = tree.exhibitionStartDate,
             exhibitionEndDate = tree.exhibitionEndDate,
-            spaceType = tree.space?.name,
+            spaceType = tree.space,
             businessDays = tree.businessDays,
             isPet = tree.isPet,
             extraInfo = tree.extraInfo,
@@ -55,6 +66,16 @@ class TreeService (
     }
 
     fun findTreeList(
+        name: String?,
+        address: String?,
+    ): List<FindTreeListDto.Res> {
+        return treeRepository.findTreeList(
+            name,
+            address,
+        )
+    }
+
+    fun findTreeMap(
         topLeftLat: Float,
         topLeftLng: Float,
         bottomLeftLat: Float,
@@ -63,7 +84,7 @@ class TreeService (
         topRightLng: Float,
         bottomRightLat: Float,
         bottomRightLng: Float,
-    ): List<FindTreeListDto.Res> {
+    ): List<FindTreeMapDto.Res> {
         val treeList = treeRepository.findTreesWithinRectangle(
             topLeftLat,
             topLeftLng,
@@ -75,12 +96,8 @@ class TreeService (
             bottomRightLng,
         )
 
-        if (treeList.isEmpty()) {
-            throw Exception("범위 내에 조회되는 tree가 없습니다.")
-        }
-
         return treeList.map {
-            FindTreeListDto.Res (
+            FindTreeMapDto.Res (
                 id = it.id,
                 name = it.name,
                 lat = it.lat,
@@ -89,6 +106,7 @@ class TreeService (
         }
     }
 
+    @Transactional
     fun updateTree(
         id: Long,
         req: UpdateTreeDto.Req

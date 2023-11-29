@@ -4,13 +4,12 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.whatismytree.wimt.tree.entity.Tree
 
-interface TreeRepository : JpaRepository<Tree, String> {
+interface TreeRepository : JpaRepository<Tree, Long>, TreeRepositoryCustom {
     fun findByIdAndDeletedAtIsNull(id: Long): Tree?
 
-    fun deleteById(id: Long)
-
     @Query("SELECT t FROM Tree t " +
-            "WHERE (t.lat BETWEEN :bottomLeftLat AND :topLeftLat) " +
+            "WHERE (t.deletedAt IS NOT NULL)" +
+            "AND (t.lat BETWEEN :bottomLeftLat AND :topLeftLat)" +
             "AND (t.lng BETWEEN :bottomLeftLng AND :bottomRightLng) " +
             "AND t.lat BETWEEN :bottomRightLat AND :topRightLat " +
             "AND t.lng BETWEEN :topLeftLng AND :topRightLng")

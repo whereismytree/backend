@@ -1,9 +1,18 @@
 package org.whatismytree.wimt.tree.entity
 
-import jakarta.persistence.*
+
+import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
+import jakarta.persistence.OneToOne
+import jakarta.persistence.Table
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.Column
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import org.hibernate.annotations.Comment
 import org.whatismytree.wimt.common.BaseTimeEntity
-import org.whatismytree.wimt.review.domain.Review
 import org.whatismytree.wimt.tree.controller.dto.UpdateTreeDto
+import org.whatismytree.wimt.user.domain.User
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -11,8 +20,15 @@ import java.time.LocalDateTime
 @Table(name = "tree")
 class Tree (
 
+    @Column(name = "user_id", nullable = false)
+    @Comment("등록한 유저 ID")
+    val userId: Long,
+
     @Column
     var name: String,
+
+    @Column
+    var imageUrl: String?,
 
     @Column
     var lat: Float,
@@ -21,7 +37,7 @@ class Tree (
     var lng: Float,
 
     @Column
-    var addressType: AddressType,
+    var addressType: String,
 
     @Column
     var streetAddress: String? = null,
@@ -33,7 +49,7 @@ class Tree (
     var detailAddress: String? = null,
 
     @Column
-    var space: Space? = null,
+    var space: String? = null,
 
     @Column
     var exhibitionStartDate: LocalDate? = null,
@@ -69,11 +85,11 @@ class Tree (
         this.name = req.name
         this.lat = req.lat
         this.lng = req.lng
-        this.addressType = AddressType.valueOf(req.addressType)
+        this.addressType = req.addressType
         this.roadAddress = req.roadAddress
         this.streetAddress = req.streetAddress
         this.detailAddress = req.detailAddress
-        this.space = req.spaceType?.let { Space.valueOf(it) }
+        this.space = req.spaceType
         this.exhibitionStartDate = req.exhibitionStartDate
         this.exhibitionEndDate = req.exhibitionEndDate
         this.businessDays = req.businessDays

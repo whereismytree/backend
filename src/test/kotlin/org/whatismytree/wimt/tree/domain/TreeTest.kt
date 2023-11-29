@@ -4,7 +4,6 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.whatismytree.wimt.review.domain.Review
 import org.whatismytree.wimt.tree.entity.Tree
 import java.time.LocalDate
 
@@ -16,6 +15,7 @@ class TreeTest {
         @DisplayName("트리를 생성한다")
         fun createTree() {
             // given
+            val userId = 1L
             val name = "명동 신세계 트리"
             val lat = 37.56052658245116.toFloat()
             val lng = 126.98065056929003.toFloat()
@@ -27,12 +27,13 @@ class TreeTest {
             val exhibitionEndDate = LocalDate.of(2023,12,31)
             val businessDays = "월,화,수,목,금,토,일"
             val isPet = true
-            val title = "명동 신셰계 백화점 크리스마스 트리"
             val extraInfo = "명동 신셰계 백화점 크리스마스 트리"
 
             // when
             val tree = Tree(
+                userId = userId,
                 name = name,
+                imageUrl = null,
                 lat = lat,
                 lng = lng,
                 addressType = addressType,

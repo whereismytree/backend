@@ -1,6 +1,10 @@
 package org.whatismytree.wimt.user.domain
 
-import jakarta.persistence.*
+import jakarta.persistence.Entity
+import jakarta.persistence.Table
+import jakarta.persistence.Column
+import jakarta.persistence.UniqueConstraint
+import jakarta.persistence.Convert
 import org.whatismytree.wimt.auth.domain.OAuthType
 import org.whatismytree.wimt.auth.domain.converter.OAuthTypeConverter
 import org.whatismytree.wimt.common.BaseTimeEntity
