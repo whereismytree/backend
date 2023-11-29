@@ -12,6 +12,7 @@ import org.whatismytree.wimt.tree.entity.Tree
 import org.whatismytree.wimt.tree.repository.TreeRepository
 import org.whatismytree.wimt.user.repository.UserRepository
 import java.lang.Exception
+import java.time.LocalDateTime
 
 @Service
 class TreeService (
@@ -116,9 +117,11 @@ class TreeService (
         tree.updateTree(req)
     }
 
+    @Transactional
     fun deleteTree(id: Long) {
-        treeRepository.findByIdAndDeletedAtIsNull(id)
+        val tree = treeRepository.findByIdOrNull(id)
             ?: throw Exception("id로 조회되는 tree가 없습니다.")
-        treeRepository.deleteById(id)
+
+        tree.deletedAt = LocalDateTime.now()
     }
 }
