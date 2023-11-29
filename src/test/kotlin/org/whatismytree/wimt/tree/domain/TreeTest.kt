@@ -19,10 +19,10 @@ class TreeTest {
             val name = "명동 신세계 트리"
             val lat = 37.56052658245116.toFloat()
             val lng = 126.98065056929003.toFloat()
-            val addressType = Tree.AddressType.ROAD
+            val addressType = "ROAD"
             val roadAddress = "서울 중구 퇴계로 77"
             val detailAddress = "명동 신세계 백화점"
-            val space = Tree.Space.EXTERNAL
+            val space = "EXTERNAL"
             val exhibitionStartDate = LocalDate.of(2023,12,1)
             val exhibitionEndDate = LocalDate.of(2023,12,31)
             val businessDays = "월,화,수,목,금,토,일"
