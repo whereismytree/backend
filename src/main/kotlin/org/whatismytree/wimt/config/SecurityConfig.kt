@@ -6,12 +6,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.whatismytree.wimt.auth.filter.JwtAuthenticationFilter
+import org.whatismytree.wimt.auth.handler.JwtTokenProvider
 import org.whatismytree.wimt.auth.handler.OAuth2AuthenticationSuccessHandler
 
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
     private val oAuth2AuthenticationSuccessHandler: OAuth2AuthenticationSuccessHandler,
+    private val jwtTokenProvider: JwtTokenProvider,
 ) {
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
@@ -27,6 +31,15 @@ class SecurityConfig(
                 oauth2
                     .successHandler(oAuth2AuthenticationSuccessHandler)
             }
+            .addFilterBefore(
+                jwtAuthenticationFilter(),
+                UsernamePasswordAuthenticationFilter::class.java,
+            )
             .build()
+    }
+
+    @Bean
+    fun jwtAuthenticationFilter(): JwtAuthenticationFilter {
+        return JwtAuthenticationFilter(jwtTokenProvider)
     }
 }
