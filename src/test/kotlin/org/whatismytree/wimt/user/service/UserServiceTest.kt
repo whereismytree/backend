@@ -1,6 +1,9 @@
 package org.whatismytree.wimt.user.service
 
+import com.navercorp.fixturemonkey.kotlin.set
+import com.navercorp.fixturemonkey.kotlin.setNull
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.catchThrowable
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -8,12 +11,15 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.whatismytree.wimt.annotation.ServiceIntTest
 import org.whatismytree.wimt.auth.domain.OAuthType
 import org.whatismytree.wimt.auth.dto.OAuthInfo
+import org.whatismytree.wimt.support.makeSample
 import org.whatismytree.wimt.user.domain.User
+import org.whatismytree.wimt.user.exception.DuplicatedNicknameException
+import org.whatismytree.wimt.user.exception.UserNotFoundException
 
 @ServiceIntTest(UserService::class)
 internal class UserServiceTest(
     private val userService: UserService,
-    private val entityManager: TestEntityManager
+    private val entityManager: TestEntityManager,
 ) {
 
     @Nested
@@ -26,7 +32,7 @@ internal class UserServiceTest(
             val oAuthInfo = OAuthInfo(
                 OAuthType.GOOGLE,
                 "ThisIsSampleOAuthId",
-                "test@google.com"
+                "test@google.com",
             )
 
             // when
@@ -47,14 +53,14 @@ internal class UserServiceTest(
             val existUser = User.of(
                 email = email,
                 oauthType = oAuthType,
-                oauthId = oAuthId
+                oauthId = oAuthId,
             )
             val existUserId = entityManager.persistAndGetId(existUser)
 
             val oAuthInfo = OAuthInfo(
                 email = email,
                 oAuthType = oAuthType,
-                oAuthId = oAuthId
+                oAuthId = oAuthId,
             )
 
             // when
@@ -62,6 +68,85 @@ internal class UserServiceTest(
 
             // then
             assertThat(findUser.id).isEqualTo(existUserId)
+        }
+    }
+
+    @Nested
+    inner class CreateProfile {
+
+        @Test
+        @DisplayName("존재하지 않는 유저이면 UserNotFoundException이 발생한다.")
+        fun userNotFound() {
+            // given
+            val userId = 1L
+            val nickname = "nickname"
+            val profileImageUrl = "profileImageUrl"
+
+            // when
+            val result = catchThrowable {
+                userService.createProfile(
+                    userId = userId,
+                    nickname = nickname,
+                    profileImageUrl = profileImageUrl,
+                )
+            }
+
+            // then
+            assertThat(result).isInstanceOf(UserNotFoundException::class.java)
+        }
+
+        @Test
+        @DisplayName("닉네임이 중복되면 DuplicatedNicknameException이 발생한다.")
+        fun duplicatedNickname() {
+            // given
+            val existNickname = "existNickname"
+            val profileImageUrl = "profileImageUrl"
+
+            entityManager.makeSample<User> {
+                set(User::nickname, existNickname)
+            }
+
+            val user = entityManager.makeSample<User> {
+                setNull(User::nickname)
+                setNull(User::profileImageUrl)
+            }
+
+            // when
+            val result = catchThrowable {
+                userService.createProfile(
+                    userId = user.id,
+                    nickname = existNickname,
+                    profileImageUrl = profileImageUrl,
+                )
+            }
+
+            // then
+            assertThat(result).isInstanceOf(DuplicatedNicknameException::class.java)
+        }
+
+        @Test
+        @DisplayName("닉네임이 중복되지 않으면 프로필을 생성한다.")
+        fun createProfile() {
+            // given
+            val nickname = "nickname"
+            val profileImageUrl = "profileImageUrl"
+
+            val user = entityManager.makeSample<User> {
+                setNull(User::nickname)
+                setNull(User::profileImageUrl)
+            }
+
+            // when
+            userService.createProfile(
+                userId = user.id,
+                nickname = nickname,
+                profileImageUrl = profileImageUrl,
+            )
+
+            // then
+            val findUser = entityManager.find(User::class.java, user.id)
+            assertThat(findUser.nickname).isEqualTo(nickname)
+            assertThat(findUser.profileImageUrl).isEqualTo(profileImageUrl)
         }
     }
 }
