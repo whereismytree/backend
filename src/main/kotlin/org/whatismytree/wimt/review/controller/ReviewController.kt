@@ -48,7 +48,7 @@ class ReviewController(
     @Operation(summary = "후기 목록을 조회한다")
     @GetMapping
     fun getReviews(
-        @RequestParam(required = true) treeId: Long
+        @RequestParam(required = true) treeId: Long,
     ): GetReviewsResponse {
         val reviews = reviewService.findAllDetail(treeId)
 
@@ -58,7 +58,7 @@ class ReviewController(
     @Operation(summary = "후기 이미지 목록을 조회한다")
     @GetMapping("/images")
     fun getReviewImages(
-        @RequestParam(required = true) treeId: Long
+        @RequestParam(required = true) treeId: Long,
     ): GetReviewImagesResponse {
         val reviews = reviewService.findAllImage(treeId)
 
