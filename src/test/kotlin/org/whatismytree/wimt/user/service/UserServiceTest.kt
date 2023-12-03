@@ -11,7 +11,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.whatismytree.wimt.annotation.ServiceIntTest
 import org.whatismytree.wimt.auth.domain.OAuthType
 import org.whatismytree.wimt.auth.dto.OAuthInfo
+import org.whatismytree.wimt.favorite.domain.Favorite
+import org.whatismytree.wimt.review.domain.Review
+import org.whatismytree.wimt.review.domain.ReviewTags
 import org.whatismytree.wimt.support.makeSample
+import org.whatismytree.wimt.tree.entity.Tree
 import org.whatismytree.wimt.user.domain.User
 import org.whatismytree.wimt.user.exception.DuplicatedNicknameException
 import org.whatismytree.wimt.user.exception.UserNotFoundException
@@ -147,6 +151,100 @@ internal class UserServiceTest(
             val findUser = entityManager.find(User::class.java, user.id)
             assertThat(findUser.nickname).isEqualTo(nickname)
             assertThat(findUser.profileImageUrl).isEqualTo(profileImageUrl)
+        }
+    }
+
+    @Nested
+    inner class GetDetailById {
+
+        @Test
+        @DisplayName("존재하지 않는 유저이면 UserNotFoundException이 발생한다.")
+        fun userNotFound() {
+            // given
+            val nonExistsUserId = 1L
+
+            // when
+            val result = catchThrowable {
+                userService.getDetailById(nonExistsUserId)
+            }
+
+            // then
+            assertThat(result).isInstanceOf(UserNotFoundException::class.java)
+        }
+
+        @Test
+        @DisplayName("닉네임이 존재하지 않으면 IllegalStateException이 발생한다.")
+        fun nicknameNotFound() {
+            // given
+            val user = entityManager.makeSample<User> {
+                setNull(User::nickname)
+                set(User::profileImageUrl, "profileImageUrl")
+                setNull(User::deletedAt)
+            }
+
+            // when
+            val result = catchThrowable {
+                userService.getDetailById(user.id)
+            }
+
+            // then
+            assertThat(result).isInstanceOf(IllegalStateException::class.java)
+        }
+
+        @Test
+        @DisplayName("프로필 이미지가 존재하지 않으면 IllegalStateException이 발생한다.")
+        fun profileImageUrlNotFound() {
+            // given
+            val user = entityManager.makeSample<User> {
+                set(User::nickname, "nickname")
+                setNull(User::profileImageUrl)
+                setNull(User::deletedAt)
+            }
+
+            // when
+            val result = catchThrowable {
+                userService.getDetailById(user.id)
+            }
+
+            // then
+            assertThat(result).isInstanceOf(IllegalStateException::class.java)
+        }
+
+        @Test
+        @DisplayName("유저 정보를 반환한다.")
+        fun getDetailById() {
+            // given
+            val user = entityManager.makeSample<User> {
+                set(User::nickname, "nickname")
+                set(User::profileImageUrl, "profileImageUrl")
+                setNull(User::deletedAt)
+            }
+            val tree = entityManager.makeSample<Tree> {
+                set(Tree::userId, user.id)
+                setNull(Tree::deletedAt)
+            }
+            entityManager.makeSample<Review> {
+                set(Review::userId, user.id)
+                set(Review::treeId, tree.id)
+                set(Review::tags, ReviewTags())
+                setNull(Review::deletedAt)
+            }
+            entityManager.makeSample<Favorite> {
+                set(Favorite::userId, user.id)
+                set(Favorite::treeId, tree.id)
+            }
+
+            // when
+            val result = userService.getDetailById(user.id)
+
+            // then
+            assertThat(result.nickname).isEqualTo(user.nickname)
+            assertThat(result.email).isEqualTo(user.email)
+            assertThat(result.oauthType).isEqualTo(user.oauthType)
+            assertThat(result.profileImageUrl).isEqualTo(user.profileImageUrl)
+            assertThat(result.postedTreesCount).isEqualTo(1)
+            assertThat(result.savedTreesCount).isEqualTo(1)
+            assertThat(result.reviewsCount).isEqualTo(1)
         }
     }
 }

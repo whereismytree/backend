@@ -7,6 +7,7 @@ import org.whatismytree.wimt.user.domain.User
 import org.whatismytree.wimt.user.exception.DuplicatedNicknameException
 import org.whatismytree.wimt.user.exception.UserNotFoundException
 import org.whatismytree.wimt.user.repository.UserRepository
+import org.whatismytree.wimt.user.repository.dto.UserDetailResult
 
 @Service
 @Transactional(readOnly = true)
@@ -30,5 +31,17 @@ class UserService(
         }
 
         user.updateProfile(nickname, profileImageUrl)
+    }
+
+    fun getDetailById(userId: Long): UserDetailResult {
+        val userDetail = (
+            userRepository.findUserDetailById(userId)
+                ?: throw UserNotFoundException("존재하지 않는 유저입니다. userId: $userId")
+            )
+
+        checkNotNull(userDetail.nickname) { "닉네임이 존재하지 않습니다. userId: $userId" }
+        checkNotNull(userDetail.profileImageUrl) { "프로필 이미지가 존재하지 않습니다. userId: $userId" }
+
+        return userDetail
     }
 }

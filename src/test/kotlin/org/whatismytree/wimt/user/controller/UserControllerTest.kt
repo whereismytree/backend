@@ -9,10 +9,14 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 import org.whatismytree.wimt.annotation.WithMockOAuth2User
+import org.whatismytree.wimt.auth.domain.OAuthType
 import org.whatismytree.wimt.common.ControllerTest
+import org.whatismytree.wimt.user.controller.dto.GetMyPageResponse
 import org.whatismytree.wimt.user.exception.UserNotFoundException
+import org.whatismytree.wimt.user.repository.dto.UserDetailResult
 import org.whatismytree.wimt.user.service.UserService
 
 @WebMvcTest(UserController::class)
@@ -66,6 +70,17 @@ internal class UserControllerTest : ControllerTest() {
         }
 
         // TODO: 인증하지 않은 사용자일 경우 401 Unauthorized를 반환하는 테스트 케이스 작성
+        @Disabled
+        @Test
+        @DisplayName("인증하지 않은 사용자일 경우 401 Unauthorized를 반환한다")
+        fun unauthorized() {
+            // when then
+            mockMvc.post(url) {
+                jsonContent(createProfileRequest())
+            }.andExpect {
+                status { isUnauthorized() }
+            }
+        }
 
         @Disabled // TODO: GlobalExceptionHandler 적용 후에 테스트 활성화
         @Test
@@ -124,6 +139,76 @@ internal class UserControllerTest : ControllerTest() {
             }.andExpect {
                 status { isOk() }
             }
+        }
+    }
+
+    @Nested
+    inner class GetMyPage {
+        private val url = "/v1/my"
+
+        @Disabled // TODO : GlobalExceptionHandler 적용 후에 테스트 활성화
+        @Test
+        @DisplayName("로그인이 되어있지 않은 경우 401 Unauthorized를 반환한다")
+        fun unauthorized() {
+            // when then
+            mockMvc.get(url).andExpect {
+                status { isUnauthorized() }
+            }
+        }
+
+        @Disabled // TODO : GlobalExceptionHandler 적용 후에 테스트 활성화
+        @Test
+        @DisplayName("로그인이 되어있고 유저의 닉네임이 존재하지 않는 경우 400 Bad Request를 반환한다")
+        @WithMockOAuth2User(userId = 1L)
+        fun nicknameIsNull() {
+            // given
+            every { userService.getDetailById(any()) } throws IllegalStateException("닉네임이 존재하지 않습니다. userId: 1")
+
+            // when then
+            mockMvc.get(url).andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Disabled // TODO : GlobalExceptionHandler 적용 후에 테스트 활성화
+        @Test
+        @DisplayName("로그인이 되어있고 유저의 프로필 사진 URL이 존재하지 않는 경우 400 Bad Request를 반환한다")
+        @WithMockOAuth2User(userId = 1L)
+        fun profileImageUrlIsNull() {
+            // given
+            every { userService.getDetailById(any()) } throws IllegalStateException("프로필 이미지가 존재하지 않습니다. userId: 1")
+
+            // when then
+            mockMvc.get(url).andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        @DisplayName("로그인이 되어있고 유저의 닉네임과 프로필 사진 URL이 존재하는 경우 200 OK를 반환한다")
+        @WithMockOAuth2User(userId = 1L)
+        fun getMyPage() {
+            // given
+            val serviceResponse = UserDetailResult(
+                nickname = "nickname",
+                email = "email",
+                oauthType = OAuthType.GOOGLE,
+                profileImageUrl = "https://profile.image.url",
+                postedTreesCount = 1L,
+                savedTreesCount = 1L,
+                reviewsCount = 1L,
+            )
+
+            val response = GetMyPageResponse.of(serviceResponse)
+
+            every { userService.getDetailById(any()) } returns serviceResponse
+
+            // when then
+            mockMvc.get(url)
+                .andExpect {
+                    status { isOk() }
+                    content { success(response) }
+                }
         }
     }
 }
