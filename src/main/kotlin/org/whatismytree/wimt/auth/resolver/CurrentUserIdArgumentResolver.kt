@@ -1,6 +1,7 @@
 package org.whatismytree.wimt.auth.resolver
 
 import org.springframework.core.MethodParameter
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.web.bind.support.WebDataBinderFactory
@@ -21,7 +22,8 @@ class CurrentUserIdArgumentResolver : HandlerMethodArgumentResolver {
         webRequest: NativeWebRequest,
         binderFactory: WebDataBinderFactory?,
     ): Any {
-        val oAuth2User = SecurityContextHolder.getContext().authentication.principal as OAuth2User
+        val oAuth2User = SecurityContextHolder.getContext().authentication?.principal as OAuth2User?
+            ?: throw AccessDeniedException("로그인이 필요합니다.")
         return oAuth2User.name.toLong()
     }
 }
