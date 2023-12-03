@@ -1,5 +1,6 @@
 package org.whatismytree.wimt.auth.handler
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
@@ -13,6 +14,8 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User
 import org.springframework.stereotype.Component
 import java.time.Duration
 import java.util.Date
+
+private val logger = KotlinLogging.logger {}
 
 @Component
 class JwtTokenProvider {
@@ -70,10 +73,10 @@ class JwtTokenProvider {
             getClaims(token)
             true
         } catch (e: JwtException) {
-            println(e.message)
+            logger.error { "JwtException: ${e.message}" }
             false
         } catch (e: IllegalArgumentException) {
-            println(e.message)
+            logger.error { "IllegalArgumentException: ${e.message}" }
             false
         }
     }
