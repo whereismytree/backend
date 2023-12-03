@@ -1,24 +1,17 @@
 package org.whatismytree.wimt.tree.entity
 
-
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.OneToOne
-import jakarta.persistence.Table
-import jakarta.persistence.JoinColumn
 import jakarta.persistence.Column
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
+import jakarta.persistence.Entity
+import jakarta.persistence.Table
 import org.hibernate.annotations.Comment
 import org.whatismytree.wimt.common.BaseTimeEntity
 import org.whatismytree.wimt.tree.controller.dto.UpdateTreeDto
-import org.whatismytree.wimt.user.domain.User
 import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Entity
 @Table(name = "tree")
-class Tree (
+class Tree(
 
     @Column(name = "user_id", nullable = false)
     @Comment("등록한 유저 ID")
@@ -69,19 +62,19 @@ class Tree (
     @Column
     var deletedAt: LocalDateTime? = null,
 
-): BaseTimeEntity() {
+) : BaseTimeEntity() {
 
     enum class AddressType {
         ROAD,
-        STREET
+        STREET,
     }
 
     enum class Space {
         INTERIOR,
-        EXTERNAL
+        EXTERNAL,
     }
 
-    fun updateTree (req: UpdateTreeDto.Req) {
+    fun updateTree(req: UpdateTreeDto.Req) {
         this.name = req.name
         this.lat = req.lat
         this.lng = req.lng
