@@ -23,8 +23,6 @@ class CurrentUserIdArgumentResolver : HandlerMethodArgumentResolver {
         binderFactory: WebDataBinderFactory?,
     ): Any {
         val oAuth2User = SecurityContextHolder.getContext().authentication?.principal as OAuth2User?
-//            ?: throw AccessDeniedException("로그인이 필요합니다.")
-//            ?: throw IllegalStateException("로그인이 필요합니다.")
             ?: throw LoginRequiredException("로그인이 필요합니다.")
         return oAuth2User.name.toLong()
     }
