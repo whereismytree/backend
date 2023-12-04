@@ -4,7 +4,6 @@ import com.ninjasquad.springmockk.MockkBean
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.just
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -16,6 +15,7 @@ import org.whatismytree.wimt.auth.domain.OAuthType
 import org.whatismytree.wimt.common.ControllerTest
 import org.whatismytree.wimt.user.controller.dto.CheckAvailableResponse
 import org.whatismytree.wimt.user.controller.dto.GetMyPageResponse
+import org.whatismytree.wimt.user.exception.DuplicatedNicknameException
 import org.whatismytree.wimt.user.exception.UserNotFoundException
 import org.whatismytree.wimt.user.repository.dto.UserDetailResult
 import org.whatismytree.wimt.user.service.UserService
@@ -70,8 +70,6 @@ internal class UserControllerTest : ControllerTest() {
             }
         }
 
-        // TODO: 인증하지 않은 사용자일 경우 401 Unauthorized를 반환하는 테스트 케이스 작성
-        @Disabled
         @Test
         @DisplayName("인증하지 않은 사용자일 경우 401 Unauthorized를 반환한다")
         fun unauthorized() {
@@ -83,7 +81,6 @@ internal class UserControllerTest : ControllerTest() {
             }
         }
 
-        @Disabled // TODO: GlobalExceptionHandler 적용 후에 테스트 활성화
         @Test
         @DisplayName("존재하지 않는 유저 ID일 경우 400 Bad Request를 반환한다")
         @WithMockOAuth2User(userId = 1L)
@@ -105,7 +102,6 @@ internal class UserControllerTest : ControllerTest() {
             }
         }
 
-        @Disabled // TODO: GlobalExceptionHandler 적용 후에 테스트 활성화
         @Test
         @DisplayName("중복되는 닉네임일 경우 400 Bad Request를 반환한다")
         @WithMockOAuth2User
@@ -117,7 +113,7 @@ internal class UserControllerTest : ControllerTest() {
                     any(),
                     any(),
                 )
-            } throws UserNotFoundException("존재하지 않는 유저입니다. userId: 1")
+            } throws DuplicatedNicknameException("이미 존재하는 닉네임입니다. nickname: duplicatedNickname")
 
             // when then
             mockMvc.post(url) {
@@ -147,7 +143,6 @@ internal class UserControllerTest : ControllerTest() {
     inner class GetMyPage {
         private val url = "/v1/my"
 
-        @Disabled // TODO : GlobalExceptionHandler 적용 후에 테스트 활성화
         @Test
         @DisplayName("로그인이 되어있지 않은 경우 401 Unauthorized를 반환한다")
         fun unauthorized() {
@@ -157,7 +152,6 @@ internal class UserControllerTest : ControllerTest() {
             }
         }
 
-        @Disabled // TODO : GlobalExceptionHandler 적용 후에 테스트 활성화
         @Test
         @DisplayName("로그인이 되어있고 유저의 닉네임이 존재하지 않는 경우 400 Bad Request를 반환한다")
         @WithMockOAuth2User(userId = 1L)
@@ -171,7 +165,6 @@ internal class UserControllerTest : ControllerTest() {
             }
         }
 
-        @Disabled // TODO : GlobalExceptionHandler 적용 후에 테스트 활성화
         @Test
         @DisplayName("로그인이 되어있고 유저의 프로필 사진 URL이 존재하지 않는 경우 400 Bad Request를 반환한다")
         @WithMockOAuth2User(userId = 1L)
