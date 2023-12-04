@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.whatismytree.wimt.common.CurrentUserId
+import org.whatismytree.wimt.user.controller.dto.CheckAvailableResponse
 import org.whatismytree.wimt.user.controller.dto.CreateProfileRequest
 import org.whatismytree.wimt.user.controller.dto.GetMyPageResponse
 import org.whatismytree.wimt.user.service.UserService
@@ -39,8 +41,18 @@ class UserController(
     fun getMyPage(
         @CurrentUserId userId: Long,
     ): GetMyPageResponse {
-        val result = userService.getDetailById(userId)
+        val userDetail = userService.getDetailById(userId)
 
-        return GetMyPageResponse.of(result)
+        return GetMyPageResponse.of(userDetail)
+    }
+
+    @Operation(summary = "닉네임 사용 가능 여부 조회")
+    @GetMapping("/check")
+    fun checkAvailable(
+        @RequestParam nickname: String,
+    ): CheckAvailableResponse {
+        val available = userService.checkNicknameAvailable(nickname)
+
+        return CheckAvailableResponse(available)
     }
 }

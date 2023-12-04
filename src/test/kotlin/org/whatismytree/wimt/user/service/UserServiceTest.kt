@@ -247,4 +247,37 @@ internal class UserServiceTest(
             assertThat(result.reviewsCount).isEqualTo(1)
         }
     }
+
+    @Nested
+    inner class CheckNicknameAvailable {
+        @Test
+        @DisplayName("닉네임이 중복되면 false를 반환한다.")
+        fun duplicatedNickname() {
+            // given
+            val existNickname = "existNickname"
+
+            entityManager.makeSample<User> {
+                set(User::nickname, existNickname)
+            }
+
+            // when
+            val result = userService.checkNicknameAvailable(existNickname)
+
+            // then
+            assertThat(result).isFalse()
+        }
+
+        @Test
+        @DisplayName("닉네임이 중복되지 않으면 true를 반환한다.")
+        fun availableNickname() {
+            // given
+            val nickname = "nickname"
+
+            // when
+            val result = userService.checkNicknameAvailable(nickname)
+
+            // then
+            assertThat(result).isTrue()
+        }
+    }
 }

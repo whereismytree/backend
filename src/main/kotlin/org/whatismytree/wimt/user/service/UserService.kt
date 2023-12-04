@@ -44,4 +44,8 @@ class UserService(
 
         return userDetail
     }
+
+    fun checkNicknameAvailable(nickname: String): Boolean {
+        return !userRepository.existsByNickname(nickname)
+    }
 }

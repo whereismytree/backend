@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.post
 import org.whatismytree.wimt.annotation.WithMockOAuth2User
 import org.whatismytree.wimt.auth.domain.OAuthType
 import org.whatismytree.wimt.common.ControllerTest
+import org.whatismytree.wimt.user.controller.dto.CheckAvailableResponse
 import org.whatismytree.wimt.user.controller.dto.GetMyPageResponse
 import org.whatismytree.wimt.user.exception.UserNotFoundException
 import org.whatismytree.wimt.user.repository.dto.UserDetailResult
@@ -205,6 +206,51 @@ internal class UserControllerTest : ControllerTest() {
 
             // when then
             mockMvc.get(url)
+                .andExpect {
+                    status { isOk() }
+                    content { success(response) }
+                }
+        }
+    }
+
+    @Nested
+    inner class CheckAvailable {
+        private val url = "/v1/my/check"
+
+        @Test
+        @DisplayName("닉네임을 입력 안했을 경우 400 Bad Request를 반환한다")
+        fun nicknameNotEntered() {
+            // when then
+            mockMvc.get(url)
+                .andExpect {
+                    status { isBadRequest() }
+                }
+        }
+
+        @Test
+        @DisplayName("닉네임이 중복될 경우 200 OK와 false를 반환한다")
+        fun nicknameIsDuplicated() {
+            // given
+            every { userService.checkNicknameAvailable(any()) } returns false
+            val response = CheckAvailableResponse(false)
+
+            // when then
+            mockMvc.get("$url?nickname=duplicatedNickname")
+                .andExpect {
+                    status { isOk() }
+                    content { success(response) }
+                }
+        }
+
+        @Test
+        @DisplayName("닉네임이 중복되지 않을 경우 200 OK와 true를 반환한다")
+        fun nicknameIsNotDuplicated() {
+            // given
+            every { userService.checkNicknameAvailable(any()) } returns true
+            val response = CheckAvailableResponse(true)
+
+            // when then
+            mockMvc.get("$url?nickname=notDuplicatedNickname")
                 .andExpect {
                     status { isOk() }
                     content { success(response) }
