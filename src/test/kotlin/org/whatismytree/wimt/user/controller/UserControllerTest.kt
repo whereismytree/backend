@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 import org.whatismytree.wimt.annotation.WithMockOAuth2User
@@ -248,6 +249,46 @@ internal class UserControllerTest : ControllerTest() {
                     status { isOk() }
                     content { success(response) }
                 }
+        }
+    }
+
+    @Nested
+    inner class DeleteUser {
+        private val url = "/v1/my"
+
+        @Test
+        @DisplayName("로그인이 되어있지 않은 경우 401 Unauthorized를 반환한다")
+        fun unauthorized() {
+            // when then
+            mockMvc.delete(url).andExpect {
+                status { isUnauthorized() }
+            }
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 유저일 경우 400 Bad Request를 반환한다")
+        @WithMockOAuth2User(userId = 1L)
+        fun userNotFound() {
+            // given
+            every { userService.deleteUser(any()) } throws UserNotFoundException("존재하지 않는 유저입니다. userId: 1")
+
+            // when then
+            mockMvc.delete(url).andExpect {
+                status { isBadRequest() }
+            }
+        }
+
+        @Test
+        @DisplayName("유저를 삭제한다")
+        @WithMockOAuth2User(userId = 1L)
+        fun deleteUser() {
+            // given
+            every { userService.deleteUser(any()) } just Runs
+
+            // when then
+            mockMvc.delete(url).andExpect {
+                status { isOk() }
+            }
         }
     }
 }

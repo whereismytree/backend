@@ -280,4 +280,37 @@ internal class UserServiceTest(
             assertThat(result).isTrue()
         }
     }
+
+    @Nested
+    inner class DeleteUser {
+        @Test
+        @DisplayName("존재하지 않는 유저이면 UserNotFoundException이 발생한다.")
+        fun userNotFound() {
+            // given
+            val nonExistsUserId = 1L
+
+            // when
+            val result = catchThrowable {
+                userService.deleteUser(nonExistsUserId)
+            }
+
+            // then
+            assertThat(result).isInstanceOf(UserNotFoundException::class.java)
+        }
+
+        @Test
+        @DisplayName("유저를 삭제한다.")
+        fun deleteUser() {
+            // given
+            val user = entityManager.makeSample<User> {
+                setNull(User::deletedAt)
+            }
+
+            // when
+            userService.deleteUser(user.id)
+
+            // then
+            assertThat(user.deletedAt).isNotNull()
+        }
+    }
 }

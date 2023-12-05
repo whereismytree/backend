@@ -48,4 +48,12 @@ class UserService(
     fun checkNicknameAvailable(nickname: String): Boolean {
         return !userRepository.existsByNickname(nickname)
     }
+
+    @Transactional
+    fun deleteUser(userId: Long) {
+        val user = userRepository.findById(userId)
+            .orElseThrow { throw UserNotFoundException("존재하지 않는 유저입니다. userId: $userId") }
+
+        user.softDelete()
+    }
 }
