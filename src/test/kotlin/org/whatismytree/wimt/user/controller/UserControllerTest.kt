@@ -208,8 +208,8 @@ internal class UserControllerTest : ControllerTest() {
     }
 
     @Nested
-    inner class CheckAvailable {
-        private val url = "/v1/my/check"
+    inner class CheckNicknameAvailable {
+        private val url = "/v1/my/check/nickname"
 
         @Test
         @DisplayName("닉네임을 입력 안했을 경우 400 Bad Request를 반환한다")

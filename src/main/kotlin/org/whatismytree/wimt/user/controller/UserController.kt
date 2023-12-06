@@ -48,8 +48,8 @@ class UserController(
     }
 
     @Operation(summary = "닉네임 사용 가능 여부 조회")
-    @GetMapping("/check")
-    fun checkAvailable(
+    @GetMapping("/check/nickname")
+    fun checkNicknameAvailable(
         @RequestParam nickname: String,
     ): CheckAvailableResponse {
         val available = userService.checkNicknameAvailable(nickname)
