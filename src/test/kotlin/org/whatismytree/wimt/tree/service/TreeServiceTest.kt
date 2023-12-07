@@ -12,7 +12,7 @@ import java.time.LocalDate
 
 @SpringBootTest
 class TreeServiceTest @Autowired constructor(
-    private val treeService: TreeService
+    private val treeService: TreeService,
 ) {
 
     @Nested
@@ -29,8 +29,8 @@ class TreeServiceTest @Autowired constructor(
             val roadAddress = "서울 중구 퇴계로 77"
             val detailAddress = "명동 신세계 백화점"
             val space = Tree.Space.EXTERNAL
-            val exhibitionStartDate = LocalDate.of(2023,12,1)
-            val exhibitionEndDate = LocalDate.of(2023,12,31)
+            val exhibitionStartDate = LocalDate.of(2023, 12, 1)
+            val exhibitionEndDate = LocalDate.of(2023, 12, 31)
             val businessDays = "월,화,수,목,금,토,일"
             val isPet = true
             val title = "명동 신셰계 백화점 크리스마스 트리"

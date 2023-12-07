@@ -7,15 +7,14 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
 import org.whatismytree.wimt.tree.controller.dto.FindTreeListDto
 import org.whatismytree.wimt.tree.entity.QTree.tree
-import org.whatismytree.wimt.tree.entity.Tree
 
 @Repository
 class TreeRepositoryImpl(
     private val jpaQueryFactory: JPAQueryFactory,
-): TreeRepositoryCustom {
+) : TreeRepositoryCustom {
     override fun findTreeList(
         nameParam: String?,
-        addressParam: String?
+        addressParam: String?,
     ): List<FindTreeListDto.Res> {
         val query = jpaQueryFactory
             .select(
@@ -27,11 +26,10 @@ class TreeRepositoryImpl(
                     tree.lng,
                     CaseBuilder().`when`(tree.addressType.eq("STREET"))
                         .then(tree.streetAddress).otherwise(tree.roadAddress).`as`("address"),
-                    tree.imageUrl
-                )
+                    tree.imageUrl,
+                ),
             )
             .from(tree)
-
 
         var predicate: BooleanExpression? = null
 
@@ -55,5 +53,4 @@ class TreeRepositoryImpl(
 
         return query.fetch()
     }
-
 }

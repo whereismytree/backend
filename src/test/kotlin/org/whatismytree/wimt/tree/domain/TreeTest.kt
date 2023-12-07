@@ -23,8 +23,8 @@ class TreeTest {
             val roadAddress = "서울 중구 퇴계로 77"
             val detailAddress = "명동 신세계 백화점"
             val space = "EXTERNAL"
-            val exhibitionStartDate = LocalDate.of(2023,12,1)
-            val exhibitionEndDate = LocalDate.of(2023,12,31)
+            val exhibitionStartDate = LocalDate.of(2023, 12, 1)
+            val exhibitionEndDate = LocalDate.of(2023, 12, 31)
             val businessDays = "월,화,수,목,금,토,일"
             val isPet = true
             val extraInfo = "명동 신셰계 백화점 크리스마스 트리"

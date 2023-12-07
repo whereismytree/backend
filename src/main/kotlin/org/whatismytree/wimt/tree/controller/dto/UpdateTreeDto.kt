@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat
 import java.time.LocalDate
 
 class UpdateTreeDto {
-    class Req (
+    class Req(
         val name: String,
         val imageUrl: String?,
         val lat: Float,

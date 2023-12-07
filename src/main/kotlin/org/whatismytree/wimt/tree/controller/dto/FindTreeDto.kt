@@ -3,7 +3,7 @@ package org.whatismytree.wimt.tree.controller.dto
 import java.time.LocalDate
 
 class FindTreeDto {
-    class Res (
+    class Res(
         val name: String,
         val lat: Float,
         val lng: Float,

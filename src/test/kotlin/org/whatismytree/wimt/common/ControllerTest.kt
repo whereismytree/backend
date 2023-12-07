@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType.APPLICATION_JSON
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder.json
 import org.springframework.test.web.servlet.MockHttpServletRequestDsl
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.ResultMatcher
-import org.springframework.test.web.servlet.result.ContentResultMatchers
+import org.springframework.test.web.servlet.result.ContentResultMatchersDsl
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
@@ -38,11 +38,9 @@ abstract class ControllerTest {
         contentType = APPLICATION_JSON
     }
 
-    fun ContentResultMatchers.success(value: Any): ResultMatcher {
-        return json(objectMapper.writeValueAsString(value), true)
-    }
+    fun ContentResultMatchersDsl.success(value: Any) =
+        json(objectMapper.writeValueAsString(value), true)
 
-    fun ContentResultMatchers.error(message: String): ResultMatcher {
-        return json(objectMapper.writeValueAsString(message), true)
-    }
+    fun ContentResultMatchersDsl.error(message: String) =
+        json(objectMapper.writeValueAsString(message), true)
 }
