@@ -26,19 +26,22 @@ import org.whatismytree.wimt.tree.service.TreeService
 @Tag(name = "트리 관리")
 @RequestMapping("/v1/trees")
 class TreeController(
-    private val treeService: TreeService
+    private val treeService: TreeService,
 ) {
     @PostMapping("")
     @Operation(summary = "트리 등록")
     @Throws(Exception::class)
-    fun createTree(@Valid @RequestBody req: CreateTreeDto.Req)
-    = treeService.createTree(req)
+    fun createTree(
+        @Valid @RequestBody
+        req: CreateTreeDto.Req,
+    ) =
+        treeService.createTree(req)
 
     @GetMapping("{id}")
     @Operation(summary = "트리 조회")
     @Throws(Exception::class)
-    fun findTree(@PathVariable id: Long): FindTreeDto.Res
-    = treeService.findTree(id)
+    fun findTree(@PathVariable id: Long): FindTreeDto.Res =
+        treeService.findTree(id)
 
     @GetMapping("list")
     @Operation(summary = "트리 목록 조회")
@@ -46,11 +49,11 @@ class TreeController(
     fun findTreeList(
         @RequestParam name: String?,
         @RequestParam address: String?,
-    ): List<FindTreeListDto.Res>
-    = treeService.findTreeList(
-        name,
-        address
-    )
+    ): List<FindTreeListDto.Res> =
+        treeService.findTreeList(
+            name,
+            address,
+        )
 
     @GetMapping("map")
     @Operation(summary = "현재 지도에서 트리 목록 조회")
@@ -64,17 +67,17 @@ class TreeController(
         @RequestParam topRightLng: Float,
         @RequestParam bottomRightLat: Float,
         @RequestParam bottomRightLng: Float,
-    ): List<FindTreeMapDto.Res>
-    = treeService.findTreeMap(
-        topLeftLat,
-        topLeftLng,
-        bottomLeftLat,
-        bottomLeftLng,
-        topRightLat,
-        topRightLng,
-        bottomRightLat,
-        bottomRightLng,
-    )
+    ): List<FindTreeMapDto.Res> =
+        treeService.findTreeMap(
+            topLeftLat,
+            topLeftLng,
+            bottomLeftLat,
+            bottomLeftLng,
+            topRightLat,
+            topRightLng,
+            bottomRightLat,
+            bottomRightLng,
+        )
 
     @GetMapping("posted")
     @Operation(summary = "내가 등록한 트리 목록 조회")
@@ -93,17 +96,16 @@ class TreeController(
     @Throws(Exception::class)
     fun updateTree(
         @PathVariable id: Long,
-        @Valid @RequestBody req: UpdateTreeDto.Req
+        @Valid @RequestBody
+        req: UpdateTreeDto.Req,
     ) = treeService.updateTree(
         id,
-        req
+        req,
     )
 
     @DeleteMapping("{id}")
     @Operation(summary = "트리 삭제")
     @Throws(Exception::class)
-    fun deleteTree(@PathVariable id: Long)
-    = treeService.deleteTree(id)
-
-
+    fun deleteTree(@PathVariable id: Long) =
+        treeService.deleteTree(id)
 }

@@ -18,13 +18,12 @@ import java.lang.Exception
 import java.time.LocalDateTime
 
 @Service
-class TreeService (
+class TreeService(
     private val treeRepository: TreeRepository,
     private val userRepository: UserRepository,
     private val jwtTokenProvider: JwtTokenProvider,
 ) {
     fun createTree(req: CreateTreeDto.Req) {
-
         val user = userRepository.findByIdOrNull(1L)
             ?: throw Exception("유저가 존재하지 않습니다.")
 
@@ -43,7 +42,7 @@ class TreeService (
             exhibitionEndDate = req.exhibitionEndDate,
             businessDays = req.businessDays,
             isPet = req.isPet,
-            extraInfo = req.extraInfo
+            extraInfo = req.extraInfo,
         )
 
         treeRepository.save(tree)
@@ -53,7 +52,7 @@ class TreeService (
         val tree = treeRepository.findByIdAndDeletedAtIsNull(id)
             ?: throw Exception("id로 조회되는 tree가 없습니다.")
 
-        return FindTreeDto.Res (
+        return FindTreeDto.Res(
             name = tree.name,
             lat = tree.lat,
             lng = tree.lng,
@@ -102,7 +101,7 @@ class TreeService (
         )
 
         return treeList.map {
-            FindTreeMapDto.Res (
+            FindTreeMapDto.Res(
                 id = it.id,
                 name = it.name,
                 lat = it.lat,
@@ -122,7 +121,7 @@ class TreeService (
     @Transactional
     fun updateTree(
         id: Long,
-        req: UpdateTreeDto.Req
+        req: UpdateTreeDto.Req,
     ) {
         val tree = treeRepository.findByIdAndDeletedAtIsNull(id)
             ?: throw Exception("id로 조회되는 tree가 없습니다.")
