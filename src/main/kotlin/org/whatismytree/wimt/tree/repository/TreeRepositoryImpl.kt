@@ -1,21 +1,29 @@
 package org.whatismytree.wimt.tree.repository
 
+import com.querydsl.core.types.ExpressionUtils
 import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.types.dsl.CaseBuilder
+import com.querydsl.core.types.dsl.Expressions
+import com.querydsl.core.types.dsl.NumberExpression
+import com.querydsl.core.types.dsl.NumberPath
+import com.querydsl.jpa.JPAExpressions
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
+import org.whatismytree.wimt.favorite.domain.QFavorite.favorite
+import org.whatismytree.wimt.review.domain.QReview.review
+import org.whatismytree.wimt.tree.controller.dto.FindPostedTreeListDto
+import org.whatismytree.wimt.tree.controller.dto.FindSavedTreeListDto
 import org.whatismytree.wimt.tree.controller.dto.FindTreeListDto
 import org.whatismytree.wimt.tree.entity.QTree.tree
-import org.whatismytree.wimt.tree.entity.Tree
 
 @Repository
 class TreeRepositoryImpl(
     private val jpaQueryFactory: JPAQueryFactory,
 ): TreeRepositoryCustom {
     override fun findTreeList(
-        nameParam: String?,
-        addressParam: String?
+        name: String?,
+        address: String?,
     ): List<FindTreeListDto.Res> {
         val query = jpaQueryFactory
             .select(
@@ -27,21 +35,21 @@ class TreeRepositoryImpl(
                     tree.lng,
                     CaseBuilder().`when`(tree.addressType.eq("STREET"))
                         .then(tree.streetAddress).otherwise(tree.roadAddress).`as`("address"),
-                    tree.imageUrl
-                )
+                    tree.imageUrl,
+                ),
             )
             .from(tree)
 
 
         var predicate: BooleanExpression? = null
 
-        if (nameParam != null) {
-            predicate = tree.name.like("%$nameParam%")
+        if (name != null) {
+            predicate = tree.name.like("%$name%")
         }
 
-        if (addressParam != null) {
-            val addressCondition = tree.streetAddress.like("%$addressParam%")
-                .or(tree.roadAddress.like("%$addressParam%"))
+        if (address != null) {
+            val addressCondition = tree.streetAddress.like("%$address%")
+                .or(tree.roadAddress.like("%$address%"))
             predicate = if (predicate != null) {
                 predicate.or(addressCondition)
             } else {
@@ -56,4 +64,49 @@ class TreeRepositoryImpl(
         return query.fetch()
     }
 
+    override fun findPostedTreeList(
+        userId: Long,
+    ): MutableList<FindPostedTreeListDto.Res> {
+        return jpaQueryFactory
+            .select(
+                Projections.constructor(
+                    FindPostedTreeListDto.Res::class.java,
+                    tree.id,
+                    tree.name,
+                    tree.lat,
+                    tree.lng,
+                    CaseBuilder().`when`(tree.addressType.eq("STREET"))
+                        .then(tree.streetAddress).otherwise(tree.roadAddress).`as`("address"),
+                    review.count().`as`("reviewsCount"),
+                ),
+            )
+            .from(tree)
+            .leftJoin(review).on(review.treeId.eq(tree.id))
+            .where(tree.userId.eq(userId))
+            .fetch()
+    }
+
+    // favorites 테이블 inner join하여 리스트 return
+    override fun findSavedTreeList(
+        userId: Long,
+    ): List<FindSavedTreeListDto.Res> {
+        return jpaQueryFactory
+            .select(
+                Projections.constructor(
+                    FindSavedTreeListDto.Res::class.java,
+                    tree.id,
+                    tree.name,
+                    tree.lat,
+                    tree.lng,
+                    CaseBuilder().`when`(tree.addressType.eq("STREET"))
+                        .then(tree.streetAddress).otherwise(tree.roadAddress).`as`("address"),
+                    review.count().`as`("reviewsCount"),
+                ),
+            )
+            .from(tree)
+            .leftJoin(review).on(review.treeId.eq(tree.id))
+            .join(favorite).on(favorite.treeId.eq(tree.id))
+            .where(tree.userId.eq(userId))
+            .fetch()
+    }
 }
