@@ -31,12 +31,12 @@ class MyTreeController(
     @GetMapping("posted")
     @Operation(summary = "내가 등록한 트리 목록 조회")
     @Throws(Exception::class)
-    fun findPostedTreeList(): FindPostedTreeListDto
-    = treeService.findPostedTreeList(1)
+    fun findPostedTreeList(@CurrentUserId userId: Long): FindPostedTreeListDto
+    = treeService.findPostedTreeList(userId)
 
     @GetMapping("saved")
     @Operation(summary = "내가 저장한 트리 목록 조회")
     @Throws(Exception::class)
-    fun findSavedTreeList(): FindSavedTreeListDto
-    = treeService.findSavedTreeList(1)
+    fun findSavedTreeList(@CurrentUserId userId: Long): FindSavedTreeListDto
+    = treeService.findSavedTreeList(userId)
 }
