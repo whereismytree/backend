@@ -21,7 +21,6 @@ import java.time.LocalDateTime
 class TreeService(
     private val treeRepository: TreeRepository,
     private val userRepository: UserRepository,
-    private val jwtTokenProvider: JwtTokenProvider,
 ) {
     fun createTree(req: CreateTreeDto.Req) {
         val user = userRepository.findByIdOrNull(1L)
