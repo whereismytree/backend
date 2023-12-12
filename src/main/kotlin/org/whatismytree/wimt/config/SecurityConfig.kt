@@ -7,6 +7,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.whatismytree.wimt.auth.filter.JwtAuthenticationFilter
 import org.whatismytree.wimt.auth.handler.JwtTokenProvider
 import org.whatismytree.wimt.auth.handler.OAuth2AuthenticationSuccessHandler
@@ -21,6 +24,7 @@ class SecurityConfig(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         return http
             .csrf { csrf -> csrf.disable() }
+            .cors { cors -> cors.configurationSource(corsConfigurationSource()) }
             .sessionManagement { session ->
                 session
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -41,5 +45,17 @@ class SecurityConfig(
     @Bean
     fun jwtAuthenticationFilter(): JwtAuthenticationFilter {
         return JwtAuthenticationFilter(jwtTokenProvider)
+    }
+
+    @Bean
+    fun corsConfigurationSource(): CorsConfigurationSource {
+        val configuration = CorsConfiguration()
+        configuration.allowedOrigins = listOf("http://localhost:3000", "https://localhost:3000") // TODO: 환경 별로 설정
+        configuration.allowedMethods = listOf("*")
+        configuration.allowedHeaders = listOf("*")
+        configuration.allowCredentials = true
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", configuration)
+        return source
     }
 }
