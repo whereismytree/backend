@@ -5,6 +5,7 @@ import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.security.SecurityRequirement
 import io.swagger.v3.oas.models.security.SecurityScheme
+import io.swagger.v3.oas.models.servers.Server
 import org.springdoc.core.customizers.OperationCustomizer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -21,6 +22,7 @@ class SwaggerConfig {
             Components().addSecuritySchemes(SECURITY_SCHEME_KEY, jwtSecurityScheme()),
         )
         .info(apiInfo())
+        .servers(listOf(Server().url("https://devjyp.shop"), Server().url("http://localhost:8080")))
 
     private fun jwtSecurityScheme(): SecurityScheme = SecurityScheme()
         .name(HttpHeaders.AUTHORIZATION)
