@@ -81,7 +81,8 @@ class TreeRepositoryImpl(
                 ),
             )
             .from(tree)
-            .leftJoin(review).on(review.treeId.eq(tree.id))
+            .leftJoin(review).on(review.treeId.eq(tree.id)
+                .and(review.deletedAt.isNull))
             .where(tree.userId.eq(userId)
                 .and(tree.deletedAt.isNull))
             .fetch()
@@ -105,7 +106,8 @@ class TreeRepositoryImpl(
                 ),
             )
             .from(tree)
-            .leftJoin(review).on(review.treeId.eq(tree.id))
+            .leftJoin(review).on(review.treeId.eq(tree.id)
+                .and(review.deletedAt.isNull))
             .join(favorite).on(favorite.treeId.eq(tree.id))
             .where(tree.userId.eq(userId)
                 .and(tree.deletedAt.isNull))
