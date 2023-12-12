@@ -109,12 +109,20 @@ class TreeService(
         }
     }
 
-    fun findPostedTreeList(userId: Long): List<FindPostedTreeListDto.Res> {
-        return treeRepository.findPostedTreeList(userId)
+    fun findPostedTreeList(userId: Long): FindPostedTreeListDto {
+        val res = treeRepository.findPostedTreeList(userId)
+        return FindPostedTreeListDto(
+            totalTrees = res.size,
+            trees = res,
+        )
     }
 
-    fun findSavedTreeList(userId: Long): List<FindSavedTreeListDto.Res> {
-        return treeRepository.findSavedTreeList(userId)
+    fun findSavedTreeList(userId: Long): FindSavedTreeListDto {
+        val res = treeRepository.findSavedTreeList(userId)
+        return FindSavedTreeListDto(
+            totalTrees = res.size,
+            trees = res,
+        )
     }
 
     @Transactional

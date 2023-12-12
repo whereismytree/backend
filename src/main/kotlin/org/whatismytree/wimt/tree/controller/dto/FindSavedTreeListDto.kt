@@ -1,6 +1,9 @@
 package org.whatismytree.wimt.tree.controller.dto
 
-class FindSavedTreeListDto {
+class FindSavedTreeListDto(
+    val totalTrees: Int,
+    val trees: List<Res>,
+) {
     class Res(
         val treeId: Long,
         val name: String,
