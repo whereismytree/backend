@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
+import org.whatismytree.wimt.common.exception.BaseException
+import org.whatismytree.wimt.common.exception.NotFoundException
 
 @RestControllerAdvice
 class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
@@ -21,6 +23,12 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
     ): ResponseEntity<Any> {
         logger.error("MethodArgumentNotValidException occured", ex)
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
+    }
+
+    @ExceptionHandler(NotFoundException::class)
+    fun handleNotFoundException(exception:NotFoundException): ResponseEntity<String> {
+        logger.info("NotFoundException occured", exception)
+        return makeErrorResponseEntity(HttpStatus.NOT_FOUND, exception.message)
     }
 
     @ExceptionHandler(BaseException::class)

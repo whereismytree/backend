@@ -1,8 +1,8 @@
 package org.whatismytree.wimt.tree.exception
 
-import org.whatismytree.wimt.common.BaseException
+import org.whatismytree.wimt.common.exception.NotFoundException
 
 class TreeNotFoundException(
     message: String,
     throwable: Throwable? = null,
-) : BaseException(message, throwable)
+) : NotFoundException(message, throwable)
