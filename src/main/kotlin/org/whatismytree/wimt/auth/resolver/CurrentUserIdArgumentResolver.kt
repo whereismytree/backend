@@ -9,8 +9,12 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.method.support.ModelAndViewContainer
 import org.whatismytree.wimt.auth.exception.LoginRequiredException
 import org.whatismytree.wimt.common.CurrentUserId
+import org.whatismytree.wimt.user.exception.UserNotFoundException
+import org.whatismytree.wimt.user.repository.UserRepository
 
-class CurrentUserIdArgumentResolver : HandlerMethodArgumentResolver {
+class CurrentUserIdArgumentResolver(
+    private val userRepository: UserRepository,
+) : HandlerMethodArgumentResolver {
     override fun supportsParameter(parameter: MethodParameter): Boolean {
         return parameter.parameterType == Long::class.java &&
             parameter.hasParameterAnnotation(CurrentUserId::class.java)
@@ -22,8 +26,22 @@ class CurrentUserIdArgumentResolver : HandlerMethodArgumentResolver {
         webRequest: NativeWebRequest,
         binderFactory: WebDataBinderFactory?,
     ): Any {
+        val userId = getCurrentUserId()
+
+        validateUserExists(userId)
+
+        return userId
+    }
+
+    private fun getCurrentUserId(): Long {
         val oAuth2User = SecurityContextHolder.getContext().authentication?.principal as OAuth2User?
             ?: throw LoginRequiredException("로그인이 필요합니다.")
         return oAuth2User.name.toLong()
+    }
+
+    private fun validateUserExists(userId: Long) {
+        if (!userRepository.existsByIdAndDeletedAtIsNull(userId)) {
+            throw UserNotFoundException("존재하지 않는 유저입니다. userId: $userId")
+        }
     }
 }
