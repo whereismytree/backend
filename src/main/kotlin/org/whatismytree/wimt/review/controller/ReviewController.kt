@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.whatismytree.wimt.common.CurrentUserId
 import org.whatismytree.wimt.review.controller.dto.CreateReviewRequest
 import org.whatismytree.wimt.review.controller.dto.CreateReviewResponse
 import org.whatismytree.wimt.review.controller.dto.GetReviewImagesResponse
@@ -32,11 +33,11 @@ class ReviewController(
     fun createReview(
         @Valid @RequestBody
         request: CreateReviewRequest,
+        @CurrentUserId userId: Long
     ): CreateReviewResponse {
         val reviewId = reviewService.createReview(
             treeId = request.treeId,
-            // TODO: 시큐리티 작업 이후 AuthenticationPrincipal 통해 가져오는 값으로 변경
-            userId = 1L,
+            userId = userId,
             content = request.content,
             tagIds = request.tagIds,
             imageUrl = request.imageUrl,
@@ -69,8 +70,8 @@ class ReviewController(
     @GetMapping("/{reviewId}")
     fun getReview(
         @Min(1) @PathVariable reviewId: Long,
-        // TODO: 시큐리티 작업 이후 AuthenticationPrincipal 통해 가져오는 값으로 변경
-    ) = reviewService.getDetailById(reviewId, 1L)
+        @CurrentUserId userId: Long
+    ) = reviewService.getDetailById(reviewId, userId)
 
     @Operation(summary = "후기를 수정한다")
     @PutMapping("/{reviewId}")
@@ -78,10 +79,10 @@ class ReviewController(
         @Min(1) @PathVariable reviewId: Long,
         @Valid @RequestBody
         request: UpdateReviewRequest,
+        @CurrentUserId userId: Long
     ) {
         reviewService.updateReview(
-            // TODO: 시큐리티 작업 이후 AuthenticationPrincipal 통해 가져오는 값으로 변경
-            userId = 1L,
+            userId = userId,
             reviewId = reviewId,
             content = request.content,
             tagIds = request.tagIds,
@@ -93,11 +94,11 @@ class ReviewController(
     @DeleteMapping("/{reviewId}")
     fun deleteReview(
         @Min(1) @PathVariable reviewId: Long,
+        @CurrentUserId userId: Long
     ) {
         reviewService.deleteReview(
             reviewId = reviewId,
-            // TODO: 시큐리티 작업 이후 AuthenticationPrincipal 통해 가져오는 값으로 변경
-            userId = 1L,
+            userId = userId,
         )
     }
 }
