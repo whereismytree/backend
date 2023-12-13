@@ -1,4 +1,4 @@
-package org.whatismytree.wimt.common.annotation
+package org.whatismytree.wimt.common.constraint
 
 import jakarta.validation.Constraint
 import jakarta.validation.Payload
