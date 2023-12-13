@@ -13,18 +13,16 @@ import org.whatismytree.wimt.review.repository.ReviewQueryRepository
 @RequestMapping("/v1/my/review")
 @Tag(name = "내 후기 API", description = "내 후기 API")
 class MyReviewController(
-    private val reviewQueryRepository: ReviewQueryRepository
+    private val reviewQueryRepository: ReviewQueryRepository,
 ) {
 
     @GetMapping
     @Operation(summary = "내 후기 목록을 조회한다")
     fun getMyReviews(
-//        @CurrentUserId userId: Long
+        @CurrentUserId userId: Long,
     ): MyReviewResponse {
-        val result = reviewQueryRepository.findAllByUserId(1L)
-
+        val result = reviewQueryRepository.findAllByUserId(userId)
 
         return MyReviewResponse.of(result)
     }
-
 }
