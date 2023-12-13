@@ -3,7 +3,10 @@ package org.whatismytree.wimt.tree.service
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.whatismytree.wimt.auth.handler.JwtTokenProvider
 import org.whatismytree.wimt.tree.controller.dto.CreateTreeDto
+import org.whatismytree.wimt.tree.controller.dto.FindPostedTreeListDto
+import org.whatismytree.wimt.tree.controller.dto.FindSavedTreeListDto
 import org.whatismytree.wimt.tree.controller.dto.FindTreeDto
 import org.whatismytree.wimt.tree.controller.dto.FindTreeListDto
 import org.whatismytree.wimt.tree.controller.dto.FindTreeMapDto
@@ -104,6 +107,22 @@ class TreeService(
                 lng = it.lng,
             )
         }
+    }
+
+    fun findPostedTreeList(userId: Long): FindPostedTreeListDto {
+        val res = treeRepository.findPostedTreeList(userId)
+        return FindPostedTreeListDto(
+            totalTrees = res.size,
+            trees = res,
+        )
+    }
+
+    fun findSavedTreeList(userId: Long): FindSavedTreeListDto {
+        val res = treeRepository.findSavedTreeList(userId)
+        return FindSavedTreeListDto(
+            totalTrees = res.size,
+            trees = res,
+        )
     }
 
     @Transactional
