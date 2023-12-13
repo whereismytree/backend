@@ -12,6 +12,8 @@ import org.whatismytree.wimt.review.repository.ReviewRepository
 import org.whatismytree.wimt.review.repository.dto.ReviewDetailResult
 import org.whatismytree.wimt.review.repository.dto.ReviewImageResult
 import org.whatismytree.wimt.tag.repository.TagRepository
+import org.whatismytree.wimt.tree.exception.TreeNotFoundException
+import org.whatismytree.wimt.tree.repository.TreeRepository
 import java.time.LocalDateTime
 
 @Service
@@ -20,6 +22,7 @@ class ReviewService(
     private val reviewRepository: ReviewRepository,
     private val reviewQueryRepository: ReviewQueryRepository,
     private val tagRepository: TagRepository,
+    private val treeRepository: TreeRepository,
 ) {
 
     fun findAllDetail(treeId: Long): List<ReviewDetailResult> {
@@ -42,7 +45,8 @@ class ReviewService(
 
     @Transactional
     fun createReview(treeId: Long, userId: Long, content: String, tagIds: List<Long>, imageUrl: String?): Long {
-        // TODO: 트리 존재 여부 체크
+        treeRepository.findByIdAndDeletedAtIsNull(treeId)
+            ?: throw TreeNotFoundException("해당하는 트리가 존재하지 않습니다 treeId=$treeId")
 
         val tags = tagRepository.findAllByDeletedAtIsNullAndIdIn(tagIds)
         if (tags.size != tagIds.size) {

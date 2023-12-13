@@ -17,6 +17,8 @@ import org.whatismytree.wimt.review.exception.TagNotFoundException
 import org.whatismytree.wimt.support.createLocalDateTime
 import org.whatismytree.wimt.support.makeSample
 import org.whatismytree.wimt.tag.domain.Tag
+import org.whatismytree.wimt.tree.entity.Tree
+import org.whatismytree.wimt.tree.exception.TreeNotFoundException
 
 @ServiceIntTest(ReviewService::class)
 internal class ReviewServiceTest(
@@ -35,9 +37,11 @@ internal class ReviewServiceTest(
                 setNull(Tag::deletedAt)
             }
 
-            // TODO: 트리 추가 필요
+            val tree: Tree = entityManager.makeSample {
+                setNull(Tree::deletedAt)
+            }
 
-            val treeId = 1L
+            val treeId = tree.id
             val userId = 1L
             val content = "content"
             val tagIds = listOf(tag.id)
@@ -50,16 +54,34 @@ internal class ReviewServiceTest(
             assertThat(reviewId).isNotNull()
         }
 
-        // TODO: 트리가 존재하지 않으면 TreeNotFoundException을 발생시킨다
+        @Test
+        @DisplayName("트리가 존재하지 않으면 TreeNotFoundException을 발생시킨다")
+        fun treeNotFound() {
+            // given
+            val treeId = 1L
+            val userId = 1L
+            val content = "content"
+            val tagIds = listOf(1L, 2L)
+            val imageUrl = "imageUrl"
+
+            // when
+            val result = catchThrowable {
+                reviewService.createReview(treeId, userId, content, tagIds, imageUrl)
+            }
+
+            // then
+            assertThat(result).isInstanceOf(TreeNotFoundException::class.java)
+        }
 
         @Test
         @DisplayName("태그가 존재하지 않으면 TagNotFoundException을 발생시킨다")
         fun notExistTag() {
             // given
+            val tree: Tree = entityManager.makeSample {
+                setNull(Tree::deletedAt)
+            }
 
-            // TODO: 트리 추가 필요
-
-            val treeId = 1L
+            val treeId = tree.id
             val userId = 1L
             val content = "content"
             val tagIds = listOf(1L, 2L)
