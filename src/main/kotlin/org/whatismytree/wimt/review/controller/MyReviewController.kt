@@ -10,7 +10,7 @@ import org.whatismytree.wimt.review.controller.dto.MyReviewResponse
 import org.whatismytree.wimt.review.repository.ReviewQueryRepository
 
 @RestController
-@RequestMapping("/v1/my/review")
+@RequestMapping("/v1/my/reviews")
 @Tag(name = "내 후기 API", description = "내 후기 API")
 class MyReviewController(
     private val reviewQueryRepository: ReviewQueryRepository,
