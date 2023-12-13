@@ -50,7 +50,10 @@ class SecurityConfig(
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
-        configuration.allowedOrigins = listOf("http://localhost:3000", "https://localhost:3000") // TODO: 환경 별로 설정
+        configuration.allowedOrigins = listOf(
+            "http://localhost:3000",
+            "https://localhost:3000",
+        ) // TODO: 환경 별로 설정
         configuration.allowedMethods = listOf("*")
         configuration.allowedHeaders = listOf("*")
         configuration.allowCredentials = true
