@@ -25,7 +25,7 @@ class TreeRepositoryImpl(
         name: String?,
         address: String?,
     ): List<FindTreeListDto.Res> {
-        val query = jpaQueryFactory
+        return jpaQueryFactory
             .select(
                 Projections.constructor(
                     FindTreeListDto.Res::class.java,
@@ -39,29 +39,15 @@ class TreeRepositoryImpl(
                 ),
             )
             .from(tree)
-
-
-        var predicate: BooleanExpression? = null
-
-        if (name != null) {
-            predicate = tree.name.like("%$name%")
-        }
-
-        if (address != null) {
-            val addressCondition = tree.streetAddress.like("%$address%")
-                .or(tree.roadAddress.like("%$address%"))
-            predicate = if (predicate != null) {
-                predicate.or(addressCondition)
-            } else {
-                addressCondition
-            }
-        }
-
-        if (predicate != null) {
-            query.where(predicate)
-        }
-
-        return query.fetch()
+            .where(ExpressionUtils.anyOf(
+                name?.let { tree.name.eq(name) },
+                address?.let {
+                    tree.streetAddress.eq(address)
+                    .or(tree.roadAddress.eq(address))
+                    },
+                )
+            )
+            .fetch()
     }
 
     override fun findPostedTreeList(
