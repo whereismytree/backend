@@ -7,6 +7,7 @@ import io.swagger.v3.oas.models.security.SecurityRequirement
 import io.swagger.v3.oas.models.security.SecurityScheme
 import io.swagger.v3.oas.models.servers.Server
 import org.springdoc.core.customizers.OperationCustomizer
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.MethodParameter
@@ -14,7 +15,9 @@ import org.springframework.http.HttpHeaders
 import org.whatismytree.wimt.common.CurrentUserId
 
 @Configuration
-class SwaggerConfig {
+class SwaggerConfig(
+    @Value("\${springdoc.server-url}") private val serverUrl: String,
+) {
 
     @Bean
     fun openAPI(): OpenAPI = OpenAPI()
@@ -22,7 +25,7 @@ class SwaggerConfig {
             Components().addSecuritySchemes(SECURITY_SCHEME_KEY, jwtSecurityScheme()),
         )
         .info(apiInfo())
-        .servers(listOf(Server().url("https://devjyp.shop"), Server().url("http://localhost:8080")))
+        .servers(listOf(Server().url(serverUrl)))
 
     private fun jwtSecurityScheme(): SecurityScheme = SecurityScheme()
         .name(HttpHeaders.AUTHORIZATION)
