@@ -44,7 +44,7 @@ class ReviewService(
     }
 
     @Transactional
-    fun createReview(treeId: Long, userId: Long, content: String, tagIds: List<Long>, imageUrl: String?): Long {
+    fun createReview(treeId: Long, userId: Long, content: String, tagIds: List<Long>, imageUrl: String): Long {
         treeRepository.findByIdAndDeletedAtIsNull(treeId)
             ?: throw TreeNotFoundException("해당하는 트리가 존재하지 않습니다 treeId=$treeId")
 

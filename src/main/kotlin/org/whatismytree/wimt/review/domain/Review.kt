@@ -19,7 +19,7 @@ class Review private constructor(
     treeId: Long,
     userId: Long,
     content: String,
-    imageUrl: String?,
+    imageUrl: String,
 ) : BaseTimeEntity() {
 
     @Column(name = "tree_id", nullable = false)
@@ -66,7 +66,7 @@ class Review private constructor(
             userId: Long,
             content: String,
             tagIds: List<Long>,
-            imageUrl: String? = null,
+            imageUrl: String,
         ): Review {
             val review = Review(
                 treeId = treeId,
