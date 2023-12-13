@@ -17,7 +17,7 @@ class FavoriteController(
     private val favoriteService: FavoriteService,
 ) {
 
-    @PutMapping("/tree")
+    @PostMapping("/trees")
     fun updateFavoriteTree(
         @RequestBody request: FavoriteTreeRequest,
         @CurrentUserId userId: Long
