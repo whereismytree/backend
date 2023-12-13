@@ -4,7 +4,7 @@ import org.whatismytree.wimt.review.repository.dto.MyReviewResult
 import java.time.LocalDateTime
 
 data class MyReviewResponse(
-    val reviews: List<MyReviews>
+    val reviews: List<MyReviews>,
 ) {
 
     val totalReviews: Int
@@ -16,9 +16,8 @@ data class MyReviewResponse(
         val createdAt: LocalDateTime,
         val reviewImageUrl: String,
         val content: String,
-        val tags: List<String>
+        val tags: List<String>,
     )
-
 
     companion object {
         fun of(reviews: List<MyReviewResult>): MyReviewResponse {
@@ -30,9 +29,9 @@ data class MyReviewResponse(
                         createdAt = it.createdAt,
                         content = it.content,
                         reviewImageUrl = it.reviewImageUrl,
-                        tags = it.tags
+                        tags = it.tags,
                     )
-                }
+                },
             )
         }
     }

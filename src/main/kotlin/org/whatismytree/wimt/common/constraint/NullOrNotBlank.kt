@@ -10,5 +10,5 @@ import kotlin.reflect.KClass
 annotation class NullOrNotBlank(
     val message: String = "must null or not blank",
     val groups: Array<KClass<*>> = [],
-    val payload: Array<KClass<out Payload>> = []
+    val payload: Array<KClass<out Payload>> = [],
 )

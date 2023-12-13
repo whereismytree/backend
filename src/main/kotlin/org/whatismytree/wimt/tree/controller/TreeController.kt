@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import org.whatismytree.wimt.common.CurrentUserId
 import org.whatismytree.wimt.tree.controller.dto.CreateTreeDto
-import org.whatismytree.wimt.tree.controller.dto.FindPostedTreeListDto
-import org.whatismytree.wimt.tree.controller.dto.FindSavedTreeListDto
 import org.whatismytree.wimt.tree.controller.dto.FindTreeDto
 import org.whatismytree.wimt.tree.controller.dto.FindTreeListDto
 import org.whatismytree.wimt.tree.controller.dto.FindTreeMapDto

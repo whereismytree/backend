@@ -2,7 +2,6 @@ package org.whatismytree.wimt.favorite.controller
 
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -20,7 +19,7 @@ class FavoriteController(
     @PostMapping("/trees")
     fun updateFavoriteTree(
         @RequestBody request: FavoriteTreeRequest,
-        @CurrentUserId userId: Long
+        @CurrentUserId userId: Long,
     ) {
         favoriteService.updateFavoriteTree(userId, request.treeId, request.isFavorite)
     }

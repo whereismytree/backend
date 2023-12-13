@@ -10,7 +10,6 @@ import org.whatismytree.wimt.review.repository.dto.MyReviewResult
 import org.whatismytree.wimt.review.repository.dto.ReviewDetailResult
 import org.whatismytree.wimt.review.repository.dto.ReviewImageResult
 import org.whatismytree.wimt.tag.domain.QTag.tag
-import org.whatismytree.wimt.tree.entity.QTree
 import org.whatismytree.wimt.tree.entity.QTree.tree
 import org.whatismytree.wimt.user.domain.QUser.user
 
@@ -106,7 +105,7 @@ class ReviewQueryRepositoryImpl(
             .innerJoin(tree).on(review.treeId.eq(tree.id), tree.deletedAt.isNull)
             .where(
                 review.userId.eq(userId),
-                review.deletedAt.isNull
+                review.deletedAt.isNull,
             )
             .groupBy(review.id)
             .fetch()

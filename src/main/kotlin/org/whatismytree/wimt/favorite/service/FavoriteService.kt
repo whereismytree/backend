@@ -10,7 +10,7 @@ import org.whatismytree.wimt.tree.repository.TreeRepository
 @Transactional(readOnly = true)
 class FavoriteService(
     private val treeRepository: TreeRepository,
-    private val favoriteRepository: FavoriteRepository
+    private val favoriteRepository: FavoriteRepository,
 ) {
     @Transactional
     fun updateFavoriteTree(userId: Long, treeId: Long, isFavorite: Boolean) {
@@ -19,12 +19,12 @@ class FavoriteService(
 
         val favorite = favoriteRepository.findByUserIdAndTreeId(userId, treeId)
 
-        if(isFavorite && favorite == null) {
+        if (isFavorite && favorite == null) {
             favoriteRepository.save(Favorite.of(userId, treeId))
             return
         }
 
-        if(!isFavorite && favorite != null) {
+        if (!isFavorite && favorite != null) {
             favoriteRepository.delete(favorite)
             return
         }

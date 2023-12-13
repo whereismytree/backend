@@ -33,7 +33,7 @@ class ReviewController(
     fun createReview(
         @Valid @RequestBody
         request: CreateReviewRequest,
-        @CurrentUserId userId: Long
+        @CurrentUserId userId: Long,
     ): CreateReviewResponse {
         val reviewId = reviewService.createReview(
             treeId = request.treeId,
@@ -70,7 +70,7 @@ class ReviewController(
     @GetMapping("/{reviewId}")
     fun getReview(
         @Min(1) @PathVariable reviewId: Long,
-        @CurrentUserId userId: Long
+        @CurrentUserId userId: Long,
     ) = reviewService.getDetailById(reviewId, userId)
 
     @Operation(summary = "후기를 수정한다")
@@ -79,7 +79,7 @@ class ReviewController(
         @Min(1) @PathVariable reviewId: Long,
         @Valid @RequestBody
         request: UpdateReviewRequest,
-        @CurrentUserId userId: Long
+        @CurrentUserId userId: Long,
     ) {
         reviewService.updateReview(
             userId = userId,
@@ -94,7 +94,7 @@ class ReviewController(
     @DeleteMapping("/{reviewId}")
     fun deleteReview(
         @Min(1) @PathVariable reviewId: Long,
-        @CurrentUserId userId: Long
+        @CurrentUserId userId: Long,
     ) {
         reviewService.deleteReview(
             reviewId = reviewId,

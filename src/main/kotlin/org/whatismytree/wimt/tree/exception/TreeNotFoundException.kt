@@ -4,5 +4,5 @@ import org.whatismytree.wimt.common.BaseException
 
 class TreeNotFoundException(
     message: String,
-    throwable: Throwable? = null
-): BaseException(message, throwable)
+    throwable: Throwable? = null,
+) : BaseException(message, throwable)

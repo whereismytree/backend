@@ -1,8 +1,8 @@
 package org.whatismytree.wimt.tree.controller.dto
 
-class FindPostedTreeListDto (
+class FindPostedTreeListDto(
     val totalTrees: Int,
-    val trees: List<Res>
+    val trees: List<Res>,
 ) {
     class Res(
         val treeId: Long,
