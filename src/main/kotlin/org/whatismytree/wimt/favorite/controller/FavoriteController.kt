@@ -19,7 +19,8 @@ class FavoriteController(
 
     @PostMapping("/trees")
     fun updateFavoriteTree(
-        @Valid @RequestBody request: FavoriteTreeRequest,
+        @Valid @RequestBody
+        request: FavoriteTreeRequest,
         @CurrentUserId userId: Long,
     ) {
         favoriteService.updateFavoriteTree(userId, request.treeId, request.isFavorite)

@@ -26,7 +26,7 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
     }
 
     @ExceptionHandler(NotFoundException::class)
-    fun handleNotFoundException(exception:NotFoundException): ResponseEntity<String> {
+    fun handleNotFoundException(exception: NotFoundException): ResponseEntity<String> {
         logger.info("NotFoundException occured", exception)
         return makeErrorResponseEntity(HttpStatus.NOT_FOUND, exception.message)
     }
