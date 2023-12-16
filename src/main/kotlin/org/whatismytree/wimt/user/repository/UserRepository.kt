@@ -5,4 +5,5 @@ import org.whatismytree.wimt.user.domain.User
 
 interface UserRepository : JpaRepository<User, Long>, CustomUserRepository {
     fun existsByNickname(nickname: String): Boolean
+    fun existsByIdAndDeletedAtIsNull(userId: Long): Boolean
 }
