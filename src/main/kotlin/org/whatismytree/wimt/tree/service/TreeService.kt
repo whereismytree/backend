@@ -3,7 +3,6 @@ package org.whatismytree.wimt.tree.service
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import org.whatismytree.wimt.auth.handler.JwtTokenProvider
 import org.whatismytree.wimt.tree.controller.dto.CreateTreeDto
 import org.whatismytree.wimt.tree.controller.dto.FindPostedTreeListDto
 import org.whatismytree.wimt.tree.controller.dto.FindSavedTreeListDto

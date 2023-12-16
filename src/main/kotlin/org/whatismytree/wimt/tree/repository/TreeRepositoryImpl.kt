@@ -2,12 +2,7 @@ package org.whatismytree.wimt.tree.repository
 
 import com.querydsl.core.types.ExpressionUtils
 import com.querydsl.core.types.Projections
-import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.core.types.dsl.CaseBuilder
-import com.querydsl.core.types.dsl.Expressions
-import com.querydsl.core.types.dsl.NumberExpression
-import com.querydsl.core.types.dsl.NumberPath
-import com.querydsl.jpa.JPAExpressions
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
 import org.whatismytree.wimt.favorite.domain.QFavorite.favorite
@@ -20,7 +15,7 @@ import org.whatismytree.wimt.tree.entity.QTree.tree
 @Repository
 class TreeRepositoryImpl(
     private val jpaQueryFactory: JPAQueryFactory,
-): TreeRepositoryCustom {
+) : TreeRepositoryCustom {
     override fun findTreeList(
         name: String?,
         address: String?,
@@ -39,13 +34,14 @@ class TreeRepositoryImpl(
                 ),
             )
             .from(tree)
-            .where(ExpressionUtils.anyOf(
-                name?.let { tree.name.eq(name) },
-                address?.let {
-                    tree.streetAddress.eq(address)
-                    .or(tree.roadAddress.eq(address))
+            .where(
+                ExpressionUtils.anyOf(
+                    name?.let { tree.name.eq(name) },
+                    address?.let {
+                        tree.streetAddress.eq(address)
+                            .or(tree.roadAddress.eq(address))
                     },
-                )
+                ),
             )
             .fetch()
     }
@@ -67,10 +63,14 @@ class TreeRepositoryImpl(
                 ),
             )
             .from(tree)
-            .leftJoin(review).on(review.treeId.eq(tree.id)
-                .and(review.deletedAt.isNull))
-            .where(tree.userId.eq(userId)
-                .and(tree.deletedAt.isNull))
+            .leftJoin(review).on(
+                review.treeId.eq(tree.id)
+                    .and(review.deletedAt.isNull),
+            )
+            .where(
+                tree.userId.eq(userId)
+                    .and(tree.deletedAt.isNull),
+            )
             .fetch()
     }
 
@@ -92,11 +92,15 @@ class TreeRepositoryImpl(
                 ),
             )
             .from(tree)
-            .leftJoin(review).on(review.treeId.eq(tree.id)
-                .and(review.deletedAt.isNull))
+            .leftJoin(review).on(
+                review.treeId.eq(tree.id)
+                    .and(review.deletedAt.isNull),
+            )
             .join(favorite).on(favorite.treeId.eq(tree.id))
-            .where(tree.userId.eq(userId)
-                .and(tree.deletedAt.isNull))
+            .where(
+                tree.userId.eq(userId)
+                    .and(tree.deletedAt.isNull),
+            )
             .fetch()
     }
 }

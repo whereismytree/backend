@@ -1,4 +1,4 @@
-package org.whatismytree.wimt.common
+package org.whatismytree.wimt.common.exception
 
 abstract class BaseException(
     message: String?,

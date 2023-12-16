@@ -1,8 +1,6 @@
-package org.whatismytree.wimt.user.exception
+package org.whatismytree.wimt.common.exception
 
-import org.whatismytree.wimt.common.exception.BaseException
-
-class UserNotFoundException(
+open class NotFoundException(
     message: String?,
     throwable: Throwable?,
 ) : BaseException(message, throwable) {

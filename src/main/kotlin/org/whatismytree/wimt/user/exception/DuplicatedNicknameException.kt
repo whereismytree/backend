@@ -1,6 +1,6 @@
 package org.whatismytree.wimt.user.exception
 
-import org.whatismytree.wimt.common.BaseException
+import org.whatismytree.wimt.common.exception.BaseException
 
 class DuplicatedNicknameException(
     message: String?,
