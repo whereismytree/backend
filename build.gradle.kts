@@ -64,6 +64,9 @@ dependencies {
 
     implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
 
+    implementation("io.awspring.cloud:spring-cloud-aws-starter:3.1.0")
+    implementation("io.awspring.cloud:spring-cloud-aws-parameter-store:3.1.0")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter-kotlin:1.0.2")
     testImplementation("com.ninja-squad:springmockk:4.0.2")
