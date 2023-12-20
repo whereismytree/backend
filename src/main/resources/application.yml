@@ -37,6 +37,7 @@ spring:
   config:
     activate:
       on-profile: dev
+    import: aws-parameterstore:/config/wimt/
   datasource:
     url: jdbc:mysql://localhost:3306/wimt?useUnicode=true&serverTimezone=Asia/Seoul
     username: user
