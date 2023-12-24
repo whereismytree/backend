@@ -83,7 +83,7 @@ internal class UserControllerTest : ControllerTest() {
         }
 
         @Test
-        @DisplayName("존재하지 않는 유저 ID일 경우 400 Bad Request를 반환한다")
+        @DisplayName("존재하지 않는 유저 ID일 경우 404 Not Found를 반환한다")
         @WithMockOAuth2User(userId = 1L)
         fun userNotFoundException() {
             // given
@@ -99,7 +99,7 @@ internal class UserControllerTest : ControllerTest() {
             mockMvc.post(url) {
                 jsonContent(createProfileRequest())
             }.andExpect {
-                status { isBadRequest() }
+                status { isNotFound() }
             }
         }
 
@@ -266,7 +266,7 @@ internal class UserControllerTest : ControllerTest() {
         }
 
         @Test
-        @DisplayName("존재하지 않는 유저일 경우 400 Bad Request를 반환한다")
+        @DisplayName("존재하지 않는 유저일 경우 404 Not Found를 반환한다")
         @WithMockOAuth2User(userId = 1L)
         fun userNotFound() {
             // given
@@ -274,7 +274,7 @@ internal class UserControllerTest : ControllerTest() {
 
             // when then
             mockMvc.delete(url).andExpect {
-                status { isBadRequest() }
+                status { isNotFound() }
             }
         }
 

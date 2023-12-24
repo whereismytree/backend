@@ -26,4 +26,4 @@ spring:
             user-name-attribute: id
 
 jwt:
-  secret: af7m12389fashjvo412nklgoira441klnfudfa741nkafdl149gn41algnhh31vdk41labfb123jgfkq1351fakasfh41 # 추후 변경
+  secret: ${JWT_SECRET:af7m12389fashjvo412nklgoira441klnfudfa741nkafdl149gn41algnhh31vdk41labfb123jgfkq1351fakasfh41}
