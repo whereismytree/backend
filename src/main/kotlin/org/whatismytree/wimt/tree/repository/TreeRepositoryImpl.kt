@@ -71,6 +71,7 @@ class TreeRepositoryImpl(
                 tree.userId.eq(userId)
                     .and(tree.deletedAt.isNull),
             )
+            .groupBy(tree.id)
             .fetch()
     }
 
