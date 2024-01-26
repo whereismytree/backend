@@ -19,7 +19,7 @@ import org.whatismytree.wimt.user.domain.User
 
 @RepositoryTest
 internal class TreeRepositoryImplTest(
-    private val em: EntityManager
+    private val em: EntityManager,
 ) {
 
     private val treeRepositoryImpl = TreeRepositoryImpl(JPAQueryFactory(em))
@@ -110,7 +110,6 @@ internal class TreeRepositoryImplTest(
         }
     }
 
-
     @Nested
     @DisplayName("유저가 즐겨찾기한 트리 목록 조회")
     inner class FindSavedTreeList {
@@ -158,7 +157,6 @@ internal class TreeRepositoryImplTest(
                 set(Favorite::userId, user.id)
                 set(Favorite::treeId, tree2.id)
             }
-
 
             // when
             val result = treeRepositoryImpl.findSavedTreeList(user.id)
