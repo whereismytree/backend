@@ -100,8 +100,8 @@ class ReviewQueryRepositoryImpl(
                 ),
             )
             .from(review)
-            .join(review.tags.value, reviewTag)
-            .innerJoin(tag).on(reviewTag.tagId.eq(tag.id))
+            .leftJoin(reviewTag).on(review.id.eq(reviewTag.review.id))
+            .leftJoin(tag).on(reviewTag.tagId.eq(tag.id))
             .innerJoin(tree).on(review.treeId.eq(tree.id), tree.deletedAt.isNull)
             .where(
                 review.userId.eq(userId),
