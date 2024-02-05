@@ -8,9 +8,9 @@ data class MyReviewResult(
     val createdAt: LocalDateTime,
     val reviewImageUrl: String,
     val content: String,
-    private val stringTags: String,
+    private val stringTags: String?,
 ) {
 
     val tags: List<String>
-        get() = stringTags.split(",")
+        get() = stringTags?.split(",") ?: listOf()
 }
