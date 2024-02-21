@@ -25,6 +25,18 @@ class TreeService(
         val user = userRepository.findByIdOrNull(1L)
             ?: throw Exception("유저가 존재하지 않습니다.")
 
+        when (req.addressType) {
+            "STREET" -> {
+                requireNotNull(req.streetAddress)
+                require(req.streetAddress.isNotBlank())
+            }
+            "ROAD" -> {
+                requireNotNull(req.roadAddress)
+                require(req.roadAddress.isNotBlank())
+            }
+            else -> throw IllegalArgumentException("addressType이 잘못된 값입니다.")
+        }
+
         val tree = Tree(
             userId = user.id,
             name = req.name,

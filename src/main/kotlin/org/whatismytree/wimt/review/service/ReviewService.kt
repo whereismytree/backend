@@ -9,8 +9,8 @@ import org.whatismytree.wimt.review.exception.ReviewNotFoundException
 import org.whatismytree.wimt.review.exception.TagNotFoundException
 import org.whatismytree.wimt.review.repository.ReviewQueryRepository
 import org.whatismytree.wimt.review.repository.ReviewRepository
-import org.whatismytree.wimt.review.repository.dto.ReviewDetailResult
 import org.whatismytree.wimt.review.repository.dto.ReviewImageResult
+import org.whatismytree.wimt.review.service.dto.GetReviewsServiceResponse
 import org.whatismytree.wimt.tag.repository.TagRepository
 import org.whatismytree.wimt.tree.exception.TreeNotFoundException
 import org.whatismytree.wimt.tree.repository.TreeRepository
@@ -25,8 +25,11 @@ class ReviewService(
     private val treeRepository: TreeRepository,
 ) {
 
-    fun findAllDetail(treeId: Long): List<ReviewDetailResult> {
-        return reviewQueryRepository.findAllByTreeId(treeId)
+    fun findAllDetail(treeId: Long): GetReviewsServiceResponse {
+        val tree = treeRepository.findByIdAndDeletedAtIsNull(treeId)
+            ?: throw TreeNotFoundException("해당하는 트리가 존재하지 않습니다 treeId=$treeId")
+
+        return GetReviewsServiceResponse(reviews = reviewQueryRepository.findAllByTreeId(treeId), tree = tree)
     }
 
     fun findAllImage(treeId: Long): List<ReviewImageResult> {

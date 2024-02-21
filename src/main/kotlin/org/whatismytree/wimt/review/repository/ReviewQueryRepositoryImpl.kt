@@ -1,6 +1,7 @@
 package org.whatismytree.wimt.review.repository
 
 import com.querydsl.core.types.Projections
+import com.querydsl.core.types.dsl.CaseBuilder
 import com.querydsl.core.types.dsl.Expressions
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
@@ -92,7 +93,10 @@ class ReviewQueryRepositoryImpl(
                 Projections.constructor(
                     MyReviewResult::class.java,
                     review.id,
+                    tree.id,
                     tree.name,
+                    CaseBuilder().`when`(tree.addressType.eq("STREET"))
+                        .then(tree.streetAddress).otherwise(tree.roadAddress).`as`("address"),
                     review.createdAt,
                     review.imageUrl,
                     review.content,

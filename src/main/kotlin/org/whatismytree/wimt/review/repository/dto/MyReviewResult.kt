@@ -4,7 +4,9 @@ import java.time.LocalDateTime
 
 data class MyReviewResult(
     val reviewId: Long,
+    val treeId: Long,
     val treeName: String,
+    val address: String,
     val createdAt: LocalDateTime,
     val reviewImageUrl: String,
     val content: String,

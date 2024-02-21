@@ -51,9 +51,9 @@ class ReviewController(
     fun getReviews(
         @RequestParam(required = true) treeId: Long,
     ): GetReviewsResponse {
-        val reviews = reviewService.findAllDetail(treeId)
+        val serviceResponse = reviewService.findAllDetail(treeId)
 
-        return GetReviewsResponse.of(reviews)
+        return GetReviewsResponse.of(serviceResponse)
     }
 
     @Operation(summary = "후기 이미지 목록을 조회한다")
