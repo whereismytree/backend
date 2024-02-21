@@ -92,7 +92,10 @@ class ReviewQueryRepositoryImpl(
                 Projections.constructor(
                     MyReviewResult::class.java,
                     review.id,
+                    tree.id,
                     tree.name,
+                    tree.lat,
+                    tree.lng,
                     review.createdAt,
                     review.imageUrl,
                     review.content,

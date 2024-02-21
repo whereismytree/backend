@@ -4,7 +4,10 @@ import java.time.LocalDateTime
 
 data class MyReviewResult(
     val reviewId: Long,
+    val treeId: Long,
     val treeName: String,
+    val lat: Float,
+    val lng: Float,
     val createdAt: LocalDateTime,
     val reviewImageUrl: String,
     val content: String,

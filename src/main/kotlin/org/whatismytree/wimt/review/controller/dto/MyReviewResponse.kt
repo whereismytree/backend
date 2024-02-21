@@ -12,11 +12,18 @@ data class MyReviewResponse(
 
     data class MyReviews(
         val reviewId: Long,
-        val treeName: String,
+        val tree: TreeSummary,
         val createdAt: LocalDateTime,
         val reviewImageUrl: String,
         val content: String,
         val tags: List<String>,
+    )
+
+    data class TreeSummary(
+        val treeId: Long,
+        val treeName: String,
+        val lat: Float,
+        val lng: Float,
     )
 
     companion object {
@@ -25,7 +32,12 @@ data class MyReviewResponse(
                 reviews = reviews.map {
                     MyReviews(
                         reviewId = it.reviewId,
-                        treeName = it.treeName,
+                        tree = TreeSummary(
+                            treeId = it.treeId,
+                            treeName = it.treeName,
+                            lat = it.lat,
+                            lng = it.lng,
+                        ),
                         createdAt = it.createdAt,
                         content = it.content,
                         reviewImageUrl = it.reviewImageUrl,
