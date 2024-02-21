@@ -1,6 +1,7 @@
 package org.whatismytree.wimt.review.controller.dto
 
 import org.whatismytree.wimt.review.repository.dto.MyReviewResult
+import org.whatismytree.wimt.tree.controller.dto.TreeSummary
 import java.time.LocalDateTime
 
 data class MyReviewResponse(
@@ -17,12 +18,6 @@ data class MyReviewResponse(
         val reviewImageUrl: String,
         val content: String,
         val tags: List<String>,
-    )
-
-    data class TreeSummary(
-        val treeId: Long,
-        val treeName: String,
-        val address: String,
     )
 
     companion object {

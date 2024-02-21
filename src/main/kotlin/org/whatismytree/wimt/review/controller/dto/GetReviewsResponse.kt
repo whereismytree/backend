@@ -1,11 +1,13 @@
 package org.whatismytree.wimt.review.controller.dto
 
-import org.whatismytree.wimt.review.repository.dto.ReviewDetailResult
+import org.whatismytree.wimt.review.service.dto.GetReviewsServiceResponse
+import org.whatismytree.wimt.tree.controller.dto.TreeSummary
 import java.time.LocalDateTime
 
 data class GetReviewsResponse(
     val reviews: List<Review>,
     val totalReviews: Long,
+    val tree: TreeSummary
 ) {
 
     data class Review(
@@ -19,9 +21,9 @@ data class GetReviewsResponse(
     )
 
     companion object {
-        fun of(reviewResult: List<ReviewDetailResult>): GetReviewsResponse {
+        fun of(serviceResponse: GetReviewsServiceResponse): GetReviewsResponse {
             return GetReviewsResponse(
-                reviews = reviewResult.map {
+                reviews = serviceResponse.reviews.map {
                     Review(
                         reviewId = it.id,
                         nickname = it.authorNickname,
@@ -32,7 +34,8 @@ data class GetReviewsResponse(
                         tags = it.tags,
                     )
                 },
-                totalReviews = reviewResult.size.toLong(),
+                totalReviews = serviceResponse.reviews.size.toLong(),
+                tree = TreeSummary.of(serviceResponse.tree)
             )
         }
     }
