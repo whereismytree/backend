@@ -22,8 +22,7 @@ data class MyReviewResponse(
     data class TreeSummary(
         val treeId: Long,
         val treeName: String,
-        val lat: Float,
-        val lng: Float,
+        val address: String,
     )
 
     companion object {
@@ -35,8 +34,7 @@ data class MyReviewResponse(
                         tree = TreeSummary(
                             treeId = it.treeId,
                             treeName = it.treeName,
-                            lat = it.lat,
-                            lng = it.lng,
+                            address = it.address,
                         ),
                         createdAt = it.createdAt,
                         content = it.content,
