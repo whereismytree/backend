@@ -16,7 +16,7 @@ data class TreeSummary(
                     "ROAD" -> tree.roadAddress!!
                     "STREET" -> tree.streetAddress!!
                     else -> ""
-                }
+                },
             )
         }
     }

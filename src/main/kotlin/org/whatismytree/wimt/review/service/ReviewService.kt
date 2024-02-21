@@ -26,12 +26,11 @@ class ReviewService(
 ) {
 
     fun findAllDetail(treeId: Long): GetReviewsServiceResponse {
-        val tree = (treeRepository.findByIdAndDeletedAtIsNull(treeId)
-            ?: throw TreeNotFoundException("해당하는 트리가 존재하지 않습니다 treeId=$treeId"))
+        val tree = treeRepository.findByIdAndDeletedAtIsNull(treeId)
+            ?: throw TreeNotFoundException("해당하는 트리가 존재하지 않습니다 treeId=$treeId")
 
         return GetReviewsServiceResponse(reviews = reviewQueryRepository.findAllByTreeId(treeId), tree = tree)
     }
-
 
     fun findAllImage(treeId: Long): List<ReviewImageResult> {
         return reviewQueryRepository.findAllImagesByTreeId(treeId)

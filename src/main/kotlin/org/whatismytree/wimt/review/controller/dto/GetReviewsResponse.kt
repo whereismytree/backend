@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 data class GetReviewsResponse(
     val reviews: List<Review>,
     val totalReviews: Long,
-    val tree: TreeSummary
+    val tree: TreeSummary,
 ) {
 
     data class Review(
@@ -35,7 +35,7 @@ data class GetReviewsResponse(
                     )
                 },
                 totalReviews = serviceResponse.reviews.size.toLong(),
-                tree = TreeSummary.of(serviceResponse.tree)
+                tree = TreeSummary.of(serviceResponse.tree),
             )
         }
     }
