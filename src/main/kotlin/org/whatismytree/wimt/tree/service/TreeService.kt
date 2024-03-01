@@ -8,13 +8,11 @@ import org.whatismytree.wimt.tree.controller.dto.CreateTreeDto
 import org.whatismytree.wimt.tree.controller.dto.FindPostedTreeListDto
 import org.whatismytree.wimt.tree.controller.dto.FindSavedTreeListDto
 import org.whatismytree.wimt.tree.controller.dto.FindTreeDto
-import org.whatismytree.wimt.tree.controller.dto.FindTreeMapDto
 import org.whatismytree.wimt.tree.controller.dto.UpdateTreeDto
 import org.whatismytree.wimt.tree.entity.Tree
 import org.whatismytree.wimt.tree.repository.TreeRepository
 import org.whatismytree.wimt.tree.repository.dto.FindTreeListResult
 import org.whatismytree.wimt.user.repository.UserRepository
-import java.lang.Exception
 import java.time.LocalDateTime
 
 @Service
@@ -105,8 +103,8 @@ class TreeService(
         topRightLng: Float,
         bottomRightLat: Float,
         bottomRightLng: Float,
-    ): List<FindTreeMapDto.Res> {
-        val treeList = treeRepository.findTreesWithinRectangle(
+    ): List<Tree> {
+        return treeRepository.findTreesWithinRectangle(
             topLeftLat,
             topLeftLng,
             bottomLeftLat,
@@ -116,15 +114,6 @@ class TreeService(
             bottomRightLat,
             bottomRightLng,
         )
-
-        return treeList.map {
-            FindTreeMapDto.Res(
-                id = it.id,
-                name = it.name,
-                lat = it.lat,
-                lng = it.lng,
-            )
-        }
     }
 
     fun findPostedTreeList(userId: Long): FindPostedTreeListDto {

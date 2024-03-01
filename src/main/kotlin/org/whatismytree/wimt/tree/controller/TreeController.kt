@@ -18,7 +18,7 @@ import org.whatismytree.wimt.common.CurrentUserId
 import org.whatismytree.wimt.tree.controller.dto.CreateTreeDto
 import org.whatismytree.wimt.tree.controller.dto.FindTreeDto
 import org.whatismytree.wimt.tree.controller.dto.FindTreeListResponse
-import org.whatismytree.wimt.tree.controller.dto.FindTreeMapDto
+import org.whatismytree.wimt.tree.controller.dto.FindTreeMapResponse
 import org.whatismytree.wimt.tree.controller.dto.UpdateTreeDto
 import org.whatismytree.wimt.tree.service.TreeService
 
@@ -69,16 +69,18 @@ class TreeController(
         @RequestParam topRightLng: Float,
         @RequestParam bottomRightLat: Float,
         @RequestParam bottomRightLng: Float,
-    ): List<FindTreeMapDto.Res> =
-        treeService.findTreeMap(
-            topLeftLat,
-            topLeftLng,
-            bottomLeftLat,
-            bottomLeftLng,
-            topRightLat,
-            topRightLng,
-            bottomRightLat,
-            bottomRightLng,
+    ): FindTreeMapResponse =
+        FindTreeMapResponse.of(
+            treeService.findTreeMap(
+                topLeftLat,
+                topLeftLng,
+                bottomLeftLat,
+                bottomLeftLng,
+                topRightLat,
+                topRightLng,
+                bottomRightLat,
+                bottomRightLng,
+            ),
         )
 
     @PutMapping("{id}")
