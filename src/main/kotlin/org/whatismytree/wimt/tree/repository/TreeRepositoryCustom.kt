@@ -5,10 +5,7 @@ import org.whatismytree.wimt.tree.controller.dto.FindSavedTreeListDto
 import org.whatismytree.wimt.tree.controller.dto.FindTreeListDto
 
 interface TreeRepositoryCustom {
-    fun findTreeList(
-        name: String?,
-        address: String?,
-    ): List<FindTreeListDto.Res>
+    fun findTreeList(query: String): List<FindTreeListDto.Res>
 
     fun findPostedTreeList(userId: Long): List<FindPostedTreeListDto.Res>
 

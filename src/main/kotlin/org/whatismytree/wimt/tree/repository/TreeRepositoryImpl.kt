@@ -1,6 +1,5 @@
 package org.whatismytree.wimt.tree.repository
 
-import com.querydsl.core.types.ExpressionUtils
 import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.CaseBuilder
 import com.querydsl.jpa.impl.JPAQueryFactory
@@ -16,10 +15,7 @@ import org.whatismytree.wimt.tree.entity.QTree.tree
 class TreeRepositoryImpl(
     private val jpaQueryFactory: JPAQueryFactory,
 ) : TreeRepositoryCustom {
-    override fun findTreeList(
-        name: String?,
-        address: String?,
-    ): List<FindTreeListDto.Res> {
+    override fun findTreeList(query: String): List<FindTreeListDto.Res> {
         return jpaQueryFactory
             .select(
                 Projections.constructor(
@@ -35,13 +31,8 @@ class TreeRepositoryImpl(
             )
             .from(tree)
             .where(
-                ExpressionUtils.anyOf(
-                    name?.let { tree.name.eq(name) },
-                    address?.let {
-                        tree.streetAddress.eq(address)
-                            .or(tree.roadAddress.eq(address))
-                    },
-                ),
+                tree.name.containsIgnoreCase(query)
+                    .or(tree.streetAddress.containsIgnoreCase(query).or(tree.roadAddress.containsIgnoreCase(query))),
             )
             .fetch()
     }

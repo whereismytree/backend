@@ -92,14 +92,8 @@ class TreeService(
         )
     }
 
-    fun findTreeList(
-        name: String?,
-        address: String?,
-    ): List<FindTreeListDto.Res> {
-        return treeRepository.findTreeList(
-            name,
-            address,
-        )
+    fun findTreeList(query: String): List<FindTreeListDto.Res> {
+        return treeRepository.findTreeList(query)
     }
 
     fun findTreeMap(

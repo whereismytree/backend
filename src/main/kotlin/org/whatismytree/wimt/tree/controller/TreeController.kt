@@ -46,16 +46,13 @@ class TreeController(
         treeService.findTree(id, userId)
 
     @GetMapping("list")
-    @Operation(summary = "트리 목록 조회")
+    @Operation(summary = "트리 검색")
     @Throws(Exception::class)
     fun findTreeList(
-        @RequestParam name: String?,
-        @RequestParam address: String?,
+        @RequestParam
+        query: String,
     ): List<FindTreeListDto.Res> =
-        treeService.findTreeList(
-            name,
-            address,
-        )
+        treeService.findTreeList(query.trim())
 
     @GetMapping("map")
     @Operation(summary = "현재 지도에서 트리 목록 조회")
