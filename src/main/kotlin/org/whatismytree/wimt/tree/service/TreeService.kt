@@ -21,8 +21,8 @@ class TreeService(
     private val treeRepository: TreeRepository,
     private val userRepository: UserRepository,
 ) {
-    fun createTree(req: CreateTreeDto.Req) {
-        val user = userRepository.findByIdOrNull(1L)
+    fun createTree(req: CreateTreeDto.Req, userId: Long) {
+        val user = userRepository.findByIdOrNull(userId)
             ?: throw Exception("유저가 존재하지 않습니다.")
 
         when (req.addressType) {
@@ -140,16 +140,22 @@ class TreeService(
     fun updateTree(
         id: Long,
         req: UpdateTreeDto.Req,
+        userId: Long,
     ) {
         val tree = treeRepository.findByIdAndDeletedAtIsNull(id)
             ?: throw Exception("id로 조회되는 tree가 없습니다.")
+
+        require(tree.userId == userId) { "본인이 생성하지 않은 트리는 수정할 수 없습니다." }
+
         tree.updateTree(req)
     }
 
     @Transactional
-    fun deleteTree(id: Long) {
+    fun deleteTree(id: Long, userId: Long) {
         val tree = treeRepository.findByIdOrNull(id)
             ?: throw Exception("id로 조회되는 tree가 없습니다.")
+
+        require(tree.userId == userId) { "본인이 생성하지 않은 트리는 삭제할 수 없습니다." }
 
         tree.deletedAt = LocalDateTime.now()
     }

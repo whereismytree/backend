@@ -55,7 +55,7 @@ class TreeServiceTest @Autowired constructor(
             )
 
             // when
-            val tree = treeService.createTree(req)
+            val tree = treeService.createTree(req, 1L)
 
             // then
             Assertions.assertThat(tree).isNotNull()

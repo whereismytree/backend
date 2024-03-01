@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import org.whatismytree.wimt.common.CurrentUserId
 import org.whatismytree.wimt.tree.controller.dto.CreateTreeDto
 import org.whatismytree.wimt.tree.controller.dto.FindTreeDto
 import org.whatismytree.wimt.tree.controller.dto.FindTreeListDto
@@ -31,8 +32,9 @@ class TreeController(
     fun createTree(
         @Valid @RequestBody
         req: CreateTreeDto.Req,
+        @CurrentUserId userId: Long,
     ) =
-        treeService.createTree(req)
+        treeService.createTree(req, userId)
 
     @GetMapping("{id}")
     @Operation(summary = "트리 조회")
@@ -83,14 +85,19 @@ class TreeController(
         @PathVariable id: Long,
         @Valid @RequestBody
         req: UpdateTreeDto.Req,
+        @CurrentUserId userId: Long,
     ) = treeService.updateTree(
         id,
         req,
+        userId,
     )
 
     @DeleteMapping("{id}")
     @Operation(summary = "트리 삭제")
     @Throws(Exception::class)
-    fun deleteTree(@PathVariable id: Long) =
-        treeService.deleteTree(id)
+    fun deleteTree(
+        @PathVariable id: Long,
+        @CurrentUserId userId: Long,
+    ) =
+        treeService.deleteTree(id, userId)
 }
