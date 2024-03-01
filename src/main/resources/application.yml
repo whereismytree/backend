@@ -23,6 +23,8 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
+  flyway:
+    enabled: false
 
 springdoc:
   packages-to-scan: org.whatismytree.wimt
@@ -50,6 +52,8 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
+  flyway:
+    enabled: false
 
 springdoc:
   packages-to-scan: org.whatismytree.wimt
@@ -75,8 +79,12 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     open-in-view: false
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 0
 
 springdoc:
   packages-to-scan: org.whatismytree.wimt

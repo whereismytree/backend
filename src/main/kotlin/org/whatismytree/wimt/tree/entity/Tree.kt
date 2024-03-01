@@ -1,11 +1,12 @@
 package org.whatismytree.wimt.tree.entity
 
 import jakarta.persistence.Column
+import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
 import org.hibernate.annotations.Comment
 import org.whatismytree.wimt.common.BaseTimeEntity
-import org.whatismytree.wimt.tree.controller.dto.UpdateTreeDto
+import org.whatismytree.wimt.tree.controller.dto.UpdateTreeRequest
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -17,51 +18,36 @@ class Tree(
     @Comment("등록한 유저 ID")
     val userId: Long,
 
-    @Column
     var name: String,
 
-    @Column
     var imageUrl: String?,
 
-    @Column
     var lat: Float,
 
-    @Column
     var lng: Float,
 
-    @Column
     var addressType: String,
 
-    @Column
     var streetAddress: String? = null,
 
-    @Column
     var roadAddress: String? = null,
 
-    @Column
     var detailAddress: String? = null,
 
-    @Column
-    var space: String? = null,
+    @Convert(converter = SpaceTypeConverter::class)
+    var spaceType: SpaceType = SpaceType.UNKNOWN,
 
-    @Column
     var exhibitionStartDate: LocalDate? = null,
 
-    @Column
     var exhibitionEndDate: LocalDate? = null,
 
-    @Column
     var businessDays: String? = null,
 
-    @Column
     var isPet: Boolean? = null,
 
-    @Column
     var extraInfo: String? = null,
 
-    @Column
     var deletedAt: LocalDateTime? = null,
-
 ) : BaseTimeEntity() {
 
     enum class AddressType {
@@ -69,12 +55,7 @@ class Tree(
         STREET,
     }
 
-    enum class Space {
-        INTERIOR,
-        EXTERNAL,
-    }
-
-    fun updateTree(req: UpdateTreeDto.Req) {
+    fun updateTree(req: UpdateTreeRequest) {
         this.name = req.name
         this.lat = req.lat
         this.lng = req.lng
@@ -82,7 +63,7 @@ class Tree(
         this.roadAddress = req.roadAddress
         this.streetAddress = req.streetAddress
         this.detailAddress = req.detailAddress
-        this.space = req.spaceType
+        this.spaceType = req.spaceType ?: SpaceType.UNKNOWN
         this.exhibitionStartDate = req.exhibitionStartDate
         this.exhibitionEndDate = req.exhibitionEndDate
         this.businessDays = req.businessDays

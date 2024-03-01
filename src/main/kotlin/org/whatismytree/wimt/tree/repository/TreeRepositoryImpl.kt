@@ -1,29 +1,25 @@
 package org.whatismytree.wimt.tree.repository
 
-import com.querydsl.core.types.ExpressionUtils
 import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.CaseBuilder
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Repository
 import org.whatismytree.wimt.favorite.domain.QFavorite.favorite
 import org.whatismytree.wimt.review.domain.QReview.review
-import org.whatismytree.wimt.tree.controller.dto.FindPostedTreeListDto
-import org.whatismytree.wimt.tree.controller.dto.FindSavedTreeListDto
-import org.whatismytree.wimt.tree.controller.dto.FindTreeListDto
+import org.whatismytree.wimt.tree.controller.dto.FindPostedTreeListResponse
+import org.whatismytree.wimt.tree.controller.dto.FindSavedTreeListResponse
 import org.whatismytree.wimt.tree.entity.QTree.tree
+import org.whatismytree.wimt.tree.repository.dto.FindTreeListResult
 
 @Repository
 class TreeRepositoryImpl(
     private val jpaQueryFactory: JPAQueryFactory,
 ) : TreeRepositoryCustom {
-    override fun findTreeList(
-        name: String?,
-        address: String?,
-    ): List<FindTreeListDto.Res> {
+    override fun findTreeList(query: String): List<FindTreeListResult> {
         return jpaQueryFactory
             .select(
                 Projections.constructor(
-                    FindTreeListDto.Res::class.java,
+                    FindTreeListResult::class.java,
                     tree.id,
                     tree.name,
                     tree.lat,
@@ -35,24 +31,19 @@ class TreeRepositoryImpl(
             )
             .from(tree)
             .where(
-                ExpressionUtils.anyOf(
-                    name?.let { tree.name.eq(name) },
-                    address?.let {
-                        tree.streetAddress.eq(address)
-                            .or(tree.roadAddress.eq(address))
-                    },
-                ),
+                tree.name.containsIgnoreCase(query)
+                    .or(tree.streetAddress.containsIgnoreCase(query).or(tree.roadAddress.containsIgnoreCase(query))),
             )
             .fetch()
     }
 
     override fun findPostedTreeList(
         userId: Long,
-    ): MutableList<FindPostedTreeListDto.Res> {
+    ): MutableList<FindPostedTreeListResponse.PostedTreeSummary> {
         return jpaQueryFactory
             .select(
                 Projections.constructor(
-                    FindPostedTreeListDto.Res::class.java,
+                    FindPostedTreeListResponse.PostedTreeSummary::class.java,
                     tree.id,
                     tree.name,
                     tree.lat,
@@ -78,11 +69,11 @@ class TreeRepositoryImpl(
     // favorites 테이블 inner join하여 리스트 return
     override fun findSavedTreeList(
         userId: Long,
-    ): List<FindSavedTreeListDto.Res> {
+    ): List<FindSavedTreeListResponse.SavedTreeSummary> {
         return jpaQueryFactory
             .select(
                 Projections.constructor(
-                    FindSavedTreeListDto.Res::class.java,
+                    FindSavedTreeListResponse.SavedTreeSummary::class.java,
                     tree.id,
                     tree.name,
                     tree.lat,

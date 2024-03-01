@@ -1,10 +1,10 @@
 package org.whatismytree.wimt.tree.controller.dto
 
-class FindPostedTreeListDto(
+data class FindSavedTreeListResponse(
     val totalTrees: Int,
-    val trees: List<Res>,
+    val trees: List<SavedTreeSummary>,
 ) {
-    class Res(
+    data class SavedTreeSummary(
         val treeId: Long,
         val name: String,
         val lat: Float,
