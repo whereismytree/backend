@@ -3,6 +3,8 @@ package org.whatismytree.wimt.tree.controller
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
+import jakarta.validation.constraints.NotBlank
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -20,6 +22,7 @@ import org.whatismytree.wimt.tree.controller.dto.FindTreeMapDto
 import org.whatismytree.wimt.tree.controller.dto.UpdateTreeDto
 import org.whatismytree.wimt.tree.service.TreeService
 
+@Validated
 @RestController
 @Tag(name = "트리 관리")
 @RequestMapping("/v1/trees")
@@ -49,7 +52,7 @@ class TreeController(
     @Operation(summary = "트리 검색")
     @Throws(Exception::class)
     fun findTreeList(
-        @RequestParam
+        @RequestParam @NotBlank
         query: String,
     ): List<FindTreeListDto.Res> =
         treeService.findTreeList(query.trim())

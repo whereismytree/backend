@@ -1,5 +1,6 @@
 package org.whatismytree.wimt.common
 
+import jakarta.validation.ConstraintViolationException
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
@@ -23,6 +24,12 @@ class GlobalExceptionHandler : ResponseEntityExceptionHandler() {
     ): ResponseEntity<Any> {
         logger.error("MethodArgumentNotValidException occured", ex)
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
+    }
+
+    @ExceptionHandler(ConstraintViolationException::class)
+    fun handleConstraintViolationException(exception: ConstraintViolationException): ResponseEntity<String> {
+        logger.info("ConstraintViolationException occured", exception)
+        return makeErrorResponseEntity(HttpStatus.BAD_REQUEST, exception.message)
     }
 
     @ExceptionHandler(NotFoundException::class)
