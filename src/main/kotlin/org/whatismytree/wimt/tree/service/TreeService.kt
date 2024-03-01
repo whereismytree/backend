@@ -8,11 +8,11 @@ import org.whatismytree.wimt.tree.controller.dto.CreateTreeDto
 import org.whatismytree.wimt.tree.controller.dto.FindPostedTreeListDto
 import org.whatismytree.wimt.tree.controller.dto.FindSavedTreeListDto
 import org.whatismytree.wimt.tree.controller.dto.FindTreeDto
-import org.whatismytree.wimt.tree.controller.dto.FindTreeListDto
 import org.whatismytree.wimt.tree.controller.dto.FindTreeMapDto
 import org.whatismytree.wimt.tree.controller.dto.UpdateTreeDto
 import org.whatismytree.wimt.tree.entity.Tree
 import org.whatismytree.wimt.tree.repository.TreeRepository
+import org.whatismytree.wimt.tree.repository.dto.FindTreeListResult
 import org.whatismytree.wimt.user.repository.UserRepository
 import java.lang.Exception
 import java.time.LocalDateTime
@@ -92,7 +92,7 @@ class TreeService(
         )
     }
 
-    fun findTreeList(query: String): List<FindTreeListDto.Res> {
+    fun findTreeList(query: String): List<FindTreeListResult> {
         return treeRepository.findTreeList(query)
     }
 

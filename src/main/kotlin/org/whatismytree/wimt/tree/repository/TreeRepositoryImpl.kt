@@ -8,18 +8,18 @@ import org.whatismytree.wimt.favorite.domain.QFavorite.favorite
 import org.whatismytree.wimt.review.domain.QReview.review
 import org.whatismytree.wimt.tree.controller.dto.FindPostedTreeListDto
 import org.whatismytree.wimt.tree.controller.dto.FindSavedTreeListDto
-import org.whatismytree.wimt.tree.controller.dto.FindTreeListDto
 import org.whatismytree.wimt.tree.entity.QTree.tree
+import org.whatismytree.wimt.tree.repository.dto.FindTreeListResult
 
 @Repository
 class TreeRepositoryImpl(
     private val jpaQueryFactory: JPAQueryFactory,
 ) : TreeRepositoryCustom {
-    override fun findTreeList(query: String): List<FindTreeListDto.Res> {
+    override fun findTreeList(query: String): List<FindTreeListResult> {
         return jpaQueryFactory
             .select(
                 Projections.constructor(
-                    FindTreeListDto.Res::class.java,
+                    FindTreeListResult::class.java,
                     tree.id,
                     tree.name,
                     tree.lat,

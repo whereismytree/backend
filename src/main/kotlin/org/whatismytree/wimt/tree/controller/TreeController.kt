@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 import org.whatismytree.wimt.common.CurrentUserId
 import org.whatismytree.wimt.tree.controller.dto.CreateTreeDto
 import org.whatismytree.wimt.tree.controller.dto.FindTreeDto
-import org.whatismytree.wimt.tree.controller.dto.FindTreeListDto
+import org.whatismytree.wimt.tree.controller.dto.FindTreeListResponse
 import org.whatismytree.wimt.tree.controller.dto.FindTreeMapDto
 import org.whatismytree.wimt.tree.controller.dto.UpdateTreeDto
 import org.whatismytree.wimt.tree.service.TreeService
@@ -54,8 +54,8 @@ class TreeController(
     fun findTreeList(
         @RequestParam @NotBlank
         query: String,
-    ): List<FindTreeListDto.Res> =
-        treeService.findTreeList(query.trim())
+    ): FindTreeListResponse =
+        FindTreeListResponse.of(treeService.findTreeList(query.trim()))
 
     @GetMapping("map")
     @Operation(summary = "현재 지도에서 트리 목록 조회")
