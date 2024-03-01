@@ -3,7 +3,7 @@ package org.whatismytree.wimt.tree.controller.dto
 import java.time.LocalDate
 
 class FindTreeDto {
-    class Res(
+    data class Res(
         val name: String,
         val lat: Float,
         val lng: Float,
@@ -16,7 +16,7 @@ class FindTreeDto {
         val spaceType: String? = null,
         val businessDays: String? = null,
         val isPet: Boolean? = null,
-        val title: String? = null,
         val extraInfo: String? = null,
+        val isFavorite: Boolean,
     )
 }

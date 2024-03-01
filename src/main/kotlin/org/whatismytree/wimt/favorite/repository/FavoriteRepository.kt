@@ -5,4 +5,6 @@ import org.whatismytree.wimt.favorite.domain.Favorite
 
 interface FavoriteRepository : JpaRepository<Favorite, Long> {
     fun findByUserIdAndTreeId(userId: Long, treeId: Long): Favorite?
+
+    fun existsByUserIdAndTreeId(userId: Long, treeId: Long): Boolean
 }

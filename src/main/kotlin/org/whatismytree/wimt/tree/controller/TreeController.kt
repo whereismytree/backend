@@ -39,8 +39,11 @@ class TreeController(
     @GetMapping("{id}")
     @Operation(summary = "트리 조회")
     @Throws(Exception::class)
-    fun findTree(@PathVariable id: Long): FindTreeDto.Res =
-        treeService.findTree(id)
+    fun findTree(
+        @PathVariable id: Long,
+        @CurrentUserId userId: Long,
+    ): FindTreeDto.Res =
+        treeService.findTree(id, userId)
 
     @GetMapping("list")
     @Operation(summary = "트리 목록 조회")

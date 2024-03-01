@@ -3,6 +3,7 @@ package org.whatismytree.wimt.tree.service
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.whatismytree.wimt.favorite.repository.FavoriteRepository
 import org.whatismytree.wimt.tree.controller.dto.CreateTreeDto
 import org.whatismytree.wimt.tree.controller.dto.FindPostedTreeListDto
 import org.whatismytree.wimt.tree.controller.dto.FindSavedTreeListDto
@@ -20,6 +21,7 @@ import java.time.LocalDateTime
 class TreeService(
     private val treeRepository: TreeRepository,
     private val userRepository: UserRepository,
+    private val favoriteRepository: FavoriteRepository,
 ) {
     fun createTree(req: CreateTreeDto.Req, userId: Long) {
         val user = userRepository.findByIdOrNull(userId)
@@ -58,9 +60,17 @@ class TreeService(
         treeRepository.save(tree)
     }
 
-    fun findTree(id: Long): FindTreeDto.Res {
+    fun findTree(
+        id: Long,
+        userId: Long,
+    ): FindTreeDto.Res {
         val tree = treeRepository.findByIdAndDeletedAtIsNull(id)
             ?: throw Exception("id로 조회되는 tree가 없습니다.")
+
+        val isFavorite = favoriteRepository.existsByUserIdAndTreeId(
+            userId = userId,
+            treeId = id,
+        )
 
         return FindTreeDto.Res(
             name = tree.name,
@@ -76,6 +86,7 @@ class TreeService(
             businessDays = tree.businessDays,
             isPet = tree.isPet,
             extraInfo = tree.extraInfo,
+            isFavorite = isFavorite,
         )
     }
 

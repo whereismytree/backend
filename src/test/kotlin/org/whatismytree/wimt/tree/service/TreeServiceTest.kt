@@ -68,7 +68,7 @@ class TreeServiceTest @Autowired constructor(
             val id = 1L
 
             // when
-            val tree = treeService.findTree(id)
+            val tree = treeService.findTree(id, 1L)
 
             // then
             Assertions.assertThat(tree).isNotNull()
