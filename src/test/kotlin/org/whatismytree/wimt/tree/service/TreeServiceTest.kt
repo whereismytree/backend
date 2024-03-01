@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.whatismytree.wimt.tree.controller.dto.CreateTreeDto
+import org.whatismytree.wimt.tree.controller.dto.CreateTreeRequest
 import org.whatismytree.wimt.tree.entity.Tree
 import java.time.LocalDate
 
@@ -36,7 +36,7 @@ class TreeServiceTest @Autowired constructor(
             val title = "명동 신셰계 백화점 크리스마스 트리"
             val extraInfo = "명동 신셰계 백화점 크리스마스 트리"
 
-            val req = CreateTreeDto.Req(
+            val req = CreateTreeRequest.Req(
                 name = name,
                 imageUrl = null,
                 lat = lat,
@@ -50,7 +50,6 @@ class TreeServiceTest @Autowired constructor(
                 spaceType = space.name,
                 businessDays = businessDays,
                 isPet = isPet,
-                title = title,
                 extraInfo = extraInfo,
             )
 

@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.whatismytree.wimt.common.CurrentUserId
-import org.whatismytree.wimt.tree.controller.dto.FindPostedTreeListDto
-import org.whatismytree.wimt.tree.controller.dto.FindSavedTreeListDto
+import org.whatismytree.wimt.tree.controller.dto.FindPostedTreeListResponse
+import org.whatismytree.wimt.tree.controller.dto.FindSavedTreeListResponse
 import org.whatismytree.wimt.tree.service.TreeService
 
 @RestController
@@ -19,12 +19,12 @@ class MyTreeController(
     @GetMapping("posted")
     @Operation(summary = "내가 등록한 트리 목록 조회")
     @Throws(Exception::class)
-    fun findPostedTreeList(@CurrentUserId userId: Long): FindPostedTreeListDto =
+    fun findPostedTreeList(@CurrentUserId userId: Long): FindPostedTreeListResponse =
         treeService.findPostedTreeList(userId)
 
     @GetMapping("saved")
     @Operation(summary = "내가 저장한 트리 목록 조회")
     @Throws(Exception::class)
-    fun findSavedTreeList(@CurrentUserId userId: Long): FindSavedTreeListDto =
+    fun findSavedTreeList(@CurrentUserId userId: Long): FindSavedTreeListResponse =
         treeService.findSavedTreeList(userId)
 }

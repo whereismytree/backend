@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.whatismytree.wimt.common.CurrentUserId
-import org.whatismytree.wimt.tree.controller.dto.CreateTreeDto
-import org.whatismytree.wimt.tree.controller.dto.FindTreeDto
+import org.whatismytree.wimt.tree.controller.dto.CreateTreeRequest
 import org.whatismytree.wimt.tree.controller.dto.FindTreeListResponse
 import org.whatismytree.wimt.tree.controller.dto.FindTreeMapResponse
-import org.whatismytree.wimt.tree.controller.dto.UpdateTreeDto
+import org.whatismytree.wimt.tree.controller.dto.FindTreeResponse
+import org.whatismytree.wimt.tree.controller.dto.UpdateTreeRequest
 import org.whatismytree.wimt.tree.service.TreeService
 
 @Validated
@@ -34,7 +34,7 @@ class TreeController(
     @Throws(Exception::class)
     fun createTree(
         @Valid @RequestBody
-        req: CreateTreeDto.Req,
+        req: CreateTreeRequest,
         @CurrentUserId userId: Long,
     ) =
         treeService.createTree(req, userId)
@@ -45,7 +45,7 @@ class TreeController(
     fun findTree(
         @PathVariable id: Long,
         @CurrentUserId userId: Long,
-    ): FindTreeDto.Res =
+    ): FindTreeResponse =
         treeService.findTree(id, userId)
 
     @GetMapping("list")
@@ -89,7 +89,7 @@ class TreeController(
     fun updateTree(
         @PathVariable id: Long,
         @Valid @RequestBody
-        req: UpdateTreeDto.Req,
+        req: UpdateTreeRequest,
         @CurrentUserId userId: Long,
     ) = treeService.updateTree(
         id,

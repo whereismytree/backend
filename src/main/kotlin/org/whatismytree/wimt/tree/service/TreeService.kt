@@ -4,11 +4,11 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.whatismytree.wimt.favorite.repository.FavoriteRepository
-import org.whatismytree.wimt.tree.controller.dto.CreateTreeDto
-import org.whatismytree.wimt.tree.controller.dto.FindPostedTreeListDto
-import org.whatismytree.wimt.tree.controller.dto.FindSavedTreeListDto
-import org.whatismytree.wimt.tree.controller.dto.FindTreeDto
-import org.whatismytree.wimt.tree.controller.dto.UpdateTreeDto
+import org.whatismytree.wimt.tree.controller.dto.CreateTreeRequest
+import org.whatismytree.wimt.tree.controller.dto.FindPostedTreeListResponse
+import org.whatismytree.wimt.tree.controller.dto.FindSavedTreeListResponse
+import org.whatismytree.wimt.tree.controller.dto.FindTreeResponse
+import org.whatismytree.wimt.tree.controller.dto.UpdateTreeRequest
 import org.whatismytree.wimt.tree.entity.Tree
 import org.whatismytree.wimt.tree.repository.TreeRepository
 import org.whatismytree.wimt.tree.repository.dto.FindTreeListResult
@@ -23,7 +23,7 @@ class TreeService(
     private val favoriteRepository: FavoriteRepository,
 ) {
     @Transactional
-    fun createTree(req: CreateTreeDto.Req, userId: Long) {
+    fun createTree(req: CreateTreeRequest, userId: Long) {
         val user = userRepository.findByIdOrNull(userId)
             ?: throw Exception("유저가 존재하지 않습니다.")
 
@@ -63,7 +63,7 @@ class TreeService(
     fun findTree(
         id: Long,
         userId: Long,
-    ): FindTreeDto.Res {
+    ): FindTreeResponse {
         val tree = treeRepository.findByIdAndDeletedAtIsNull(id)
             ?: throw Exception("id로 조회되는 tree가 없습니다.")
 
@@ -72,7 +72,7 @@ class TreeService(
             treeId = id,
         )
 
-        return FindTreeDto.Res(
+        return FindTreeResponse(
             name = tree.name,
             lat = tree.lat,
             lng = tree.lng,
@@ -116,17 +116,17 @@ class TreeService(
         )
     }
 
-    fun findPostedTreeList(userId: Long): FindPostedTreeListDto {
+    fun findPostedTreeList(userId: Long): FindPostedTreeListResponse {
         val res = treeRepository.findPostedTreeList(userId)
-        return FindPostedTreeListDto(
+        return FindPostedTreeListResponse(
             totalTrees = res.size,
             trees = res,
         )
     }
 
-    fun findSavedTreeList(userId: Long): FindSavedTreeListDto {
+    fun findSavedTreeList(userId: Long): FindSavedTreeListResponse {
         val res = treeRepository.findSavedTreeList(userId)
-        return FindSavedTreeListDto(
+        return FindSavedTreeListResponse(
             totalTrees = res.size,
             trees = res,
         )
@@ -135,7 +135,7 @@ class TreeService(
     @Transactional
     fun updateTree(
         id: Long,
-        req: UpdateTreeDto.Req,
+        req: UpdateTreeRequest,
         userId: Long,
     ) {
         val tree = treeRepository.findByIdAndDeletedAtIsNull(id)

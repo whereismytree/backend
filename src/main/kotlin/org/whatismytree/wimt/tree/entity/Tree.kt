@@ -5,7 +5,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Table
 import org.hibernate.annotations.Comment
 import org.whatismytree.wimt.common.BaseTimeEntity
-import org.whatismytree.wimt.tree.controller.dto.UpdateTreeDto
+import org.whatismytree.wimt.tree.controller.dto.UpdateTreeRequest
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -74,7 +74,7 @@ class Tree(
         EXTERNAL,
     }
 
-    fun updateTree(req: UpdateTreeDto.Req) {
+    fun updateTree(req: UpdateTreeRequest) {
         this.name = req.name
         this.lat = req.lat
         this.lng = req.lng
