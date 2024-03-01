@@ -9,6 +9,7 @@ import org.whatismytree.wimt.tree.controller.dto.FindPostedTreeListResponse
 import org.whatismytree.wimt.tree.controller.dto.FindSavedTreeListResponse
 import org.whatismytree.wimt.tree.controller.dto.FindTreeResponse
 import org.whatismytree.wimt.tree.controller.dto.UpdateTreeRequest
+import org.whatismytree.wimt.tree.entity.SpaceType
 import org.whatismytree.wimt.tree.entity.Tree
 import org.whatismytree.wimt.tree.repository.TreeRepository
 import org.whatismytree.wimt.tree.repository.dto.FindTreeListResult
@@ -49,7 +50,7 @@ class TreeService(
             streetAddress = req.streetAddress,
             roadAddress = req.roadAddress,
             detailAddress = req.detailAddress,
-            space = req.spaceType,
+            spaceType = req.spaceType ?: SpaceType.UNKNOWN,
             exhibitionStartDate = req.exhibitionStartDate,
             exhibitionEndDate = req.exhibitionEndDate,
             businessDays = req.businessDays,
@@ -82,7 +83,7 @@ class TreeService(
             detailAddress = tree.detailAddress,
             exhibitionStartDate = tree.exhibitionStartDate,
             exhibitionEndDate = tree.exhibitionEndDate,
-            spaceType = tree.space,
+            spaceType = tree.spaceType,
             businessDays = tree.businessDays,
             isPet = tree.isPet,
             extraInfo = tree.extraInfo,

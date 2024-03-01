@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.whatismytree.wimt.tree.controller.dto.CreateTreeRequest
+import org.whatismytree.wimt.tree.entity.SpaceType
 import org.whatismytree.wimt.tree.entity.Tree
 import java.time.LocalDate
 
@@ -28,15 +29,14 @@ class TreeServiceTest @Autowired constructor(
             val addressType = Tree.AddressType.ROAD
             val roadAddress = "서울 중구 퇴계로 77"
             val detailAddress = "명동 신세계 백화점"
-            val space = Tree.Space.EXTERNAL
+            val spaceType = SpaceType.OUTDOOR
             val exhibitionStartDate = LocalDate.of(2023, 12, 1)
             val exhibitionEndDate = LocalDate.of(2023, 12, 31)
             val businessDays = "월,화,수,목,금,토,일"
             val isPet = true
-            val title = "명동 신셰계 백화점 크리스마스 트리"
             val extraInfo = "명동 신셰계 백화점 크리스마스 트리"
 
-            val req = CreateTreeRequest.Req(
+            val req = CreateTreeRequest(
                 name = name,
                 imageUrl = null,
                 lat = lat,
@@ -47,7 +47,7 @@ class TreeServiceTest @Autowired constructor(
                 detailAddress = detailAddress,
                 exhibitionStartDate = exhibitionStartDate,
                 exhibitionEndDate = exhibitionEndDate,
-                spaceType = space.name,
+                spaceType = spaceType,
                 businessDays = businessDays,
                 isPet = isPet,
                 extraInfo = extraInfo,

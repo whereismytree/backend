@@ -1,6 +1,7 @@
 package org.whatismytree.wimt.tree.controller.dto
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import org.whatismytree.wimt.tree.entity.SpaceType
 import java.time.LocalDate
 
 data class UpdateTreeRequest(
@@ -16,7 +17,7 @@ data class UpdateTreeRequest(
     val exhibitionStartDate: LocalDate? = null,
     @JsonFormat(pattern = "yyyy-MM-dd")
     val exhibitionEndDate: LocalDate? = null,
-    val spaceType: String? = null,
+    val spaceType: SpaceType? = null,
     val businessDays: String? = null,
     val isPet: Boolean? = null,
     val extraInfo: String? = null,

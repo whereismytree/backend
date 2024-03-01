@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.whatismytree.wimt.tree.entity.SpaceType
 import org.whatismytree.wimt.tree.entity.Tree
 import java.time.LocalDate
 
@@ -22,7 +23,7 @@ class TreeTest {
             val addressType = "ROAD"
             val roadAddress = "서울 중구 퇴계로 77"
             val detailAddress = "명동 신세계 백화점"
-            val space = "EXTERNAL"
+            val spaceType = SpaceType.OUTDOOR
             val exhibitionStartDate = LocalDate.of(2023, 12, 1)
             val exhibitionEndDate = LocalDate.of(2023, 12, 31)
             val businessDays = "월,화,수,목,금,토,일"
@@ -39,7 +40,7 @@ class TreeTest {
                 addressType = addressType,
                 roadAddress = roadAddress,
                 detailAddress = detailAddress,
-                space = space,
+                spaceType = spaceType,
                 exhibitionStartDate = exhibitionStartDate,
                 exhibitionEndDate = exhibitionEndDate,
                 businessDays = businessDays,
@@ -54,7 +55,7 @@ class TreeTest {
             Assertions.assertThat(tree.addressType).isEqualTo(addressType)
             Assertions.assertThat(tree.roadAddress).isEqualTo(roadAddress)
             Assertions.assertThat(tree.detailAddress).isEqualTo(detailAddress)
-            Assertions.assertThat(tree.space).isEqualTo(space)
+            Assertions.assertThat(tree.spaceType).isEqualTo(spaceType)
             Assertions.assertThat(tree.exhibitionStartDate).isEqualTo(exhibitionStartDate)
             Assertions.assertThat(tree.exhibitionEndDate).isEqualTo(exhibitionEndDate)
             Assertions.assertThat(tree.businessDays).isEqualTo(businessDays)
