@@ -2,6 +2,7 @@ package org.whatismytree.wimt.image.service
 
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.CannedAccessControlList
+import com.amazonaws.services.s3.model.DeleteObjectRequest
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
 import org.springframework.beans.factory.annotation.Value
@@ -31,6 +32,11 @@ class ImageService(private val amazonS3Client: AmazonS3) {
         )
 
         return getFileUrl(generatedFileName, path)
+    }
+
+    fun delete(imageUrl: String?) {
+        val fileName = imageUrl?.substringAfterLast("/") ?: return
+        amazonS3Client.deleteObject(DeleteObjectRequest(bucketName, "images/$fileName"))
     }
 
     private fun getFileUrl(generatedFileName: String, path: String): String {
