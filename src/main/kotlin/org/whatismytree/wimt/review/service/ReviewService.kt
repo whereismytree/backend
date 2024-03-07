@@ -2,6 +2,7 @@ package org.whatismytree.wimt.review.service
 
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.whatismytree.wimt.image.service.ImageService
 import org.whatismytree.wimt.review.controller.dto.GetReviewResponse
 import org.whatismytree.wimt.review.domain.Review
 import org.whatismytree.wimt.review.exception.ReviewInvalidPermissionException
@@ -23,6 +24,7 @@ class ReviewService(
     private val reviewQueryRepository: ReviewQueryRepository,
     private val tagRepository: TagRepository,
     private val treeRepository: TreeRepository,
+    private val imageService: ImageService,
 ) {
 
     fun findAllDetail(treeId: Long): GetReviewsServiceResponse {
@@ -70,6 +72,10 @@ class ReviewService(
 
         if (!review.isAuthor(userId)) {
             throw ReviewInvalidPermissionException("수정 권한이 없습니다. reviewId: $reviewId, userId: $userId")
+        }
+
+        if (imageUrl != review.imageUrl) {
+            imageService.delete(review.imageUrl)
         }
 
         review.update(content, tagIds, imageUrl)

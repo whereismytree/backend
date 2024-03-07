@@ -4,6 +4,7 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.whatismytree.wimt.favorite.repository.FavoriteRepository
+import org.whatismytree.wimt.image.service.ImageService
 import org.whatismytree.wimt.tree.controller.dto.CreateTreeRequest
 import org.whatismytree.wimt.tree.controller.dto.FindPostedTreeListResponse
 import org.whatismytree.wimt.tree.controller.dto.FindSavedTreeListResponse
@@ -22,6 +23,7 @@ class TreeService(
     private val treeRepository: TreeRepository,
     private val userRepository: UserRepository,
     private val favoriteRepository: FavoriteRepository,
+    private val imageService: ImageService,
 ) {
     @Transactional
     fun createTree(req: CreateTreeRequest, userId: Long) {
@@ -143,6 +145,10 @@ class TreeService(
             ?: throw Exception("id로 조회되는 tree가 없습니다.")
 
         require(tree.userId == userId) { "본인이 생성하지 않은 트리는 수정할 수 없습니다." }
+
+        if (req.imageUrl != tree.imageUrl) {
+            imageService.delete(tree.imageUrl)
+        }
 
         tree.updateTree(req)
     }

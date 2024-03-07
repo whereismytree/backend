@@ -74,6 +74,8 @@ dependencies {
     testImplementation("io.kotest:kotest-property:5.8.0")
     testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.3")
 
+    implementation("com.amazonaws:aws-java-sdk-s3:1.12.52")
+
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-mysql")
 }
