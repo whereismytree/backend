@@ -38,6 +38,6 @@ class OAuth2AuthenticationSuccessHandler(
 
     companion object {
         private const val REDIRECT_URI = "redirect_uri"
-        private const val DEFAULT_OAUTH_REDIRECT_URI = "http://localhost:3000/oauth/redirect"
+        private const val DEFAULT_OAUTH_REDIRECT_URI = "https://whereismytree.me/oauth/redirect"
     }
 }
