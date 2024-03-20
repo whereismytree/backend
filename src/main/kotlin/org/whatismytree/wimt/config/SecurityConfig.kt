@@ -54,6 +54,7 @@ class SecurityConfig(
             "http://localhost:3000",
             "https://localhost:3000",
             "https://devjyp.shop",
+            "https://whereismytree.me",
         )
         configuration.allowedMethods = listOf("*")
         configuration.allowedHeaders = listOf("*")
