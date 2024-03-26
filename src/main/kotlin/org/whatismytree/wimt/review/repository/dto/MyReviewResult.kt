@@ -8,7 +8,7 @@ data class MyReviewResult(
     val treeName: String,
     val address: String,
     val createdAt: LocalDateTime,
-    val reviewImageUrl: String,
+    val reviewImageUrl: String?,
     val content: String,
     private val stringTags: String?,
 ) {

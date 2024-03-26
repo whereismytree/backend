@@ -15,7 +15,7 @@ data class MyReviewResponse(
         val reviewId: Long,
         val tree: TreeSummary,
         val createdAt: LocalDateTime,
-        val reviewImageUrl: String,
+        val reviewImageUrl: String?,
         val content: String,
         val tags: List<String>,
     )
