@@ -99,7 +99,6 @@ class TreeController(
 
     @DeleteMapping("{id}")
     @Operation(summary = "트리 삭제")
-    @Throws(Exception::class)
     fun deleteTree(
         @PathVariable id: Long,
         @CurrentUserId userId: Long,
