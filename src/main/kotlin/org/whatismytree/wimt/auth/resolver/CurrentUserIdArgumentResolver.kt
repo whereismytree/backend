@@ -38,7 +38,7 @@ class CurrentUserIdArgumentResolver(
             val oAuth2User = SecurityContextHolder.getContext().authentication.principal as OAuth2User
             return oAuth2User.name.toLong()
         } catch (e: ClassCastException) {
-            throw LoginRequiredException("로그인이 필요합니다.", e)
+            throw LoginRequiredException("유효하지 않은 토큰입니다. 다시 로그인해주세요.", e)
         }
     }
 
