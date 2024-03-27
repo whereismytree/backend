@@ -34,14 +34,17 @@ class CurrentUserIdArgumentResolver(
     }
 
     private fun getCurrentUserId(): Long {
-        val oAuth2User = SecurityContextHolder.getContext().authentication?.principal as OAuth2User?
-            ?: throw LoginRequiredException("로그인이 필요합니다.")
-        return oAuth2User.name.toLong()
+        try {
+            val oAuth2User = SecurityContextHolder.getContext().authentication.principal as OAuth2User
+            return oAuth2User.name.toLong()
+        } catch (e: ClassCastException) {
+            throw LoginRequiredException("로그인이 필요합니다.", e)
+        }
     }
 
     private fun validateUserExists(userId: Long) {
         if (!userRepository.existsByIdAndDeletedAtIsNull(userId)) {
-            throw UserNotFoundException("존재하지 않는 유저입니다. userId: $userId")
+            throw UserNotFoundException("존재하지 않거나 탈퇴한 유저입니다. userId: $userId")
         }
     }
 }
