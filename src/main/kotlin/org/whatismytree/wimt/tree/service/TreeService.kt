@@ -12,8 +12,10 @@ import org.whatismytree.wimt.tree.controller.dto.FindTreeResponse
 import org.whatismytree.wimt.tree.controller.dto.UpdateTreeRequest
 import org.whatismytree.wimt.tree.entity.SpaceType
 import org.whatismytree.wimt.tree.entity.Tree
+import org.whatismytree.wimt.tree.exception.TreeNotFoundException
 import org.whatismytree.wimt.tree.repository.TreeRepository
 import org.whatismytree.wimt.tree.repository.dto.FindTreeListResult
+import org.whatismytree.wimt.user.exception.UserNotFoundException
 import org.whatismytree.wimt.user.repository.UserRepository
 import java.time.LocalDateTime
 
@@ -28,7 +30,7 @@ class TreeService(
     @Transactional
     fun createTree(req: CreateTreeRequest, userId: Long) {
         val user = userRepository.findByIdOrNull(userId)
-            ?: throw Exception("유저가 존재하지 않습니다.")
+            ?: throw UserNotFoundException("유저가 존재하지 않습니다.")
 
         when (req.addressType) {
             "STREET" -> {
@@ -68,7 +70,7 @@ class TreeService(
         userId: Long,
     ): FindTreeResponse {
         val tree = treeRepository.findByIdAndDeletedAtIsNull(id)
-            ?: throw Exception("id로 조회되는 tree가 없습니다.")
+            ?: throw TreeNotFoundException("id로 조회되는 tree가 없습니다.")
 
         val isFavorite = favoriteRepository.existsByUserIdAndTreeId(
             userId = userId,
@@ -142,7 +144,7 @@ class TreeService(
         userId: Long,
     ) {
         val tree = treeRepository.findByIdAndDeletedAtIsNull(id)
-            ?: throw Exception("id로 조회되는 tree가 없습니다.")
+            ?: throw TreeNotFoundException("id로 조회되는 tree가 없습니다.")
 
         require(tree.userId == userId) { "본인이 생성하지 않은 트리는 수정할 수 없습니다." }
 
@@ -156,7 +158,7 @@ class TreeService(
     @Transactional
     fun deleteTree(id: Long, userId: Long) {
         val tree = treeRepository.findByIdOrNull(id)
-            ?: throw Exception("id로 조회되는 tree가 없습니다.")
+            ?: throw TreeNotFoundException("id로 조회되는 tree가 없습니다.")
 
         require(tree.userId == userId) { "본인이 생성하지 않은 트리는 삭제할 수 없습니다." }
 
